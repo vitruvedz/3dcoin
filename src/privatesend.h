@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2014-2017 The xxxx Core developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -327,7 +327,7 @@ public:
     static std::vector<CAmount> GetStandardDenominations() { return vecStandardDenominations; }
     static CAmount GetSmallestDenomination() { return vecStandardDenominations.back(); }
 
-    /// Get the denominations for a specific amount of dash.
+    /// Get the denominations for a specific amount of 3dcoin.
     static int GetDenominationsByAmounts(const std::vector<CAmount>& vecAmount);
 
     /// Get the denominations for a list of outputs (returns a bitshifted integer)

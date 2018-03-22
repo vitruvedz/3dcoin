@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin Core developers
-// Copyright (c) 2014-2017 The Dash Core developers
+// Copyright (c) 2014-2017 The xxxx Core developers
 // Copyright (c) 2014-2017 The 3DCoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -147,12 +147,12 @@ public:
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,11);
         // 3DCoin private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
-        // Dash BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
+        // 3DCoin BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
-        // Dash BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
+        // 3DCoin BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x88)(0xAD)(0xE4).convert_to_container<std::vector<unsigned char> >();
 
-        // Dash BIP44 coin type is '5'
+        // 3DCoin BIP44 coin type is '5'
         nExtCoinType = 5;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -252,12 +252,12 @@ public:
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,128);
         // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Testnet Dash BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Testnet 3DCoin BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
-        // Testnet Dash BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Testnet 3DCoin BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
 
-        // Testnet Dash BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet 3DCoin BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
@@ -373,12 +373,12 @@ public:
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,123);
         // Regtest private keys start with '9' or 'c' (Bitcoin defaults)
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
-        // Regtest Dash BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
+        // Regtest 3DCoin BIP32 pubkeys start with 'tpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
-        // Regtest Dash BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
+        // Regtest 3DCoin BIP32 prvkeys start with 'tprv' (Bitcoin defaults)
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
 
-        // Regtest Dash BIP44 coin type is '1' (All coin's testnet default)
+        // Regtest 3DCoin BIP44 coin type is '1' (All coin's testnet default)
         nExtCoinType = 1;
    }
 };

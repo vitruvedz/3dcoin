@@ -43,7 +43,7 @@
 using namespace std;
 
 #if defined(NDEBUG)
-# error "Dash Core cannot be compiled without assertions."
+# error "3DCoin Core cannot be compiled without assertions."
 #endif
 
 int64_t nTimeBestReceived = 0; // Used only to inform the wallet of when we last received a block
@@ -698,7 +698,7 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
         return mapBlockIndex.count(inv.hash);
 
     /* 
-        Dash Related Inventory Messages
+        3DCoin Related Inventory Messages
 
         --
 

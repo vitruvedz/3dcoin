@@ -6,13 +6,13 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/dash
-src/dashd
-src/dash-cli
-src/dash-tx
-src/test/test_dash
-src/qt/test/test_dash-qt
-src/bench/bench_dash
+src/3dcoin
+src/3dcoind
+src/3dcoin-cli
+src/3dcoin-tx
+src/test/test_3dcoin
+src/qt/test/test_3dcoin-qt
+src/bench/bench_3dcoin
 
 # autoreconf
 Makefile.in
@@ -35,8 +35,8 @@ config.log
 config.status
 configure
 libtool
-src/config/dash-config.h
-src/config/dash-config.h.in
+src/config/core-config.h
+src/config/core-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
@@ -62,7 +62,7 @@ libconftest.dylib*
 *.o
 *.o-*
 *.patch
-.dash
+.3dcoin
 *.a
 *.pb.cc
 *.pb.h
@@ -81,12 +81,12 @@ libconftest.dylib*
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-dash-qt
-Dash-Qt.app
+3dcoin-qt
+3DCoin-Qt.app
 
 # Unit-tests
 Makefile.test
-dash-qt_test
+3dcoin-qt_test
 src/test/buildenv.py
 
 # Resources cpp
@@ -100,7 +100,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_dash.coverage/
+test_3dcoin.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -123,12 +123,12 @@ share/BitcoindComparisonTool.jar
 .autotools
 /doc/doxygen/
 
-libdashconsensus.pc
-src/qt/dash-qt.bash
+lib3dcoinconsensus.pc
+src/qt/3dcoin-qt.bash
 qa/pull-tester/tests-config.sh
 
 #development symlinks
-dash-cli
-dashd
-dash-qt
+3dcoin-cli
+3dcoind
+3dcoin-qt
 make
