@@ -41,6 +41,10 @@ struct Params {
     int nMasternodePaymentsStartBlock;
     int nMasternodePaymentsIncreaseBlock;
     int nMasternodePaymentsIncreasePeriod; // in blocks
+    int nPrimenodePaymentsStartBlock; 
+    int nPrimenodePaymentsIncreaseBlock; 
+    int nSupernodePaymentsStartBlock; 
+    int nSupernodePaymentsIncreaseBlock; 
     int nInstantSendKeepLock; // in blocks
     int nBudgetPaymentsStartBlock;
     int nBudgetPaymentsCycleBlocks;
