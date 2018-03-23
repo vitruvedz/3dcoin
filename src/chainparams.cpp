@@ -73,8 +73,8 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
-        consensus.nMasternodePaymentsStartBlock = 100000; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
-        consensus.nMasternodePaymentsIncreaseBlock = 158000; // actual historical value
+        consensus.nMasternodePaymentsStartBlock = 1; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nMasternodePaymentsIncreaseBlock = 128436; // 3 months
         consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
         consensus.nPrimenodePaymentsStartBlock = 1003500; // The block at which Districts Beta released.
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; // 6 months after Districts Beta release.
@@ -144,8 +144,8 @@ public:
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,23);
         // 3DCoin script addresses start with '5'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,11);
-        // 3DCoin private keys start with '7' or 'X'
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,204);
+        // 3DCoin private keys start with 'H'
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,41);
         // 3DCoin BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
         // 3DCoin BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
