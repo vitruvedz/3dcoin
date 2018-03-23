@@ -1256,7 +1256,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     }
 
     
-    return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
+    return fSuperblockPartOnly ? 0 : nSubsidy;
 }
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
