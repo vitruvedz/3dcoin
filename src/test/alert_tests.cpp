@@ -15,7 +15,7 @@
 #include "util.h"
 #include "utilstrencodings.h"
 
-#include "test/test_dash.h"
+#include "test/test_3dcoin.h"
 
 #include <fstream>
 
