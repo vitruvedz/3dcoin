@@ -73,7 +73,11 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
-        consensus.nMasternodePaymentsStartBlock = 1; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nPrimenodePaymentsStartBlock = 1003500; // The block at which Districts Beta released.
+        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; // 6 months after Districts Beta release.
+        consensus.nSupernodePaymentsStartBlock = 1003500; 
+        consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
+        consensus.nMasternodePaymentsStartBlock = 41812; // true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         consensus.nMasternodePaymentsIncreaseBlock = 128436; // 3 months
         consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
         consensus.nInstantSendKeepLock = 32;
@@ -184,7 +188,11 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 210240;
-        consensus.nMasternodePaymentsStartBlock = 10000; // not true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nPrimenodePaymentsStartBlock = 1003500; // The block at which Districts Beta released.
+        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; // 6 months after Districts Beta release.
+        consensus.nSupernodePaymentsStartBlock = 1003500; 
+        consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
+        consensus.nMasternodePaymentsStartBlock = 10000; // true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
         consensus.nMasternodePaymentsIncreaseBlock = 46000;
         consensus.nMasternodePaymentsIncreasePeriod = 576;
         consensus.nInstantSendKeepLock = 6;
@@ -286,6 +294,10 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         consensus.nSubsidyHalvingInterval = 150;
+        consensus.nPrimenodePaymentsStartBlock = 1003500; // The block at which Districts Beta released.
+        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; // 6 months after Districts Beta release.
+        consensus.nSupernodePaymentsStartBlock = 1003500; 
+        consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
         consensus.nMasternodePaymentsIncreasePeriod = 10;
