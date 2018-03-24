@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=3DCoin
+Comment=3DCoin P2P Cryptocurrency
+Comment[fr]=3DCoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=3DCoin, eşten eşe kriptografik sanal para birimi
+Exec=3dcoin-qt %u
+Terminal=false
+Type=Application
+Icon=3dcoin128
+MimeType=x-scheme-handler/3dcoin;
+Categories=Office;Finance;

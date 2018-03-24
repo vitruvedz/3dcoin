@@ -1,0 +1,20 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource prefix="/translations">
+        <file alias="bg">locale/3dcoin_bg.qm</file>
+        <file alias="de">locale/3dcoin_de.qm</file>
+        <file alias="en">locale/3dcoin_en.qm</file>
+        <file alias="es">locale/3dcoin_es.qm</file>
+        <file alias="fi">locale/3dcoin_fi.qm</file>
+        <file alias="fr">locale/3dcoin_fr.qm</file>
+        <file alias="it">locale/3dcoin_it.qm</file>
+        <file alias="ja">locale/3dcoin_ja.qm</file>
+        <file alias="pl">locale/3dcoin_pl.qm</file>
+        <file alias="pt">locale/3dcoin_pt.qm</file>
+        <file alias="ru">locale/3dcoin_ru.qm</file>
+        <file alias="sk">locale/3dcoin_sk.qm</file>
+        <file alias="sv">locale/3dcoin_sv.qm</file>
+        <file alias="vi">locale/3dcoin_vi.qm</file>
+        <file alias="zh_CN">locale/3dcoin_zh_CN.qm</file>
+        <file alias="zh_TW">locale/3dcoin_zh_TW.qm</file>
+    </qresource>
+</RCC>
