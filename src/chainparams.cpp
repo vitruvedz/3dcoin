@@ -73,11 +73,11 @@ public:
     CMainParams() {
         strNetworkID = "main";
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
-        consensus.nPrimenodePaymentsStartBlock = 1003500; // The block at which Districts Beta released.
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; // 6 months after Districts Beta release.
+        consensus.nPrimenodePaymentsStartBlock = 1003500; 
+        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
         consensus.nSupernodePaymentsStartBlock = 1003500; 
         consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
-        consensus.nMasternodePaymentsStartBlock = 41812; // true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nMasternodePaymentsStartBlock = 41812; 
         consensus.nMasternodePaymentsIncreaseBlock = 128436; // 3 months
         consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
         consensus.nInstantSendKeepLock = 32;
@@ -125,13 +125,12 @@ public:
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1521707748, 1890273, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1521936000, 385071, 0x1e0ffff0, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
+      
 
-       
-
-        assert(consensus.hashGenesisBlock == uint256S("0x0000025b3b811f59a11d28dfbe0adf2e8e984d59c4bedb5d9b3f53ebef28e31f"));
-        assert(genesis.hashMerkleRoot == uint256S("0xac528c9b5ff009b4465342b158890695f5efcc1894d34be7654f9b3fe15a22a1"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000009c68fa7a5604b26aae2330f87fb67248ebc79fd93648981da6e704ca901"));
+        assert(genesis.hashMerkleRoot == uint256S("0x01cece0a7bcfdc2b9341c9ebf9f96b9f9746c57d2be182ebeada84ff21d855a8"));
 
 
         //vSeeds.push_back(CDNSSeedData("3dcoin1", "138.68.173.173"));
@@ -170,7 +169,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (  0, uint256S("0x0000025b3b811f59a11d28dfbe0adf2e8e984d59c4bedb5d9b3f53ebef28e31f")),
+            (  0, uint256S("0x000009c68fa7a5604b26aae2330f87fb67248ebc79fd93648981da6e704ca901")),
             1521707748, // * UNIX timestamp of last checkpoint block
             0,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
@@ -188,11 +187,11 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         consensus.nSubsidyHalvingInterval = 210240;
-        consensus.nPrimenodePaymentsStartBlock = 1003500; // The block at which Districts Beta released.
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; // 6 months after Districts Beta release.
+        consensus.nPrimenodePaymentsStartBlock = 1003500; 
+        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
         consensus.nSupernodePaymentsStartBlock = 1003500; 
         consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
-        consensus.nMasternodePaymentsStartBlock = 10000; // true, but it's ok as long as it's less then nMasternodePaymentsIncreaseBlock
+        consensus.nMasternodePaymentsStartBlock = 10000; 
         consensus.nMasternodePaymentsIncreaseBlock = 46000;
         consensus.nMasternodePaymentsIncreasePeriod = 576;
         consensus.nInstantSendKeepLock = 6;
@@ -216,7 +215,7 @@ public:
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
-        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nMinerConfirmationWindow = 1440; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
@@ -235,10 +234,13 @@ public:
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1521707748UL, 1890273, 0x1e0ffff0, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1521707748UL, 416965, 0x1e0ffff0, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000025b3b811f59a11d28dfbe0adf2e8e984d59c4bedb5d9b3f53ebef28e31f"));
-        assert(genesis.hashMerkleRoot == uint256S("0xac528c9b5ff009b4465342b158890695f5efcc1894d34be7654f9b3fe15a22a1"));
+
+
+
+        assert(consensus.hashGenesisBlock == uint256S("0x000007c41652b32383518b0a5b6722c5a693c730c4be7f1abcb0f70e286a3edd"));
+        assert(genesis.hashMerkleRoot == uint256S("0x01cece0a7bcfdc2b9341c9ebf9f96b9f9746c57d2be182ebeada84ff21d855a8"));
 
          vFixedSeeds.clear();
         vSeeds.clear();
@@ -294,8 +296,8 @@ public:
     CRegTestParams() {
         strNetworkID = "regtest";
         consensus.nSubsidyHalvingInterval = 150;
-        consensus.nPrimenodePaymentsStartBlock = 1003500; // The block at which Districts Beta released.
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; // 6 months after Districts Beta release.
+        consensus.nPrimenodePaymentsStartBlock = 1003500; 
+        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
         consensus.nSupernodePaymentsStartBlock = 1003500; 
         consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 240;
@@ -338,10 +340,16 @@ public:
         nDefaultPort = 12014;
         nPruneAfterHeight = 1000;
 
-        genesis = CreateGenesisBlock(1521707748, 1, 0x207fffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1521707748, 0, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x77061e47d90501e3ae3a4becbee4e4410d5123f09d0a6bb68a5e5b30c713b2e8"));
-        assert(genesis.hashMerkleRoot == uint256S("0xac528c9b5ff009b4465342b158890695f5efcc1894d34be7654f9b3fe15a22a1"));
+
+
+
+
+
+
+        assert(consensus.hashGenesisBlock == uint256S("0x0bc8fd0c140fe882fa62331845bb2cd92b030626376d0330d7fb542ddd4d5971"));
+        assert(genesis.hashMerkleRoot == uint256S("0x01cece0a7bcfdc2b9341c9ebf9f96b9f9746c57d2be182ebeada84ff21d855a8"));
 
         vFixedSeeds.clear(); //! Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();  //! Regtest mode doesn't have any DNS seeds.
@@ -356,7 +364,7 @@ public:
 
         checkpointData = (CCheckpointData){
             boost::assign::map_list_of
-            ( 0, uint256S("0x77061e47d90501e3ae3a4becbee4e4410d5123f09d0a6bb68a5e5b30c713b2e8")),
+            ( 0, uint256S("0x0bc8fd0c140fe882fa62331845bb2cd92b030626376d0330d7fb542ddd4d5971")),
             1521707748,
             0,
             0

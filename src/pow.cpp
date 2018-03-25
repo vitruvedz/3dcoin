@@ -81,7 +81,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast, const Conse
 }
 
 unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consensus::Params& params) {
-    /* current difficulty formula, 3dcoin - DarkGravity v3, written by Evan Duffield - evan@3dcoin.io */
+    /* current difficulty formula, Darkcoin - DarkGravity v3, written by Evan Duffield */
     const CBlockIndex *BlockLastSolved = pindexLast;
     const CBlockIndex *BlockReading = pindexLast;
     int64_t nActualTimespan = 0;
@@ -142,9 +142,8 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
     // mainnet/regtest share a configuration 
     if (Params().NetworkIDString() == CBaseChainParams::MAIN || Params().NetworkIDString() == CBaseChainParams::REGTEST) {
-        if (pindexLast->nHeight + 1 >= 34140) retarget = DIFF_DGW;
-        else if (pindexLast->nHeight + 1 >= 15200) retarget = DIFF_KGW;
-        else retarget = DIFF_BTC;
+        retarget = DIFF_DGW;
+        
     // testnet -- we want a lot of coins in existance early on 
     } else {
         if (pindexLast->nHeight + 1 >= 3000) retarget = DIFF_DGW;
