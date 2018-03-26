@@ -77,8 +77,8 @@ public:
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
         consensus.nSupernodePaymentsStartBlock = 1003500; 
         consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
-        consensus.nMasternodePaymentsStartBlock = 130; // 30 days 
-        consensus.nMasternodePaymentsIncreaseBlock = 128436; // 3 months
+        consensus.nMasternodePaymentsStartBlock = 130 //41812; // 30 days 
+        consensus.nMasternodePaymentsIncreaseBlock = 160 //128436; // 3 months
         consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
         consensus.nInstantSendKeepLock = 32;
         consensus.nBudgetPaymentsStartBlock = 100000000; // Disabled
@@ -121,7 +121,7 @@ public:
         pchMessageStart[2] = 0xa2;
         pchMessageStart[3] = 0x7d;
         vAlertPubKey = ParseHex("03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff");
-        nDefaultPort = 12012;
+        nDefaultPort = 6695;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
 
@@ -230,7 +230,7 @@ public:
         pchMessageStart[2] = 0xc4;
         pchMessageStart[3] = 0xcf;
         vAlertPubKey = ParseHex("03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff");
-        nDefaultPort = 12013;
+        nDefaultPort = 6696;
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
 
@@ -337,7 +337,7 @@ public:
         pchMessageStart[2] = 0xc7;
         pchMessageStart[3] = 0xec;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
-        nDefaultPort = 12014;
+        nDefaultPort = 6697;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(1521707748, 0, 0x207fffff, 1, 50 * COIN);
