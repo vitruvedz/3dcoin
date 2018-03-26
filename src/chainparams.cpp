@@ -77,8 +77,8 @@ public:
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
         consensus.nSupernodePaymentsStartBlock = 1003500; 
         consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
-        consensus.nMasternodePaymentsStartBlock = 130 //41812; // 30 days 
-        consensus.nMasternodePaymentsIncreaseBlock = 160 //128436; // 3 months
+        consensus.nMasternodePaymentsStartBlock = 130; //41812; // 30 days 
+        consensus.nMasternodePaymentsIncreaseBlock = 160; //128436; // 3 months
         consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
         consensus.nInstantSendKeepLock = 32;
         consensus.nBudgetPaymentsStartBlock = 100000000; // Disabled
