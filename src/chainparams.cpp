@@ -75,8 +75,8 @@ public:
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
         consensus.nPrimenodePaymentsStartBlock = 1003500; 
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nSupernodePaymentsStartBlock = 1003500; 
-        consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
+        consensus.nPulsenodePaymentsStartBlock = 1003500; 
+        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 130; //41812; // 30 days 
         consensus.nMasternodePaymentsIncreaseBlock = 160; //128436; // 3 months
         consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
@@ -144,10 +144,10 @@ public:
 
        // 3DCoin addresses start with 'A'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 23);
-        // 3DCoin script addresses start with '7'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 14);
-        // 3DCoin private keys start with 'H'
-        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 41);
+        // 3DCoin script addresses start with '4'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 8);
+        // 3DCoin private keys start with 'L'
+        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 130);
         // 3DCoin BIP32 pubkeys start with 'xpub' (Bitcoin defaults)
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x88)(0xB2)(0x1E).convert_to_container<std::vector<unsigned char> >();
         // 3DCoin BIP32 prvkeys start with 'xprv' (Bitcoin defaults)
@@ -189,8 +189,8 @@ public:
         consensus.nSubsidyHalvingInterval = 210240;
         consensus.nPrimenodePaymentsStartBlock = 1003500; 
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nSupernodePaymentsStartBlock = 1003500; 
-        consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
+        consensus.nPulsenodePaymentsStartBlock = 1003500; 
+        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 10000; 
         consensus.nMasternodePaymentsIncreaseBlock = 46000;
         consensus.nMasternodePaymentsIncreasePeriod = 576;
@@ -298,8 +298,8 @@ public:
         consensus.nSubsidyHalvingInterval = 150;
         consensus.nPrimenodePaymentsStartBlock = 1003500; 
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nSupernodePaymentsStartBlock = 1003500; 
-        consensus.nSupernodePaymentsIncreaseBlock = 1254375; 
+        consensus.nPulsenodePaymentsStartBlock = 1003500; 
+        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
         consensus.nMasternodePaymentsIncreasePeriod = 10;

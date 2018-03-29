@@ -1743,7 +1743,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     
     CAmount nSubsidyBase;
 
-    nSubsidyBase = 13;
+    nSubsidyBase = 25;
                             //ICO Premine
     if (nPrevHeight == 0)   {nSubsidyBase = 62896941;} 
 
@@ -1761,11 +1761,21 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     int nMNSBlock = Params().GetConsensus().nMasternodePaymentsStartBlock;
     int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
+    int nPNSBlock = Params().GetConsensus().nPulsenodePaymentsStartBlock;
     CAmount ret = blockValue;
 
     if(nHeight > nMNSBlock)         ret = blockValue / 10; // start at 10% 41812 30 days from genesis block
                                                                       
-    if(nHeight > nMNPIBlock)        ret += blockValue / 20; // 128436 - 15.0%
+    if(nHeight > nMNPIBlock)        ret += blockValue / 20; // 128436 - 15%
+
+    if(nPNSBlock < nHeight){
+
+    if(nHeight > nMNPIBlock*2)        ret += blockValue / 10; // 256872 -25%
+
+    if(nHeight > nMNPIBlock*3)        ret += blockValue / 10; // 385308 -35%
+
+    if(nHeight > nMNPIBlock*4)        ret += blockValue / 10; // 513744 -45%
+    }
 
     return ret;
 

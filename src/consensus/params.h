@@ -39,8 +39,8 @@ struct Params {
     int nSubsidyHalvingInterval;
     int nPrimenodePaymentsStartBlock; 
     int nPrimenodePaymentsIncreaseBlock; 
-    int nSupernodePaymentsStartBlock; 
-    int nSupernodePaymentsIncreaseBlock; 
+    int nPulsenodePaymentsStartBlock; 
+    int nPulsenodePaymentsIncreaseBlock; 
     int nMasternodePaymentsStartBlock;
     int nMasternodePaymentsIncreaseBlock;
     int nMasternodePaymentsIncreasePeriod; // in blocks
