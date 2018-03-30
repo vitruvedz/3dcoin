@@ -2696,7 +2696,7 @@ https://www.transifex.com/projects/p/3dcoin/</translation>
         <translation>位元幣核心開發人員</translation>
     </message>
     <message>
-        <source>The xxxx Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>達世幣核心開發人員</translation>
     </message>
     <message>

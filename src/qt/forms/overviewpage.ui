@@ -409,13 +409,11 @@
             <item>
              <widget class="QLabel" name="labelPrivateSendHeader">
               <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
+               <font>                
                </font>
               </property>
               <property name="text">
-               <string>PrivateSend</string>
+               <string>PrivateSend:</string>
               </property>
              </widget>
             </item>
@@ -711,7 +709,7 @@
           <item>
            <widget class="QListView" name="listTransactions">
             <property name="styleSheet">
-             <string notr="true">QListView { background: transparent; }</string>
+             <string notr="true">QListView</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
