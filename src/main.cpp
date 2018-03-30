@@ -1746,7 +1746,7 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     nSubsidyBase = 25;
                             //ICO Premine
     if (nPrevHeight == 0)   {nSubsidyBase = 62896941;} 
-
+    if (nPrevHeight < 50) {nSubsidyBase = 0;} 
     CAmount nSubsidy = nSubsidyBase * COIN;   
 
     // yearly decline of production by 5% per year

@@ -75,10 +75,10 @@ public:
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
         consensus.nPrimenodePaymentsStartBlock = 1003500; 
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nPulsenodePaymentsStartBlock = 1003500; 
+        consensus.nPulsenodePaymentsStartBlock = /300; //1003500; 
         consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nMasternodePaymentsStartBlock = 130; //41812; // 30 days 
-        consensus.nMasternodePaymentsIncreaseBlock = 160; //128436; // 3 months
+        consensus.nMasternodePaymentsStartBlock = 180; //41812; // 30 days 
+        consensus.nMasternodePaymentsIncreaseBlock = 240; //128436; // 3 months
         consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
         consensus.nInstantSendKeepLock = 32;
         consensus.nBudgetPaymentsStartBlock = 100000000; // Disabled
