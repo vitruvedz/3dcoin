@@ -2140,7 +2140,7 @@ https://www.transifex.com/projects/p/3dcoin/</translation>
         <translation>Bitcoin Core-utvecklarna</translation>
     </message>
     <message>
-        <source>The xxxx Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>3DCoin Core-utvecklarna</translation>
     </message>
     <message>

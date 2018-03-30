@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2014-2017 The xxxx Core developers
+// Copyright (c) 2014-2017 The Dash Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -282,8 +282,8 @@ UniValue validateaddress(const UniValue& params, bool fHelp)
             "  \"account\" : \"account\"         (string) DEPRECATED. The account associated with the address, \"\" is the default account\n"
             "}\n"
             "\nExamples:\n"
-            + HelpExampleCli("validateaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"")
-            + HelpExampleRpc("validateaddress", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"")
+            + HelpExampleCli("validateaddress", "\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"")
+            + HelpExampleRpc("validateaddress", "\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"")
         );
 
 #ifdef ENABLE_WALLET
@@ -442,11 +442,11 @@ UniValue verifymessage(const UniValue& params, bool fHelp)
             "\nUnlock the wallet for 30 seconds\n"
             + HelpExampleCli("walletpassphrase", "\"mypassphrase\" 30") +
             "\nCreate the signature\n"
-            + HelpExampleCli("signmessage", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" \"my message\"") +
+            + HelpExampleCli("signmessage", "\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\" \"my message\"") +
             "\nVerify the signature\n"
-            + HelpExampleCli("verifymessage", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\" \"signature\" \"my message\"") +
+            + HelpExampleCli("verifymessage", "\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\" \"signature\" \"my message\"") +
             "\nAs json rpc\n"
-            + HelpExampleRpc("verifymessage", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\", \"signature\", \"my message\"")
+            + HelpExampleRpc("verifymessage", "\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\", \"signature\", \"my message\"")
         );
 
     LOCK(cs_main);
@@ -596,8 +596,8 @@ UniValue getaddressmempool(const UniValue& params, bool fHelp)
             "  }\n"
             "]\n"
             "\nExamples:\n"
-            + HelpExampleCli("getaddressmempool", "'{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}'")
-            + HelpExampleRpc("getaddressmempool", "{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}")
+            + HelpExampleCli("getaddressmempool", "'{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}'")
+            + HelpExampleRpc("getaddressmempool", "{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}")
         );
 
     std::vector<std::pair<uint160, int> > addresses;
@@ -666,8 +666,8 @@ UniValue getaddressutxos(const UniValue& params, bool fHelp)
             "  }\n"
             "]\n"
             "\nExamples:\n"
-            + HelpExampleCli("getaddressutxos", "'{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}'")
-            + HelpExampleRpc("getaddressutxos", "{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}")
+            + HelpExampleCli("getaddressutxos", "'{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}'")
+            + HelpExampleRpc("getaddressutxos", "{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}")
         );
 
     std::vector<std::pair<uint160, int> > addresses;
@@ -734,8 +734,8 @@ UniValue getaddressdeltas(const UniValue& params, bool fHelp)
             "  }\n"
             "]\n"
             "\nExamples:\n"
-            + HelpExampleCli("getaddressdeltas", "'{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}'")
-            + HelpExampleRpc("getaddressdeltas", "{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}")
+            + HelpExampleCli("getaddressdeltas", "'{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}'")
+            + HelpExampleRpc("getaddressdeltas", "{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}")
         );
 
 
@@ -814,8 +814,8 @@ UniValue getaddressbalance(const UniValue& params, bool fHelp)
             "  \"received\"  (string) The total number of satoshis received (including change)\n"
             "}\n"
             "\nExamples:\n"
-            + HelpExampleCli("getaddressbalance", "'{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}'")
-            + HelpExampleRpc("getaddressbalance", "{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}")
+            + HelpExampleCli("getaddressbalance", "'{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}'")
+            + HelpExampleRpc("getaddressbalance", "{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}")
         );
 
     std::vector<std::pair<uint160, int> > addresses;
@@ -872,8 +872,8 @@ UniValue getaddresstxids(const UniValue& params, bool fHelp)
             "  ,...\n"
             "]\n"
             "\nExamples:\n"
-            + HelpExampleCli("getaddresstxids", "'{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}'")
-            + HelpExampleRpc("getaddresstxids", "{\"addresses\": [\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwg\"]}")
+            + HelpExampleCli("getaddresstxids", "'{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}'")
+            + HelpExampleRpc("getaddresstxids", "{\"addresses\": [\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"]}")
         );
 
     std::vector<std::pair<uint160, int> > addresses;
