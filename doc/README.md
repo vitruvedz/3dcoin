@@ -24,10 +24,10 @@ Drag 3DCoin-Qt to your applications folder, and then run 3DCoin-Qt.
 
 ### Need Help?
 
-* See the [3DCoin documentation](https://BlockchainTechLLC.atlassian.net/wiki/display/DOC)
+* See the [3DCoin documentation](https://3DCoin.atlassian.net/wiki/)
 for help and more information.
-* Ask for help on [#BlockchainTechLLC](http://webchat.freenode.net?channels=BlockchainTechLLC) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=BlockchainTechLLC).
-* Ask for help on the [3DCoinTalk](https://3dcointalk.org/) forums.
+* Ask for help on [#3DCoin](http://webchat.freenode.net?channels=3DCoin) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=3DCoin).
+* Ask for help on the [3DCoinTalk](https://3dctalk.org/) forums.
 
 Building
 ---------------------

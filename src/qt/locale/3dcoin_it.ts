@@ -2590,7 +2590,7 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Gli sviluppatori di Bitcoin Core</translation>
     </message>
     <message>
-        <source>The xxxx Core developers</source>
+        <source>The Dash Core developers</source>
         <translation>Gli sviluppatori di 3DCoin Core</translation>
     </message>
     <message>
