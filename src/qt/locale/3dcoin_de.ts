@@ -2748,7 +2748,7 @@ Dies kann passieren, wenn einige 3DCoin aus ihrer Wallet bereits ausgegeben wurd
         <translation>Die "Bitcoin Core"-Entwickler</translation>
     </message>
     <message>
-        <source>The Dash Core developers</source>
+        <source>The 3DCoin Core developers</source>
         <translation>Die "3DCoin Core"-Entwickler</translation>
     </message>
     <message>
