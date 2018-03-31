@@ -79,7 +79,7 @@ public:
         consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 500; // unused 
         consensus.nMasternodePaymentsIncreaseBlock = 200;//41812; // 30days
-        consensus.nMasternodePaymentsIncreasePeriod = 10;//62718; // 45 days
+        consensus.nMasternodePaymentsIncreasePeriod = 10;//62718; // unused
         consensus.nInstantSendKeepLock = 32;
         consensus.nBudgetPaymentsStartBlock = 100000000; // Disabled
         consensus.nBudgetPaymentsCycleBlocks = 41812; // actual number of blocks per month is 501750 / 12 = 41812
