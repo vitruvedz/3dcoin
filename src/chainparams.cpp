@@ -157,7 +157,7 @@ public:
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
-        fMiningRequiresPeers = false;
+        fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
@@ -229,7 +229,7 @@ public:
         pchMessageStart[1] = 0xa2;
         pchMessageStart[2] = 0xc4;
         pchMessageStart[3] = 0xcf;
-        vAlertPubKey = ParseHex("03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff");
+        vAlertPubKey = ParseHex("04671B05F92043DA4EB8F45D50BCD20327D7E091ED32CB3A5BEF95FF6B4FF397E83824FFE856236A2099F74CE90D810C61D2375035123CE9468E5555735B207D81");
         nDefaultPort = 6696;
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
@@ -245,7 +245,7 @@ public:
          vFixedSeeds.clear();
         vSeeds.clear();
         vSeeds.push_back(CDNSSeedData("3dcoin1", "testseed1.3dcoin.io"));
-        // vSeeds.push_back(CDNSSeedData("Districts1", "testseed1.districts.io"));
+        vSeeds.push_back(CDNSSeedData("Districts1", "testseed1.districts.io"));
         // vSeeds.push_back(CDNSSeedData("3dcoin2", "testseed2.3dcoin.io"));
         // vSeeds.push_back(CDNSSeedData("Districts2", "testseed2.districts.io"));
 
@@ -272,11 +272,11 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
-        strSporkPubKey = "03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff";
+        strSporkPubKey = "04671B05F92043DA4EB8F45D50BCD20327D7E091ED32CB3A5BEF95FF6B4FF397E83824FFE856236A2099F74CE90D810C61D2375035123CE9468E5555735B207D81";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (   0, uint256S("0x0000025b3b811f59a11d28dfbe0adf2e8e984d59c4bedb5d9b3f53ebef28e31f")),
+            (   0, uint256S("0x000007c41652b32383518b0a5b6722c5a693c730c4be7f1abcb0f70e286a3edd")),
 
             1521707748, // * UNIX timestamp of last checkpoint block
             0,     // * total number of transactions between genesis and last checkpoint
