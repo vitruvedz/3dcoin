@@ -2748,7 +2748,7 @@ https://www.transifex.com/projects/p/3dcoin/</translation>
         <translation>Les développeurs Bitcoin Core</translation>
     </message>
     <message>
-        <source>The Dash Core developers</source>
+        <source>The 3DCoin Core developers</source>
         <translation>Les développeurs 3DCoin Core</translation>
     </message>
     <message>

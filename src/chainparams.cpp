@@ -77,9 +77,9 @@ public:
         consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
         consensus.nPulsenodePaymentsStartBlock = 1003500; 
         consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nMasternodePaymentsStartBlock = 130; //41812; // 30 days 
-        consensus.nMasternodePaymentsIncreaseBlock = 160; //128436; // 3 months
-        consensus.nMasternodePaymentsIncreasePeriod = 1393*30; // 41812 
+        consensus.nMasternodePaymentsStartBlock = 500; // unused 
+        consensus.nMasternodePaymentsIncreaseBlock = 41812; // 30days
+        consensus.nMasternodePaymentsIncreasePeriod = 62718; // unused
         consensus.nInstantSendKeepLock = 32;
         consensus.nBudgetPaymentsStartBlock = 100000000; // Disabled
         consensus.nBudgetPaymentsCycleBlocks = 41812; // actual number of blocks per month is 501750 / 12 = 41812
@@ -94,7 +94,7 @@ public:
         consensus.nMajorityRejectBlockOutdated = 950;
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("0x000007d91d1254d60e2dd1ae580383070a4ddffa4c64c2eeb4a2f9ecc0414343");
+        consensus.BIP34Hash = uint256S("0x000000adcac9296478b762152dbd56959fd0f8d2881f167d34be38e110d98ba8");
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 24 * 60 * 60; //  24 hours
         consensus.nPowTargetSpacing = 60; //  60 sec
@@ -120,7 +120,7 @@ public:
         pchMessageStart[1] = 0xc0;
         pchMessageStart[2] = 0xa2;
         pchMessageStart[3] = 0x7d;
-        vAlertPubKey = ParseHex("03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff");
+        vAlertPubKey = ParseHex("04671B05F92043DA4EB8F45D50BCD20327D7E091ED32CB3A5BEF95FF6B4FF397E83824FFE856236A2099F74CE90D810C61D2375035123CE9468E5555735B207D81");
         nDefaultPort = 6695;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
@@ -133,14 +133,14 @@ public:
         assert(genesis.hashMerkleRoot == uint256S("0x01cece0a7bcfdc2b9341c9ebf9f96b9f9746c57d2be182ebeada84ff21d855a8"));
 
 
-        //vSeeds.push_back(CDNSSeedData("3dcoin1", "138.68.173.173"));
-        // vSeeds.push_back(CDNSSeedData("3dcoin2", "138.197.184.156"));
-        // vSeeds.push_back(CDNSSeedData("3dcoin3", "seed3.3dcoin.io"));
-        // vSeeds.push_back(CDNSSeedData("3dcoin4", "seed4.3dcoin.io"));
-        // vSeeds.push_back(CDNSSeedData("Districts1", "seed1.districts.io"));
-        // vSeeds.push_back(CDNSSeedData("Districts2", "seed2.districts.io"));
-        // vSeeds.push_back(CDNSSeedData("Districts3", "seed3.districts.io"));
-        // vSeeds.push_back(CDNSSeedData("Districts4", "seed4.districts.io"));
+        vSeeds.push_back(CDNSSeedData("3dcoin1", "174.138.3.33"));
+        vSeeds.push_back(CDNSSeedData("3dcoin2", "159.203.167.75"));
+        vSeeds.push_back(CDNSSeedData("3dcoin3", "128.199.218.139"));
+        vSeeds.push_back(CDNSSeedData("3dcoin4", "159.65.90.101"));
+        vSeeds.push_back(CDNSSeedData("Districts1", "159.65.167.79"));
+        vSeeds.push_back(CDNSSeedData("Districts2", "31.215.26.187"));
+        vSeeds.push_back(CDNSSeedData("Districts3", "159.65.148.226"));
+        vSeeds.push_back(CDNSSeedData("Districts4", "159.65.201.222"));
 
        // 3DCoin addresses start with 'A'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 23);
@@ -165,12 +165,12 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff";
+        strSporkPubKey = "04671B05F92043DA4EB8F45D50BCD20327D7E091ED32CB3A5BEF95FF6B4FF397E83824FFE856236A2099F74CE90D810C61D2375035123CE9468E5555735B207D81";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (  0, uint256S("0x000009c68fa7a5604b26aae2330f87fb67248ebc79fd93648981da6e704ca901")),
-            1521707748, // * UNIX timestamp of last checkpoint block
+            (  1, uint256S("0x00000f4c2ffc196e91ce35cce629f7a16425005650ceac655d55a3919af1cc74")),
+            1522531117, // * UNIX timestamp of last checkpoint block
             0,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0        // * estimated number of transactions per day after checkpoint
@@ -229,7 +229,7 @@ public:
         pchMessageStart[1] = 0xa2;
         pchMessageStart[2] = 0xc4;
         pchMessageStart[3] = 0xcf;
-        vAlertPubKey = ParseHex("03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff");
+        vAlertPubKey = ParseHex("04671B05F92043DA4EB8F45D50BCD20327D7E091ED32CB3A5BEF95FF6B4FF397E83824FFE856236A2099F74CE90D810C61D2375035123CE9468E5555735B207D81");
         nDefaultPort = 6696;
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
@@ -246,8 +246,8 @@ public:
         vSeeds.clear();
         vSeeds.push_back(CDNSSeedData("3dcoin1", "testseed1.3dcoin.io"));
         vSeeds.push_back(CDNSSeedData("Districts1", "testseed1.districts.io"));
-        vSeeds.push_back(CDNSSeedData("3dcoin2", "testseed2.3dcoin.io"));
-        vSeeds.push_back(CDNSSeedData("Districts2", "testseed2.districts.io"));
+        // vSeeds.push_back(CDNSSeedData("3dcoin2", "testseed2.3dcoin.io"));
+        // vSeeds.push_back(CDNSSeedData("Districts2", "testseed2.districts.io"));
 
       // Testnet 3DCoin addresses start with 'T'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 66);
@@ -272,11 +272,11 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
-        strSporkPubKey = "03d67fc9de9229213c3521612a6d685db4dff40beaa0e516fd2d775399add01aff";
+        strSporkPubKey = "04671B05F92043DA4EB8F45D50BCD20327D7E091ED32CB3A5BEF95FF6B4FF397E83824FFE856236A2099F74CE90D810C61D2375035123CE9468E5555735B207D81";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (   0, uint256S("0x0000025b3b811f59a11d28dfbe0adf2e8e984d59c4bedb5d9b3f53ebef28e31f")),
+            (   0, uint256S("0x000007c41652b32383518b0a5b6722c5a693c730c4be7f1abcb0f70e286a3edd")),
 
             1521707748, // * UNIX timestamp of last checkpoint block
             0,     // * total number of transactions between genesis and last checkpoint

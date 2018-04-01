@@ -2741,7 +2741,7 @@ https://www.transifex.com/projects/p/3dcoin/</translation>
         <translation>Bitcoin Core 的开发者</translation>
     </message>
     <message>
-        <source>The Dash Core developers</source>
+        <source>The 3DCoin Core developers</source>
         <translation>达世币核心开发人员</translation>
     </message>
     <message>

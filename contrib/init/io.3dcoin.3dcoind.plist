@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>org.3dcoin.3dcoind</string>
+	<string>io.3dcoin.3dcoind</string>
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/local/bin/3dcoind</string>

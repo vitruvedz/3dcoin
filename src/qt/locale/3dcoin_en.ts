@@ -3513,8 +3513,8 @@ https://www.transifex.com/projects/p/3dcoin/</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>The Dash Core developers</source>
-        <translation>The Dash Core developers</translation>
+        <source>The 3DCoin Core developers</source>
+        <translation>The 3DCoin Core developers</translation>
     </message>
     <message>
         <location filename="../networkstyle.cpp" line="+19"/>
