@@ -3,13 +3,13 @@ Description=3DCoin's distributed currency daemon
 After=network.target
 
 [Service]
-User=3dcoincore
-Group=3dcoincore
+User=3dcoin
+Group=3dcoin
 
 Type=forking
 PIDFile=/var/lib/3dcoind/3dcoind.pid
 ExecStart=/usr/bin/3dcoind -daemon -pid=/var/lib/3dcoind/3dcoind.pid \
--conf=/etc/3dcoincore/3dcoin.conf -datadir=/var/lib/3dcoind -disablewallet
+-conf=/etc/3dcoin/3dcoin.conf -datadir=/var/lib/3dcoind -disablewallet
 
 Restart=always
 PrivateTmp=true

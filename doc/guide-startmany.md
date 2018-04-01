@@ -120,7 +120,7 @@ If you generated a new masternode private key, you will need to update the remot
 
 Shut down the daemon and then edit the file.
 
-```nano .3dcoincore/3dcoin.conf```
+```nano .3dcoin/3dcoin.conf```
 
 ### Edit the masternodeprivkey
 If you generated a new masternode private key, you will need to update the `masternodeprivkey` value in your remote `3dcoin.conf` file.

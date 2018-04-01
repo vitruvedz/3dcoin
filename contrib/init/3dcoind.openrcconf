@@ -1,7 +1,7 @@
 # /etc/conf.d/3dcoind: config file for /etc/init.d/3dcoind
 
 # Config file location
-#BITCOIND_CONFIGFILE="/etc/3dcoincore/3dcoin.conf"
+#BITCOIND_CONFIGFILE="/etc/3dcoin/3dcoin.conf"
 
 # What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
 #BITCOIND_PIDDIR="/var/run/3dcoind"
@@ -13,8 +13,8 @@
 #BITCOIND_DATADIR="/var/lib/3dcoind"
 
 # User and group to own 3dcoind process
-#BITCOIND_USER="3dcoincore"
-#BITCOIND_GROUP="3dcoincore"
+#BITCOIND_USER="3dcoin"
+#BITCOIND_GROUP="3dcoin"
 
 # Path to 3dcoind executable
 #BITCOIND_BIN="/usr/bin/3dcoind"

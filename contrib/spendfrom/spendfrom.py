@@ -35,10 +35,10 @@ def check_json_precision():
 def determine_db_dir():
     """Return the default location of the 3DCoin Core data directory"""
     if platform.system() == "Darwin":
-        return os.path.expanduser("~/Library/Application Support/3DCoinCore/")
+        return os.path.expanduser("~/Library/Application Support/3DCoin/")
     elif platform.system() == "Windows":
-        return os.path.join(os.environ['APPDATA'], "3DCoinCore")
-    return os.path.expanduser("~/.3dcoincore")
+        return os.path.join(os.environ['APPDATA'], "3DCoin")
+    return os.path.expanduser("~/.3dcoin")
 
 def read_bitcoin_config(dbdir):
     """Read the 3dcoin.conf file from dbdir, returns dictionary of settings"""

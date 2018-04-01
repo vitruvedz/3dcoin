@@ -2,9 +2,9 @@ Masternode config
 =======================
 
 3DCoin Core allows controlling multiple remote masternodes from a single wallet. The wallet needs to have a valid collateral output of 1000 coins for each masternode and uses a configuration file named `masternode.conf` which can be found in the following data directory (depending on your operating system):
- * Windows: %APPDATA%\3DCoinCore\
- * Mac OS: ~/Library/Application Support/3DCoinCore/
- * Unix/Linux: ~/.3dcoincore/
+ * Windows: %APPDATA%\3DCoin\
+ * Mac OS: ~/Library/Application Support/3DCoin/
+ * Unix/Linux: ~/.3dcoin/
 
 `masternode.conf` is a space separated text file. Each line consists of an alias, IP address followed by port, masternode private key, collateral output transaction id and collateral output index.
 

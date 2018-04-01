@@ -50,9 +50,9 @@ Var StartMenuGroup
 # Installer attributes
 OutFile @abs_top_srcdir@/3dcoincore-${VERSION}-win@WINDOWS_BITS@-setup.exe
 !if "@WINDOWS_BITS@" == "64"
-InstallDir $PROGRAMFILES64\3DCoinCore
+InstallDir $PROGRAMFILES64\3DCoin
 !else
-InstallDir $PROGRAMFILES\3DCoinCore
+InstallDir $PROGRAMFILES\3DCoin
 !endif
 CRCCheck on
 XPStyle on

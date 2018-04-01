@@ -13,7 +13,7 @@ can be found in the contrib/init folder.
 1. Service User
 ---------------------------------
 
-All three Linux startup configurations assume the existence of a "3dcoincore" user
+All three Linux startup configurations assume the existence of a "3dcoin" user
 and group.  They must be created before attempting to use these scripts.
 The OS X configuration assumes 3dcoind will be set up for the current user.
 
@@ -54,23 +54,23 @@ see `contrib/debian/examples/3dcoin.conf`.
 All three configurations assume several paths that might need to be adjusted.
 
 Binary:              `/usr/bin/3dcoind`  
-Configuration file:  `/etc/3dcoincore/3dcoin.conf`  
+Configuration file:  `/etc/3dcoin/3dcoin.conf`  
 Data directory:      `/var/lib/3dcoind`  
 PID file:            `/var/run/3dcoind/3dcoind.pid` (OpenRC and Upstart) or `/var/lib/3dcoind/3dcoind.pid` (systemd)  
 Lock file:           `/var/lock/subsys/3dcoind` (CentOS)  
 
 The configuration file, PID directory (if applicable) and data directory
-should all be owned by the 3dcoincore user and group.  It is advised for security
+should all be owned by the 3dcoin user and group.  It is advised for security
 reasons to make the configuration file and data directory only readable by the
-3dcoincore user and group.  Access to 3dcoin-cli and other 3dcoind rpc clients
+3dcoin user and group.  Access to 3dcoin-cli and other 3dcoind rpc clients
 can then be controlled by group membership.
 
 3b) Mac OS X
 
 Binary:              `/usr/local/bin/3dcoind`  
-Configuration file:  `~/Library/Application Support/3DCoinCore/3dcoin.conf`  
-Data directory:      `~/Library/Application Support/3DCoinCore`
-Lock file:           `~/Library/Application Support/3DCoinCore/.lock`
+Configuration file:  `~/Library/Application Support/3DCoin/3dcoin.conf`  
+Data directory:      `~/Library/Application Support/3DCoin`
+Lock file:           `~/Library/Application Support/3DCoin/.lock`
 
 4. Installing Service Configuration
 -----------------------------------
@@ -116,7 +116,7 @@ This Launch Agent will cause 3dcoind to start whenever the user logs in.
 
 NOTE: This approach is intended for those wanting to run 3dcoind as the current user.
 You will need to modify org.3dcoin.3dcoind.plist if you intend to use it as a
-Launch Daemon with a dedicated 3dcoincore user.
+Launch Daemon with a dedicated 3dcoin user.
 
 5. Auto-respawn
 -----------------------------------

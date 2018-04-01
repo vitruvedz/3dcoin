@@ -514,13 +514,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\3DCoinCore
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\3DCoinCore
-    // Mac: ~/Library/Application Support/3DCoinCore
-    // Unix: ~/.3dcoincore
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\3DCoin
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\3DCoin
+    // Mac: ~/Library/Application Support/3DCoin
+    // Unix: ~/.3dcoin
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "3DCoinCore";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "3DCoin";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -530,10 +530,10 @@ boost::filesystem::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/3DCoinCore";
+    return pathRet / "Library/Application Support/3DCoin";
 #else
     // Unix
-    return pathRet / ".3dcoincore";
+    return pathRet / ".3dcoin";
 #endif
 #endif
 }
