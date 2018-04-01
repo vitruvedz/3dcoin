@@ -8,7 +8,7 @@
 
 #include "base58.h"
 #include "consensus/validation.h"
-#include "validation.h" // For CheckTransaction
+#include "main.h" // For CheckTransaction
 #include "protocol.h"
 #include "serialize.h"
 #include "sync.h"
@@ -556,7 +556,14 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             ssKey >> nIndex;
             CKeyPool keypool;
             ssValue >> keypool;
-            pwallet->LoadKeyPool(nIndex, keypool);
+            pwallet->setKeyPool.insert(nIndex);
+
+            // If no metadata exists yet, create a default with the pool key's
+            // creation time. Note that this may be overwritten by actually
+            // stored metadata for that key later, which is fine.
+            CKeyID keyid = keypool.vchPubKey.GetID();
+            if (pwallet->mapKeyMetadata.count(keyid) == 0)
+                pwallet->mapKeyMetadata[keyid] = CKeyMetadata(keypool.nTime);
         }
         else if (strType == "version")
         {
@@ -592,45 +599,6 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
                 return false;
             }
         }
-        else if (strType == "hdchain")
-        {
-            CHDChain chain;
-            ssValue >> chain;
-            if (!pwallet->SetHDChain(chain, true))
-            {
-                strErr = "Error reading wallet database: SetHDChain failed";
-                return false;
-            }
-        }
-        else if (strType == "chdchain")
-        {
-            CHDChain chain;
-            ssValue >> chain;
-            if (!pwallet->SetCryptedHDChain(chain, true))
-            {
-                strErr = "Error reading wallet database: SetHDCryptedChain failed";
-                return false;
-            }
-        }
-        else if (strType == "hdpubkey")
-        {
-            CPubKey vchPubKey;
-            ssKey >> vchPubKey;
-
-            CHDPubKey hdPubKey;
-            ssValue >> hdPubKey;
-
-            if(vchPubKey != hdPubKey.extPubKey.pubkey)
-            {
-                strErr = "Error reading wallet database: CHDPubKey corrupt";
-                return false;
-            }
-            if (!pwallet->LoadHDPubKey(hdPubKey))
-            {
-                strErr = "Error reading wallet database: LoadHDPubKey failed";
-                return false;
-            }
-        }
     } catch (...)
     {
         return false;
@@ -641,8 +609,7 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
 static bool IsKeyType(string strType)
 {
     return (strType== "key" || strType == "wkey" ||
-            strType == "mkey" || strType == "ckey" ||
-            strType == "hdchain" || strType == "chdchain");
+            strType == "mkey" || strType == "ckey");
 }
 
 DBErrors CWalletDB::LoadWallet(CWallet* pwallet)
@@ -706,8 +673,8 @@ DBErrors CWalletDB::LoadWallet(CWallet* pwallet)
         }
         pcursor->close();
 
-        // Store initial external keypool size since we mostly use external keys in mixing
-        pwallet->nKeysLeftSinceAutoBackup = pwallet->KeypoolCountExternalKeys();
+        // Store initial pool size
+        pwallet->nKeysLeftSinceAutoBackup = pwallet->GetKeyPoolSize();
         LogPrintf("nKeysLeftSinceAutoBackup: %d\n", pwallet->nKeysLeftSinceAutoBackup);
     }
     catch (const boost::thread_interrupted&) {
@@ -842,7 +809,7 @@ DBErrors CWalletDB::ZapWalletTx(CWallet* pwallet, vector<CWalletTx>& vWtx)
 void ThreadFlushWalletDB(const string& strFile)
 {
     // Make this thread recognisable as the wallet flushing thread
-    RenameThread("dash-wallet");
+    RenameThread("3dcoin-wallet");
 
     static bool fOneThread;
     if (fOneThread)
@@ -980,8 +947,8 @@ bool AutoBackupWallet (CWallet* wallet, std::string strWalletFile, std::string& 
                 nWalletBackups = -1;
                 return false;
             }
-            // Update nKeysLeftSinceAutoBackup using current external keypool size
-            wallet->nKeysLeftSinceAutoBackup = wallet->KeypoolCountExternalKeys();
+            // Update nKeysLeftSinceAutoBackup using current pool size
+            wallet->nKeysLeftSinceAutoBackup = wallet->GetKeyPoolSize();
             LogPrintf("nKeysLeftSinceAutoBackup: %d\n", wallet->nKeysLeftSinceAutoBackup);
             if(wallet->IsLocked(true)) {
                 strBackupWarning = _("Wallet is locked, can't replenish keypool! Automatic backups and mixing are disabled, please unlock your wallet to replenish keypool.");
@@ -1124,7 +1091,7 @@ bool CWalletDB::Recover(CDBEnv& dbenv, const std::string& filename, bool fOnlyKe
                 fReadOK = ReadKeyValue(&dummyWallet, ssKey, ssValue,
                                         wss, strType, strErr);
             }
-            if (!IsKeyType(strType) && strType != "hdpubkey")
+            if (!IsKeyType(strType))
                 continue;
             if (!fReadOK)
             {
@@ -1159,32 +1126,4 @@ bool CWalletDB::EraseDestData(const std::string &address, const std::string &key
 {
     nWalletDBUpdated++;
     return Erase(std::make_pair(std::string("destdata"), std::make_pair(address, key)));
-}
-
-bool CWalletDB::WriteHDChain(const CHDChain& chain)
-{
-    nWalletDBUpdated++;
-    return Write(std::string("hdchain"), chain);
-}
-
-bool CWalletDB::WriteCryptedHDChain(const CHDChain& chain)
-{
-    nWalletDBUpdated++;
-
-    if (!Write(std::string("chdchain"), chain))
-        return false;
-
-    Erase(std::string("hdchain"));
-
-    return true;
-}
-
-bool CWalletDB::WriteHDPubKey(const CHDPubKey& hdPubKey, const CKeyMetadata& keyMeta)
-{
-    nWalletDBUpdated++;
-
-    if (!Write(std::make_pair(std::string("keymeta"), hdPubKey.extPubKey.pubkey), keyMeta, false))
-        return false;
-
-    return Write(std::make_pair(std::string("hdpubkey"), hdPubKey.extPubKey.pubkey), hdPubKey, false);
 }

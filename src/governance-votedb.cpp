@@ -53,12 +53,11 @@ std::vector<CGovernanceVote> CGovernanceObjectVoteFile::GetVotes() const
     return vecResult;
 }
 
-void CGovernanceObjectVoteFile::RemoveVotesFromMasternode(const COutPoint& outpointMasternode)
+void CGovernanceObjectVoteFile::RemoveVotesFromMasternode(const CTxIn& vinMasternode)
 {
     vote_l_it it = listVotes.begin();
     while(it != listVotes.end()) {
-        if(it->GetMasternodeOutpoint() == outpointMasternode) {
-            --nMemoryVotes;
+        if(it->GetVinMasternode() == vinMasternode) {
             mapVoteIndex.erase(it->GetHash());
             listVotes.erase(it++);
         }
@@ -79,18 +78,8 @@ CGovernanceObjectVoteFile& CGovernanceObjectVoteFile::operator=(const CGovernanc
 void CGovernanceObjectVoteFile::RebuildIndex()
 {
     mapVoteIndex.clear();
-    nMemoryVotes = 0;
-    vote_l_it it = listVotes.begin();
-    while(it != listVotes.end()) {
+    for(vote_l_it it = listVotes.begin(); it != listVotes.end(); ++it) {
         CGovernanceVote& vote = *it;
-        uint256 nHash = vote.GetHash();
-        if(mapVoteIndex.find(nHash) == mapVoteIndex.end()) {
-            mapVoteIndex[nHash] = it;
-            ++nMemoryVotes;
-            ++it;
-        }
-        else {
-            listVotes.erase(it++);
-        }
+        mapVoteIndex[vote.GetHash()] = it;
     }
 }

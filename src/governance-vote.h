@@ -13,7 +13,6 @@
 using namespace std;
 
 class CGovernanceVote;
-class CConnman;
 
 // INTENTION OF MASTERNODES REGARDING ITEM
 enum vote_outcome_enum_t  {
@@ -103,7 +102,7 @@ private:
 
 public:
     CGovernanceVote();
-    CGovernanceVote(COutPoint outpointMasternodeIn, uint256 nParentHashIn, vote_signal_enum_t eVoteSignalIn, vote_outcome_enum_t eVoteOutcomeIn);
+    CGovernanceVote(CTxIn vinMasternodeIn, uint256 nParentHashIn, vote_signal_enum_t eVoteSignalIn, vote_outcome_enum_t eVoteOutcomeIn);
 
     bool IsValid() const { return fValid; }
 
@@ -123,13 +122,15 @@ public:
 
     bool Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode);
     bool IsValid(bool fSignatureCheck) const;
-    void Relay(CConnman& connman) const;
+    void Relay() const;
 
     std::string GetVoteString() const {
         return CGovernanceVoting::ConvertOutcomeToString(GetOutcome());
     }
 
-    const COutPoint& GetMasternodeOutpoint() const { return vinMasternode.prevout; }
+    CTxIn& GetVinMasternode() { return vinMasternode; }
+
+    const CTxIn& GetVinMasternode() const { return vinMasternode; }
 
     /**
     *   GetHash()

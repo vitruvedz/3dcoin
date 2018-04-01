@@ -43,7 +43,6 @@ private:
 
 private Q_SLOTS:
     void textChanged();
-    void secureClearPassFields();
 
 protected:
     bool event(QEvent *event);

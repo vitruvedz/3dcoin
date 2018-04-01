@@ -8,7 +8,6 @@
 #include "guiconstants.h"
 #include "guiutil.h"
 
-#include "validation.h" // for cs_main
 #include "sync.h"
 
 #include <QDebug>
@@ -25,14 +24,12 @@ bool NodeLessThan::operator()(const CNodeCombinedStats &left, const CNodeCombine
 
     switch(column)
     {
-    case PeerTableModel::NetNodeId:
-        return pLeft->nodeid < pRight->nodeid;
     case PeerTableModel::Address:
         return pLeft->addrName.compare(pRight->addrName) < 0;
     case PeerTableModel::Subversion:
         return pLeft->cleanSubVer.compare(pRight->cleanSubVer) < 0;
     case PeerTableModel::Ping:
-        return pLeft->dMinPing < pRight->dMinPing;
+        return pLeft->dPingTime < pRight->dPingTime;
     }
 
     return false;
@@ -55,21 +52,24 @@ public:
     void refreshPeers()
     {
         {
+            TRY_LOCK(cs_vNodes, lockNodes);
+            if (!lockNodes)
+            {
+                // skip the refresh if we can't immediately get the lock
+                return;
+            }
             cachedNodeStats.clear();
-            std::vector<CNodeStats> vstats;
-            if(g_connman)
-                g_connman->GetNodeStats(vstats);
 #if QT_VERSION >= 0x040700
-            cachedNodeStats.reserve(vstats.size());
+            cachedNodeStats.reserve(vNodes.size());
 #endif
-            Q_FOREACH (const CNodeStats& nodestats, vstats)
+            Q_FOREACH (CNode* pnode, vNodes)
             {
                 CNodeCombinedStats stats;
                 stats.nodeStateStats.nMisbehavior = 0;
                 stats.nodeStateStats.nSyncHeight = -1;
                 stats.nodeStateStats.nCommonHeight = -1;
                 stats.fNodeStateStatsAvailable = false;
-                stats.nodeStats = nodestats;
+                pnode->copyStats(stats.nodeStats);
                 cachedNodeStats.append(stats);
             }
         }
@@ -114,23 +114,18 @@ PeerTableModel::PeerTableModel(ClientModel *parent) :
     clientModel(parent),
     timer(0)
 {
-    columns << tr("NodeId") << tr("Node/Service") << tr("User Agent") << tr("Ping");
-    priv.reset(new PeerTablePriv());
+    columns << tr("Node/Service") << tr("User Agent") << tr("Ping Time");
+    priv = new PeerTablePriv();
     // default to unsorted
     priv->sortColumn = -1;
 
     // set up timer for auto refresh
-    timer = new QTimer(this);
+    timer = new QTimer();
     connect(timer, SIGNAL(timeout()), SLOT(refresh()));
     timer->setInterval(MODEL_UPDATE_DELAY);
 
     // load initial data
     refresh();
-}
-
-PeerTableModel::~PeerTableModel()
-{
-    // Intentionally left empty
 }
 
 void PeerTableModel::startAutoRefresh()
@@ -152,7 +147,7 @@ int PeerTableModel::rowCount(const QModelIndex &parent) const
 int PeerTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return columns.length();
+    return columns.length();;
 }
 
 QVariant PeerTableModel::data(const QModelIndex &index, int role) const
@@ -165,14 +160,12 @@ QVariant PeerTableModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         switch(index.column())
         {
-        case NetNodeId:
-            return rec->nodeStats.nodeid;
         case Address:
             return QString::fromStdString(rec->nodeStats.addrName);
         case Subversion:
             return QString::fromStdString(rec->nodeStats.cleanSubVer);
         case Ping:
-            return GUIUtil::formatPingTime(rec->nodeStats.dMinPing);
+            return GUIUtil::formatPingTime(rec->nodeStats.dPingTime);
         }
     } else if (role == Qt::TextAlignmentRole) {
         if (index.column() == Ping)

@@ -8,9 +8,7 @@
 #include "paymentrequestplus.h"
 #include "walletmodeltransaction.h"
 
-#ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
-#endif // ENABLE_WALLET
 #include "support/allocators/secure.h"
 
 #include <map>
@@ -51,9 +49,7 @@ public:
     // Todo: This is a hack, should be replaced with a cleaner solution!
     QString address;
     QString label;
-#ifdef ENABLE_WALLET
     AvailableCoinsType inputType;
-#endif // ENABLE_WALLET
     bool fUseInstantSend;
     CAmount amount;
     // If from a payment request, this is used for storing the memo
@@ -210,11 +206,6 @@ public:
 
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest);
-
-    bool transactionCanBeAbandoned(uint256 hash) const;
-    bool abandonTransaction(uint256 hash) const;
-
-    bool hdEnabled() const;
 
 private:
     CWallet *wallet;

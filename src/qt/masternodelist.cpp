@@ -15,17 +15,6 @@
 #include <QTimer>
 #include <QMessageBox>
 
-int GetOffsetFromUtc()
-{
-#if QT_VERSION < 0x050200
-    const QDateTime dateTime1 = QDateTime::currentDateTime();
-    const QDateTime dateTime2 = QDateTime(dateTime1.date(), dateTime1.time(), Qt::UTC);
-    return dateTime1.secsTo(dateTime2);
-#else
-    return QDateTime::currentDateTime().offsetFromUtc();
-#endif
-}
-
 MasternodeList::MasternodeList(const PlatformStyle *platformStyle, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::MasternodeList),
@@ -113,9 +102,9 @@ void MasternodeList::StartAlias(std::string strAlias)
 
             if(fSuccess) {
                 strStatusHtml += "<br>Successfully started masternode.";
-                mnodeman.UpdateMasternodeList(mnb, *g_connman);
-                mnb.Relay(*g_connman);
-                mnodeman.NotifyMasternodeUpdates(*g_connman);
+                mnodeman.UpdateMasternodeList(mnb);
+                mnb.Relay();
+                mnodeman.NotifyMasternodeUpdates();
             } else {
                 strStatusHtml += "<br>Failed to start masternode.<br>Error: " + strError;
             }
@@ -146,17 +135,17 @@ void MasternodeList::StartAll(std::string strCommand)
             continue;
         }
 
-        COutPoint outpoint = COutPoint(uint256S(mne.getTxHash()), nOutputIndex);
+        CTxIn txin = CTxIn(uint256S(mne.getTxHash()), nOutputIndex);
 
-        if(strCommand == "start-missing" && mnodeman.Has(outpoint)) continue;
+        if(strCommand == "start-missing" && mnodeman.Has(txin)) continue;
 
         bool fSuccess = CMasternodeBroadcast::Create(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), strError, mnb);
 
         if(fSuccess) {
             nCountSuccessful++;
-            mnodeman.UpdateMasternodeList(mnb, *g_connman);
-            mnb.Relay(*g_connman);
-            mnodeman.NotifyMasternodeUpdates(*g_connman);
+            mnodeman.UpdateMasternodeList(mnb);
+            mnb.Relay();
+            mnodeman.NotifyMasternodeUpdates();
         } else {
             nCountFailed++;
             strFailedHtml += "\nFailed to start " + mne.getAlias() + ". Error: " + strError;
@@ -177,7 +166,7 @@ void MasternodeList::StartAll(std::string strCommand)
     updateMyNodeList(true);
 }
 
-void MasternodeList::updateMyMasternodeInfo(QString strAlias, QString strAddr, const COutPoint& outpoint)
+void MasternodeList::updateMyMasternodeInfo(QString strAlias, QString strAddr, masternode_info_t& infoMn)
 {
     bool fOldRowFound = false;
     int nNewRow = 0;
@@ -195,17 +184,14 @@ void MasternodeList::updateMyMasternodeInfo(QString strAlias, QString strAddr, c
         ui->tableWidgetMyMasternodes->insertRow(nNewRow);
     }
 
-    masternode_info_t infoMn;
-    bool fFound = mnodeman.GetMasternodeInfo(outpoint, infoMn);
-
     QTableWidgetItem *aliasItem = new QTableWidgetItem(strAlias);
-    QTableWidgetItem *addrItem = new QTableWidgetItem(fFound ? QString::fromStdString(infoMn.addr.ToString()) : strAddr);
-    QTableWidgetItem *protocolItem = new QTableWidgetItem(QString::number(fFound ? infoMn.nProtocolVersion : -1));
-    QTableWidgetItem *statusItem = new QTableWidgetItem(QString::fromStdString(fFound ? CMasternode::StateToString(infoMn.nActiveState) : "MISSING"));
-    QTableWidgetItem *activeSecondsItem = new QTableWidgetItem(QString::fromStdString(DurationToDHMS(fFound ? (infoMn.nTimeLastPing - infoMn.sigTime) : 0)));
+    QTableWidgetItem *addrItem = new QTableWidgetItem(infoMn.fInfoValid ? QString::fromStdString(infoMn.addr.ToString()) : strAddr);
+    QTableWidgetItem *protocolItem = new QTableWidgetItem(QString::number(infoMn.fInfoValid ? infoMn.nProtocolVersion : -1));
+    QTableWidgetItem *statusItem = new QTableWidgetItem(QString::fromStdString(infoMn.fInfoValid ? CMasternode::StateToString(infoMn.nActiveState) : "MISSING"));
+    QTableWidgetItem *activeSecondsItem = new QTableWidgetItem(QString::fromStdString(DurationToDHMS(infoMn.fInfoValid ? (infoMn.nTimeLastPing - infoMn.sigTime) : 0)));
     QTableWidgetItem *lastSeenItem = new QTableWidgetItem(QString::fromStdString(DateTimeStrFormat("%Y-%m-%d %H:%M",
-                                                                                                   fFound ? infoMn.nTimeLastPing + GetOffsetFromUtc() : 0)));
-    QTableWidgetItem *pubkeyItem = new QTableWidgetItem(QString::fromStdString(fFound ? CBitcoinAddress(infoMn.pubKeyCollateralAddress.GetID()).ToString() : ""));
+                                                                                                   infoMn.fInfoValid ? infoMn.nTimeLastPing + QDateTime::currentDateTime().offsetFromUtc() : 0)));
+    QTableWidgetItem *pubkeyItem = new QTableWidgetItem(QString::fromStdString(infoMn.fInfoValid ? CBitcoinAddress(infoMn.pubKeyCollateralAddress.GetID()).ToString() : ""));
 
     ui->tableWidgetMyMasternodes->setItem(nNewRow, 0, aliasItem);
     ui->tableWidgetMyMasternodes->setItem(nNewRow, 1, addrItem);
@@ -239,7 +225,11 @@ void MasternodeList::updateMyNodeList(bool fForce)
             continue;
         }
 
-        updateMyMasternodeInfo(QString::fromStdString(mne.getAlias()), QString::fromStdString(mne.getIp()), COutPoint(uint256S(mne.getTxHash()), nOutputIndex));
+        CTxIn txin = CTxIn(uint256S(mne.getTxHash()), nOutputIndex);
+
+        masternode_info_t infoMn = mnodeman.GetMasternodeInfo(txin);
+
+        updateMyMasternodeInfo(QString::fromStdString(mne.getAlias()), QString::fromStdString(mne.getIp()), infoMn);
     }
     ui->tableWidgetMasternodes->setSortingEnabled(true);
 
@@ -273,19 +263,17 @@ void MasternodeList::updateNodeList()
     ui->tableWidgetMasternodes->setSortingEnabled(false);
     ui->tableWidgetMasternodes->clearContents();
     ui->tableWidgetMasternodes->setRowCount(0);
-    std::map<COutPoint, CMasternode> mapMasternodes = mnodeman.GetFullMasternodeMap();
-    int offsetFromUtc = GetOffsetFromUtc();
+    std::vector<CMasternode> vMasternodes = mnodeman.GetFullMasternodeVector();
 
-    for(auto& mnpair : mapMasternodes)
+    BOOST_FOREACH(CMasternode& mn, vMasternodes)
     {
-        CMasternode mn = mnpair.second;
         // populate list
         // Address, Protocol, Status, Active Seconds, Last Seen, Pub Key
         QTableWidgetItem *addressItem = new QTableWidgetItem(QString::fromStdString(mn.addr.ToString()));
         QTableWidgetItem *protocolItem = new QTableWidgetItem(QString::number(mn.nProtocolVersion));
         QTableWidgetItem *statusItem = new QTableWidgetItem(QString::fromStdString(mn.GetStatus()));
         QTableWidgetItem *activeSecondsItem = new QTableWidgetItem(QString::fromStdString(DurationToDHMS(mn.lastPing.sigTime - mn.sigTime)));
-        QTableWidgetItem *lastSeenItem = new QTableWidgetItem(QString::fromStdString(DateTimeStrFormat("%Y-%m-%d %H:%M", mn.lastPing.sigTime + offsetFromUtc)));
+        QTableWidgetItem *lastSeenItem = new QTableWidgetItem(QString::fromStdString(DateTimeStrFormat("%Y-%m-%d %H:%M", mn.lastPing.sigTime + QDateTime::currentDateTime().offsetFromUtc())));
         QTableWidgetItem *pubkeyItem = new QTableWidgetItem(QString::fromStdString(CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString()));
 
         if (strCurrentFilter != "")

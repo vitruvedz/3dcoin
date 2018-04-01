@@ -42,9 +42,10 @@ public:
         return (setSelected.size() > 0);
     }
 
-    bool IsSelected(const COutPoint& output) const
+    bool IsSelected(const uint256& hash, unsigned int n) const
     {
-        return (setSelected.count(output) > 0);
+        COutPoint outpt(hash, n);
+        return (setSelected.count(outpt) > 0);
     }
 
     void Select(const COutPoint& output)

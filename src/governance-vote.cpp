@@ -2,11 +2,9 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "darksend.h"
 #include "governance-vote.h"
-#include "governance-object.h"
-#include "masternode-sync.h"
 #include "masternodeman.h"
-#include "messagesigner.h"
 #include "util.h"
 
 #include <boost/lexical_cast.hpp>
@@ -214,27 +212,21 @@ CGovernanceVote::CGovernanceVote()
       vchSig()
 {}
 
-CGovernanceVote::CGovernanceVote(COutPoint outpointMasternodeIn, uint256 nParentHashIn, vote_signal_enum_t eVoteSignalIn, vote_outcome_enum_t eVoteOutcomeIn)
+CGovernanceVote::CGovernanceVote(CTxIn vinMasternodeIn, uint256 nParentHashIn, vote_signal_enum_t eVoteSignalIn, vote_outcome_enum_t eVoteOutcomeIn)
     : fValid(true),
       fSynced(false),
       nVoteSignal(eVoteSignalIn),
-      vinMasternode(outpointMasternodeIn),
+      vinMasternode(vinMasternodeIn),
       nParentHash(nParentHashIn),
       nVoteOutcome(eVoteOutcomeIn),
       nTime(GetAdjustedTime()),
       vchSig()
 {}
 
-void CGovernanceVote::Relay(CConnman& connman) const
+void CGovernanceVote::Relay() const
 {
-    // Do not relay until fully synced
-    if(!masternodeSync.IsSynced()) {
-        LogPrint("gobject", "CGovernanceVote::Relay -- won't relay until fully synced\n");
-        return;
-    }
-
     CInv inv(MSG_GOVERNANCE_OBJECT_VOTE, GetHash());
-    connman.RelayInv(inv, MIN_GOVERNANCE_PEER_PROTO_VERSION);
+    RelayInv(inv, PROTOCOL_VERSION);
 }
 
 bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
@@ -247,12 +239,12 @@ bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     std::string strMessage = vinMasternode.prevout.ToStringShort() + "|" + nParentHash.ToString() + "|" +
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
-    if(!CMessageSigner::SignMessage(strMessage, vchSig, keyMasternode)) {
+    if(!darkSendSigner.SignMessage(strMessage, vchSig, keyMasternode)) {
         LogPrintf("CGovernanceVote::Sign -- SignMessage() failed\n");
         return false;
     }
 
-    if(!CMessageSigner::VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!darkSendSigner.VerifyMessage(pubKeyMasternode, vchSig, strMessage, strError)) {
         LogPrintf("CGovernanceVote::Sign -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }
@@ -262,8 +254,8 @@ bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
 
 bool CGovernanceVote::IsValid(bool fSignatureCheck) const
 {
-    if(nTime > GetAdjustedTime() + (60*60)) {
-        LogPrint("gobject", "CGovernanceVote::IsValid -- vote is too far ahead of current time - %s - nTime %lli - Max Time %lli\n", GetHash().ToString(), nTime, GetAdjustedTime() + (60*60));
+    if(nTime > GetTime() + (60*60)) {
+        LogPrint("gobject", "CGovernanceVote::IsValid -- vote is too far ahead of current time - %s - nTime %lli - Max Time %lli\n", GetHash().ToString(), nTime, GetTime() + (60*60));
         return false;
     }
 
@@ -281,8 +273,8 @@ bool CGovernanceVote::IsValid(bool fSignatureCheck) const
         return false;
     }
 
-    masternode_info_t infoMn;
-    if(!mnodeman.GetMasternodeInfo(vinMasternode.prevout, infoMn)) {
+    masternode_info_t infoMn = mnodeman.GetMasternodeInfo(vinMasternode);
+    if(!infoMn.fInfoValid) {
         LogPrint("gobject", "CGovernanceVote::IsValid -- Unknown Masternode - %s\n", vinMasternode.prevout.ToStringShort());
         return false;
     }
@@ -293,7 +285,7 @@ bool CGovernanceVote::IsValid(bool fSignatureCheck) const
     std::string strMessage = vinMasternode.prevout.ToStringShort() + "|" + nParentHash.ToString() + "|" +
         boost::lexical_cast<std::string>(nVoteSignal) + "|" + boost::lexical_cast<std::string>(nVoteOutcome) + "|" + boost::lexical_cast<std::string>(nTime);
 
-    if(!CMessageSigner::VerifyMessage(infoMn.pubKeyMasternode, vchSig, strMessage, strError)) {
+    if(!darkSendSigner.VerifyMessage(infoMn.pubKeyMasternode, vchSig, strMessage, strError)) {
         LogPrintf("CGovernanceVote::IsValid -- VerifyMessage() failed, error: %s\n", strError);
         return false;
     }

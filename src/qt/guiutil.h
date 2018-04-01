@@ -14,7 +14,6 @@
 #include <QProgressBar>
 #include <QString>
 #include <QTableView>
-#include <QLabel>
 
 #include <boost/filesystem.hpp>
 
@@ -30,7 +29,7 @@ class QUrl;
 class QWidget;
 QT_END_NAMESPACE
 
-/** Utility functions used by the Dash Qt UI.
+/** Utility functions used by the 3DCoin Qt UI.
  */
 namespace GUIUtil
 {
@@ -45,7 +44,7 @@ namespace GUIUtil
     void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent);
     void setupAmountWidget(QLineEdit *widget, QWidget *parent);
 
-    // Parse "dash:" URI into recipient object, return true on successful parsing
+    // Parse "3dcoin:" URI into recipient object, return true on successful parsing
     bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out);
     bool parseBitcoinURI(QString uri, SendCoinsRecipient *out);
     QString formatBitcoinURI(const SendCoinsRecipient &info);
@@ -68,9 +67,10 @@ namespace GUIUtil
     /** Return a field of the currently selected entry as a QString. Does nothing if nothing
         is selected.
        @param[in] column  Data column to extract from the model
+       @param[in] role    Data role to extract from the model
        @see  TransactionView::copyLabel, TransactionView::copyAmount, TransactionView::copyAddress
      */
-    QList<QModelIndex> getEntryData(QAbstractItemView *view, int column);
+    QString getEntryData(QAbstractItemView *view, int column, int role);
 
     void setClipboard(const QString& str);
 
@@ -114,7 +114,7 @@ namespace GUIUtil
     // Open debug.log
     void openDebugLogfile();
 	
-    // Open dash.conf
+    // Open 3dcoin.conf
     void openConfigfile();	
 
     // Open masternode.conf
@@ -159,7 +159,7 @@ namespace GUIUtil
         Q_OBJECT
 
         public:
-            TableViewLastColumnResizingFixer(QTableView* table, int lastColMinimumWidth, int allColsMinimumWidth, QObject *parent);
+            TableViewLastColumnResizingFixer(QTableView* table, int lastColMinimumWidth, int allColsMinimumWidth);
             void stretchColumnWidth(int column);
 
         private:
@@ -218,46 +218,18 @@ namespace GUIUtil
     /* Format a CNodeCombinedStats.nTimeOffset into a user-readable string. */
     QString formatTimeOffset(int64_t nTimeOffset);
 
-    QString formatNiceTimeOffset(qint64 secs);
-
-    class ClickableLabel : public QLabel
-    {
-        Q_OBJECT
-
-    Q_SIGNALS:
-        /** Emitted when the label is clicked. The relative mouse coordinates of the click are
-         * passed to the signal.
-         */
-        void clicked(const QPoint& point);
-    protected:
-        void mouseReleaseEvent(QMouseEvent *event);
-    };
-    
-    class ClickableProgressBar : public QProgressBar
-    {
-        Q_OBJECT
-        
-    Q_SIGNALS:
-        /** Emitted when the progressbar is clicked. The relative mouse coordinates of the click are
-         * passed to the signal.
-         */
-        void clicked(const QPoint& point);
-    protected:
-        void mouseReleaseEvent(QMouseEvent *event);
-    };
-
 #if defined(Q_OS_MAC) && QT_VERSION >= 0x050000
     // workaround for Qt OSX Bug:
     // https://bugreports.qt-project.org/browse/QTBUG-15631
     // QProgressBar uses around 10% CPU even when app is in background
-    class ProgressBar : public ClickableProgressBar
+    class ProgressBar : public QProgressBar
     {
         bool event(QEvent *e) {
             return (e->type() != QEvent::StyleAnimationUpdate) ? QProgressBar::event(e) : false;
         }
     };
 #else
-    typedef ClickableProgressBar ProgressBar;
+    typedef QProgressBar ProgressBar;
 #endif
 
 } // namespace GUIUtil

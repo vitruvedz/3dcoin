@@ -10,21 +10,16 @@
 class CDSNotificationInterface : public CValidationInterface
 {
 public:
-    CDSNotificationInterface(CConnman& connmanIn): connman(connmanIn) {}
-    virtual ~CDSNotificationInterface() = default;
-
-    // a small helper to initialize current block height in sub-modules on startup
-    void InitializeCurrentBlockTip();
+    // virtual CDSNotificationInterface();
+    CDSNotificationInterface();
+    virtual ~CDSNotificationInterface();
 
 protected:
     // CValidationInterface
-    void AcceptedBlockHeader(const CBlockIndex *pindexNew) override;
-    void NotifyHeaderTip(const CBlockIndex *pindexNew, bool fInitialDownload) override;
-    void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) override;
-    void SyncTransaction(const CTransaction &tx, const CBlock *pblock) override;
+    void UpdatedBlockTip(const CBlockIndex *pindex);
+    void SyncTransaction(const CTransaction &tx, const CBlock *pblock);
 
 private:
-    CConnman& connman;
 };
 
 #endif // BITCOIN_DSNOTIFICATIONINTERFACE_H

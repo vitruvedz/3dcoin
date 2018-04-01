@@ -1,0 +1,33 @@
+# /etc/conf.d/3dcoind: config file for /etc/init.d/3dcoind
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/3dcoincore/3dcoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/3dcoind"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/3dcoind.pid"
+
+# Where to write 3dcoind data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/3dcoind"
+
+# User and group to own 3dcoind process
+#BITCOIND_USER="3dcoincore"
+#BITCOIND_GROUP="3dcoincore"
+
+# Path to 3dcoind executable
+#BITCOIND_BIN="/usr/bin/3dcoind"
+
+# Nice value to run 3dcoind under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for bitcoind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+BITCOIND_SIGTERM_TIMEOUT=60

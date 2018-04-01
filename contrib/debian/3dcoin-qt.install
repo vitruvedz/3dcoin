@@ -1,0 +1,6 @@
+usr/local/bin/3dcoin-qt usr/bin
+share/pixmaps/3dcoin32.xpm usr/share/pixmaps
+share/pixmaps/3dcoin16.xpm usr/share/pixmaps
+share/pixmaps/3dcoin128.png usr/share/pixmaps
+debian/3dcoin-qt.desktop usr/share/applications
+debian/3dcoin-qt.protocol usr/share/kde4/services/

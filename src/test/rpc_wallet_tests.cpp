@@ -2,14 +2,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "rpc/server.h"
-#include "rpc/client.h"
+#include "rpcserver.h"
+#include "rpcclient.h"
 
 #include "base58.h"
-#include "validation.h"
+#include "main.h"
 #include "wallet/wallet.h"
 
-#include "test/test_dash.h"
+#include "test/test_3dcoin.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(rpc_wallet)
     {
         LOCK(pwalletMain->cs_wallet);
 
-        demoPubkey = pwalletMain->GenerateNewKey(0, false);
+        demoPubkey = pwalletMain->GenerateNewKey();
         demoAddress = CBitcoinAddress(CTxDestination(demoPubkey.GetID()));
         string strPurpose = "receive";
         BOOST_CHECK_NO_THROW({ /*Initialize Wallet with an account */
@@ -85,17 +85,17 @@ BOOST_AUTO_TEST_CASE(rpc_wallet)
             walletdb.WriteAccount(strAccount, account);
         });
 
-        CPubKey setaccountDemoPubkey = pwalletMain->GenerateNewKey(0, false);
+        CPubKey setaccountDemoPubkey = pwalletMain->GenerateNewKey();
         setaccountDemoAddress = CBitcoinAddress(CTxDestination(setaccountDemoPubkey.GetID()));
     }
     /*********************************
      * 			setaccount
      *********************************/
     BOOST_CHECK_NO_THROW(CallRPC("setaccount " + setaccountDemoAddress.ToString() + " nullaccount"));
-    /* XnhQgp2Y11hPGWaCB7rdGF5xLxjf2kBZCb is not owned by the test wallet. */
+    /* 1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4XZ is not owned by the test wallet. */
     BOOST_CHECK_THROW(CallRPC("setaccount XnhQgp2Y11hPGWaCB7rdGF5xLxjf2kBZCb nullaccount"), runtime_error);
     BOOST_CHECK_THROW(CallRPC("setaccount"), runtime_error);
-    /* XnhQgp2Y11hPGWaCB7rdGF5xLxjf2kBZC (33 chars) is an illegal address (should be 34 chars) */
+    /* 1D1ZrZNe3JUo7ZycKEYQQiQAWd9y54F4X (33 chars) is an illegal address (should be 34 chars) */
     BOOST_CHECK_THROW(CallRPC("setaccount XnhQgp2Y11hPGWaCB7rdGF5xLxjf2kBZC nullaccount"), runtime_error);
 
 

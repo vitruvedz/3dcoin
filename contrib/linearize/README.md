@@ -1,9 +1,9 @@
 # Linearize
 Construct a linear, no-fork, best version of the blockchain.
 
-## Step 0: Install dash_hash
+## Step 0: Install 3dcoin_hash
 
-https://github.com/dashpay/dash_hash
+https://github.com/BlockchainTechLLC/3dcoin_hash
 
 ## Step 1: Download hash list
 

@@ -5,7 +5,7 @@
 #ifndef GOVERNANCE_MISC_H
 #define GOVERNANCE_MISC_H
 
-#include "validation.h"
+#include "main.h"
 #include "governance.h"
 #include "init.h"
 

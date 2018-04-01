@@ -4,13 +4,11 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dash-config.h"
+#include "config/core-config.h"
 #endif
 
 #include "util.h"
 #include "uritests.h"
-#include "compattests.h"
-#include "trafficgraphdatatests.h"
 
 #ifdef ENABLE_WALLET
 #include "paymentservertests.h"
@@ -39,7 +37,7 @@ int main(int argc, char *argv[])
     // Don't remove this, it's needed to access
     // QCoreApplication:: in the tests
     QCoreApplication app(argc, argv);
-    app.setApplicationName("Dash-Qt-test");
+    app.setApplicationName("3DCoin-Qt-test");
 
     SSL_library_init();
 
@@ -51,13 +49,6 @@ int main(int argc, char *argv[])
     if (QTest::qExec(&test2) != 0)
         fInvalid = true;
 #endif
-    CompatTests test4;
-    if (QTest::qExec(&test4) != 0)
-        fInvalid = true;
-
-    TrafficGraphDataTests test5;
-    if (QTest::qExec(&test5) != 0)
-        fInvalid = true;
 
     return fInvalid;
 }

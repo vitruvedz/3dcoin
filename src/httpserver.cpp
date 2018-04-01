@@ -8,7 +8,7 @@
 #include "compat.h"
 #include "util.h"
 #include "netbase.h"
-#include "rpc/protocol.h" // For HTTP status codes
+#include "rpcprotocol.h" // For HTTP status codes
 #include "sync.h"
 #include "ui_interface.h"
 
@@ -126,7 +126,7 @@ public:
     void Run()
     {
         ThreadCounter count(*this);
-        while (true) {
+        while (running) {
             WorkItem* i = 0;
             {
                 boost::unique_lock<boost::mutex> lock(cs);
@@ -207,17 +207,12 @@ static bool ClientAllowed(const CNetAddr& netaddr)
 static bool InitHTTPAllowList()
 {
     rpc_allow_subnets.clear();
-    CNetAddr localv4;
-    CNetAddr localv6;
-    LookupHost("127.0.0.1", localv4, false);
-    LookupHost("::1", localv6, false);
-    rpc_allow_subnets.push_back(CSubNet(localv4, 8));      // always allow IPv4 local subnet
-    rpc_allow_subnets.push_back(CSubNet(localv6));         // always allow IPv6 localhost
+    rpc_allow_subnets.push_back(CSubNet("127.0.0.0/8")); // always allow IPv4 local subnet
+    rpc_allow_subnets.push_back(CSubNet("::1"));         // always allow IPv6 localhost
     if (mapMultiArgs.count("-rpcallowip")) {
         const std::vector<std::string>& vAllow = mapMultiArgs["-rpcallowip"];
         BOOST_FOREACH (std::string strAllow, vAllow) {
-            CSubNet subnet;
-            LookupSubNet(strAllow.c_str(), subnet);
+            CSubNet subnet(strAllow);
             if (!subnet.IsValid()) {
                 uiInterface.ThreadSafeMessageBox(
                     strprintf("Invalid -rpcallowip subnet specification: %s. Valid are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24).", strAllow),
@@ -258,7 +253,7 @@ static std::string RequestMethodString(HTTPRequest::RequestMethod m)
 /** HTTP request callback */
 static void http_request_cb(struct evhttp_request* req, void* arg)
 {
-    std::unique_ptr<HTTPRequest> hreq(new HTTPRequest(req));
+    std::auto_ptr<HTTPRequest> hreq(new HTTPRequest(req));
 
     LogPrint("http", "Received a %s request for %s from %s\n",
              RequestMethodString(hreq->GetRequestMethod()), hreq->GetURI(), hreq->GetPeer().ToString());
@@ -294,7 +289,7 @@ static void http_request_cb(struct evhttp_request* req, void* arg)
 
     // Dispatch to worker thread
     if (i != iend) {
-        std::unique_ptr<HTTPWorkItem> item(new HTTPWorkItem(hreq.release(), path, i->handler));
+        std::auto_ptr<HTTPWorkItem> item(new HTTPWorkItem(hreq.release(), path, i->handler));
         assert(workQueue);
         if (workQueue->Enqueue(item.get()))
             item.release(); /* if true, queue took ownership */
@@ -315,7 +310,7 @@ static void http_reject_request_cb(struct evhttp_request* req, void*)
 /** Event dispatcher thread */
 static void ThreadHTTP(struct event_base* base, struct evhttp* http)
 {
-    RenameThread("dash-http");
+    RenameThread("3dcoin-http");
     LogPrint("http", "Entering http event loop\n");
     event_base_dispatch(base);
     // Event loop will be interrupted by InterruptHTTPServer()
@@ -364,7 +359,7 @@ static bool HTTPBindAddresses(struct evhttp* http)
 /** Simple wrapper to set thread name and run work queue */
 static void HTTPWorkQueueRun(WorkQueue<HTTPClosure>* queue)
 {
-    RenameThread("dash-httpworker");
+    RenameThread("3dcoin-httpworker");
     queue->Run();
 }
 
@@ -631,7 +626,7 @@ CService HTTPRequest::GetPeer()
         const char* address = "";
         uint16_t port = 0;
         evhttp_connection_get_peer(con, (char**)&address, &port);
-        peer = LookupNumeric(address, port);
+        peer = CService(address, port);
     }
     return peer;
 }

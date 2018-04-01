@@ -4,7 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dash-config.h"
+#include "config/core-config.h"
 #endif
 
 #include "optionsmodel.h"
@@ -14,17 +14,18 @@
 
 #include "amount.h"
 #include "init.h"
-#include "validation.h" // For DEFAULT_SCRIPTCHECK_THREADS
+#include "main.h" // For DEFAULT_SCRIPTCHECK_THREADS
 #include "net.h"
-#include "netbase.h"
 #include "txdb.h" // for -dbcache defaults
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
+#endif
 
+#include "darksend.h"
+#ifdef ENABLE_WALLET
 #include "masternodeconfig.h"
-#include "privatesend-client.h"
 #endif
 
 #include <QNetworkProxy>
@@ -58,14 +59,9 @@ void OptionsModel::Init(bool resetSettings)
     // These are Qt-only settings:
 
     // Window
-    if (!settings.contains("fHideTrayIcon"))
-        settings.setValue("fHideTrayIcon", false);
-    fHideTrayIcon = settings.value("fHideTrayIcon").toBool();
-    Q_EMIT hideTrayIconChanged(fHideTrayIcon);
-    
     if (!settings.contains("fMinimizeToTray"))
         settings.setValue("fMinimizeToTray", false);
-    fMinimizeToTray = settings.value("fMinimizeToTray").toBool() && !fHideTrayIcon;
+    fMinimizeToTray = settings.value("fMinimizeToTray").toBool();
 
     if (!settings.contains("fMinimizeOnClose"))
         settings.setValue("fMinimizeOnClose", false);
@@ -73,23 +69,21 @@ void OptionsModel::Init(bool resetSettings)
 
     // Display
     if (!settings.contains("nDisplayUnit"))
-        settings.setValue("nDisplayUnit", BitcoinUnits::DASH);
+        settings.setValue("nDisplayUnit", BitcoinUnits::COINS);
     nDisplayUnit = settings.value("nDisplayUnit").toInt();
 
     if (!settings.contains("strThirdPartyTxUrls"))
         settings.setValue("strThirdPartyTxUrls", "");
     strThirdPartyTxUrls = settings.value("strThirdPartyTxUrls", "").toString();
 
-    if (!settings.contains("theme"))
-        settings.setValue("theme", "");
-
-#ifdef ENABLE_WALLET
     if (!settings.contains("fCoinControlFeatures"))
         settings.setValue("fCoinControlFeatures", false);
     fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 
     if (!settings.contains("digits"))
         settings.setValue("digits", "2");
+    if (!settings.contains("theme"))
+        settings.setValue("theme", "");
 
     if (!settings.contains("fShowMasternodesTab"))
         settings.setValue("fShowMasternodesTab", masternodeConfig.getCount());
@@ -100,7 +94,6 @@ void OptionsModel::Init(bool resetSettings)
 
     if (!settings.contains("fLowKeysWarning"))
         settings.setValue("fLowKeysWarning", true);
-#endif // ENABLE_WALLET
 
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
@@ -133,24 +126,24 @@ void OptionsModel::Init(bool resetSettings)
         settings.setValue("nPrivateSendRounds", DEFAULT_PRIVATESEND_ROUNDS);
     if (!SoftSetArg("-privatesendrounds", settings.value("nPrivateSendRounds").toString().toStdString()))
         addOverriddenOption("-privatesendrounds");
-    privateSendClient.nPrivateSendRounds = settings.value("nPrivateSendRounds").toInt();
+    nPrivateSendRounds = settings.value("nPrivateSendRounds").toInt();
 
     if (!settings.contains("nPrivateSendAmount")) {
         // for migration from old settings
-        if (!settings.contains("nAnonymizeDashAmount"))
+        if (!settings.contains("nAnonymize3DCoinAmount"))
             settings.setValue("nPrivateSendAmount", DEFAULT_PRIVATESEND_AMOUNT);
         else
-            settings.setValue("nPrivateSendAmount", settings.value("nAnonymizeDashAmount").toInt());
+            settings.setValue("nPrivateSendAmount", settings.value("nAnonymize3DCoinAmount").toInt());
     }
     if (!SoftSetArg("-privatesendamount", settings.value("nPrivateSendAmount").toString().toStdString()))
         addOverriddenOption("-privatesendamount");
-    privateSendClient.nPrivateSendAmount = settings.value("nPrivateSendAmount").toInt();
+    nPrivateSendAmount = settings.value("nPrivateSendAmount").toInt();
 
     if (!settings.contains("fPrivateSendMultiSession"))
         settings.setValue("fPrivateSendMultiSession", DEFAULT_PRIVATESEND_MULTISESSION);
     if (!SoftSetBoolArg("-privatesendmultisession", settings.value("fPrivateSendMultiSession").toBool()))
         addOverriddenOption("-privatesendmultisession");
-    privateSendClient.fPrivateSendMultiSession = settings.value("fPrivateSendMultiSession").toBool();
+    fPrivateSendMultiSession = settings.value("fPrivateSendMultiSession").toBool();
 #endif
 
     // Network
@@ -199,7 +192,7 @@ void OptionsModel::Reset()
 
     // Remove all entries from our QSettings object
     settings.clear();
-    resetSettings = true; // Needed in dash.cpp during shotdown to also remove the window positions
+    resetSettings = true; // Needed in 3dcoin.cpp during shotdown to also remove the window positions
 
     // default setting for OptionsModel::StartAtStartup - disabled
     if (GUIUtil::GetStartOnSystemStartup())
@@ -221,8 +214,6 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
         {
         case StartAtStartup:
             return GUIUtil::GetStartOnSystemStartup();
-        case HideTrayIcon:
-            return fHideTrayIcon;
         case MinimizeToTray:
             return fMinimizeToTray;
         case MapPortUPnP:
@@ -282,18 +273,14 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return nDisplayUnit;
         case ThirdPartyTxUrls:
             return strThirdPartyTxUrls;
-#ifdef ENABLE_WALLET
         case Digits:
             return settings.value("digits");
-#endif // ENABLE_WALLET
         case Theme:
             return settings.value("theme");
         case Language:
             return settings.value("language");
-#ifdef ENABLE_WALLET
         case CoinControlFeatures:
             return fCoinControlFeatures;
-#endif // ENABLE_WALLET
         case DatabaseCache:
             return settings.value("nDatabaseCache");
         case ThreadsScriptVerif:
@@ -318,11 +305,6 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         {
         case StartAtStartup:
             successful = GUIUtil::SetStartOnSystemStartup(value.toBool());
-            break;
-        case HideTrayIcon:
-            fHideTrayIcon = value.toBool();
-            settings.setValue("fHideTrayIcon", fHideTrayIcon);
-    		Q_EMIT hideTrayIconChanged(fHideTrayIcon);
             break;
         case MinimizeToTray:
             fMinimizeToTray = value.toBool();
@@ -425,24 +407,24 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         case PrivateSendRounds:
             if (settings.value("nPrivateSendRounds") != value)
             {
-                privateSendClient.nPrivateSendRounds = value.toInt();
-                settings.setValue("nPrivateSendRounds", privateSendClient.nPrivateSendRounds);
+                nPrivateSendRounds = value.toInt();
+                settings.setValue("nPrivateSendRounds", nPrivateSendRounds);
                 Q_EMIT privateSendRoundsChanged();
             }
             break;
         case PrivateSendAmount:
             if (settings.value("nPrivateSendAmount") != value)
             {
-                privateSendClient.nPrivateSendAmount = value.toInt();
-                settings.setValue("nPrivateSendAmount", privateSendClient.nPrivateSendAmount);
+                nPrivateSendAmount = value.toInt();
+                settings.setValue("nPrivateSendAmount", nPrivateSendAmount);
                 Q_EMIT privateSentAmountChanged();
             }
             break;
         case PrivateSendMultiSession:
             if (settings.value("fPrivateSendMultiSession") != value)
             {
-                privateSendClient.fPrivateSendMultiSession = value.toBool();
-                settings.setValue("fPrivateSendMultiSession", privateSendClient.fPrivateSendMultiSession);
+                fPrivateSendMultiSession = value.toBool();
+                settings.setValue("fPrivateSendMultiSession", fPrivateSendMultiSession);
             }
             break;
 #endif
@@ -456,14 +438,12 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
                 setRestartRequired(true);
             }
             break;
-#ifdef ENABLE_WALLET
         case Digits:
             if (settings.value("digits") != value) {
                 settings.setValue("digits", value);
                 setRestartRequired(true);
             }
             break;            
-#endif // ENABLE_WALLET
         case Theme:
             if (settings.value("theme") != value) {
                 settings.setValue("theme", value);
@@ -476,13 +456,11 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
                 setRestartRequired(true);
             }
             break;
-#ifdef ENABLE_WALLET
         case CoinControlFeatures:
             fCoinControlFeatures = value.toBool();
             settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
             Q_EMIT coinControlFeaturesChanged(fCoinControlFeatures);
             break;
-#endif // ENABLE_WALLET
         case DatabaseCache:
             if (settings.value("nDatabaseCache") != value) {
                 settings.setValue("nDatabaseCache", value);
