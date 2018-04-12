@@ -57,10 +57,10 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case COINS: return QString("3DC");
-            case POLYGON: return QString("POLYGON");
-            case EDGE: return QString::fromUtf8("EDGE");
-            case VERTEX: return QString("VERTEX");
+            case COINS: return QString("t3DC");
+            case POLYGON: return QString("tPOLYGON");
+            case EDGE: return QString::fromUtf8("tEDGE");
+            case VERTEX: return QString("tVERTEX");
             default: return QString("???");
         }
     }
@@ -96,11 +96,11 @@ qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case COINS:  return 10000000000;
-    case POLYGON: return 100000000;
-    case EDGE: return 1000000;
-    case VERTEX: return 1;
-    default:   return 10000000000;
+    case COINS:   return 10000000000;
+    case POLYGON: return 10000000;
+    case EDGE:    return 10000;
+    case VERTEX:  return 1;
+    default:      return 10000000000;
     }
 }
 
@@ -109,8 +109,8 @@ int BitcoinUnits::decimals(int unit)
     switch(unit)
     {
     case COINS: return 10;
-    case POLYGON: return 8;
-    case EDGE: return 6;
+    case POLYGON: return 7;
+    case EDGE: return 4;
     case VERTEX: return 0;
     default: return 0;
     }
