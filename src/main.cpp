@@ -1743,7 +1743,12 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     
     CAmount nSubsidyBase;
 
-    nSubsidyBase = 25;
+    if (nPrevHeight > 45000)
+        {
+            nSubsidyBase = 16;
+        }else{
+            nSubsidyBase = 25;
+        }
                             //ICO Premine
      
     if (nPrevHeight < 2500) {nSubsidyBase = 0;} 
@@ -1768,15 +1773,7 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
    
                                                                       
     if(nHeight > nMNPIBlock)        ret += blockValue / 20; // 41812 - 15%
-    if(nHeight > nMNPIBlock*2)        ret += blockValue / 20; // 41812*2 - 20%
-
-
-    if(nHeight > nMNPIBlock*3)        ret += blockValue / 10; // 41812*3 -25%
-
-    if(nHeight > nMNPIBlock*4)        ret += blockValue / 10; // 41812*4 -35%
-
-    if(nHeight > nMNPIBlock*5)        ret += blockValue / 10; // 41812*5 -45%
-    
+    if(nHeight > 45000)             ret += (blockValue*60) / 100;  // 45000 - 65%
 
     return ret;
 
