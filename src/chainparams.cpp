@@ -133,14 +133,18 @@ public:
         assert(genesis.hashMerkleRoot == uint256S("0x01cece0a7bcfdc2b9341c9ebf9f96b9f9746c57d2be182ebeada84ff21d855a8"));
 
 
-        vSeeds.push_back(CDNSSeedData("3dcoin1", "174.138.3.33"));
-        vSeeds.push_back(CDNSSeedData("3dcoin2", "159.203.167.75"));
-        vSeeds.push_back(CDNSSeedData("3dcoin3", "128.199.218.139"));
-        vSeeds.push_back(CDNSSeedData("3dcoin4", "159.65.90.101"));
-        vSeeds.push_back(CDNSSeedData("Districts1", "159.65.167.79"));
-        vSeeds.push_back(CDNSSeedData("Districts2", "31.215.26.187"));
-        vSeeds.push_back(CDNSSeedData("Districts3", "159.65.148.226"));
-        vSeeds.push_back(CDNSSeedData("Districts4", "159.65.201.222"));
+        vSeeds.push_back(CDNSSeedData("seed1", "seed1.3dcstats.net"));
+        vSeeds.push_back(CDNSSeedData("seed2", "seed2.3dcstats.net"));
+        vSeeds.push_back(CDNSSeedData("seed3", "seed3.3dcstats.net"));
+        vSeeds.push_back(CDNSSeedData("seed4", "seed4.3dcstats.net"));
+        vSeeds.push_back(CDNSSeedData("mn1", "seed1.3dctalk.net"));
+        vSeeds.push_back(CDNSSeedData("mn2", "seed2.3dctalk.net"));
+        vSeeds.push_back(CDNSSeedData("mn3", "seed3.3dctalk.net"));
+        vSeeds.push_back(CDNSSeedData("mn4", "seed4.3dctalk.net"));
+        vSeeds.push_back(CDNSSeedData("s1", "seed1.3dcstats.info"));
+        vSeeds.push_back(CDNSSeedData("s2", "seed2.3dcstats.info"));
+        vSeeds.push_back(CDNSSeedData("s3", "seed3.3dcstats.info"));
+        vSeeds.push_back(CDNSSeedData("s4", "seed4.3dcstats.info"));
 
        // 3DCoin addresses start with 'A'
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 23);
@@ -157,7 +161,7 @@ public:
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
-        fMiningRequiresPeers = false;
+        fMiningRequiresPeers = true;
         fDefaultConsistencyChecks = false;
         fRequireStandard = true;
         fMineBlocksOnDemand = false;
@@ -170,9 +174,10 @@ public:
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
             (  1, uint256S("0x00000dace491f29d20f137225c4db0342cb0a34ac96cb057ef03f00bd08ffaf1"))
-            (  50, uint256S("0x000000d10472d9b2de295fef7bc7d6ce8c90fed450ae22e1e9a5731d5cd9ad05")),
-            1522625502, // * UNIX timestamp of last checkpoint block
-            51,    // * total number of transactions between genesis and last checkpoint
+            (  50, uint256S("0x000000d10472d9b2de295fef7bc7d6ce8c90fed450ae22e1e9a5731d5cd9ad05"))
+            (  40805, uint256S("0x000000000a7c49002925d143b45ef89c1f47e6af9765c6ee0331af1530e70ebf")),
+            1525188579, // * UNIX timestamp of last checkpoint block
+            38768,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0        // * estimated number of transactions per day after checkpoint
         };
@@ -245,8 +250,8 @@ public:
 
          vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("3dcoin1", "testseed1.3dcoin.io"));
-        vSeeds.push_back(CDNSSeedData("Districts1", "testseed1.districts.io"));
+        vSeeds.push_back(CDNSSeedData("testseed1", "testseed1.3dcstats.net"));
+        vSeeds.push_back(CDNSSeedData("testseed2", "testseed2.3dctalk.net"));
         // vSeeds.push_back(CDNSSeedData("3dcoin2", "testseed2.3dcoin.io"));
         // vSeeds.push_back(CDNSSeedData("Districts2", "testseed2.districts.io"));
 
@@ -277,10 +282,11 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (   0, uint256S("0x000007c41652b32383518b0a5b6722c5a693c730c4be7f1abcb0f70e286a3edd")),
+            (   0, uint256S("0x000007c41652b32383518b0a5b6722c5a693c730c4be7f1abcb0f70e286a3edd"))
+            (3898, uint256S("0x0000000008c4dbeb4a1233222303dc31e59516259c58ff5ac1af1c6dd373906c")),
 
-            1521707748, // * UNIX timestamp of last checkpoint block
-            0,     // * total number of transactions between genesis and last checkpoint
+            1524908077, // * UNIX timestamp of last checkpoint block
+            3901,     // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0         // * estimated number of transactions per day after checkpoint
         };

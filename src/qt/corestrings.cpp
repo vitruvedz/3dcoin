@@ -205,10 +205,10 @@ QT_TRANSLATE_NOOP("3dcoin-core", ""
 QT_TRANSLATE_NOOP("3dcoin-core", ""
 "You must specify a masternodeprivkey in the configuration. Please see "
 "documentation for help."),
-QT_TRANSLATE_NOOP("3dcoin-core", "(9999 could be used only on mainnet)"),
+QT_TRANSLATE_NOOP("3dcoin-core", "(6695 could be used only on mainnet)"),
 QT_TRANSLATE_NOOP("3dcoin-core", "(default: %s)"),
 QT_TRANSLATE_NOOP("3dcoin-core", "(default: 1)"),
-QT_TRANSLATE_NOOP("3dcoin-core", "(must be 9999 for mainnet)"),
+QT_TRANSLATE_NOOP("3dcoin-core", "(must be 6695 for mainnet)"),
 QT_TRANSLATE_NOOP("3dcoin-core", "<category> can be:\n"),
 QT_TRANSLATE_NOOP("3dcoin-core", "Accept command line and JSON-RPC commands"),
 QT_TRANSLATE_NOOP("3dcoin-core", "Accept connections from outside (default: 1 if no -proxy or -connect)"),

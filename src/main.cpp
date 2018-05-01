@@ -1743,7 +1743,12 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     
     CAmount nSubsidyBase;
 
-    nSubsidyBase = 25;
+    if (nPrevHeight > 45000)
+        {
+            nSubsidyBase = 16;
+        }else{
+            nSubsidyBase = 25;
+        }
                             //ICO Premine
      
     if (nPrevHeight < 2500) {nSubsidyBase = 0;} 
@@ -1768,15 +1773,9 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
    
                                                                       
     if(nHeight > nMNPIBlock)        ret += blockValue / 20; // 41812 - 15%
-    if(nHeight > nMNPIBlock*2)        ret += blockValue / 20; // 41812*2 - 20%
-
-
-    if(nHeight > nMNPIBlock*3)        ret += blockValue / 10; // 41812*3 -25%
-
-    if(nHeight > nMNPIBlock*4)        ret += blockValue / 10; // 41812*4 -35%
-
-    if(nHeight > nMNPIBlock*5)        ret += blockValue / 10; // 41812*5 -45%
-    
+    if(nHeight > 45000)             ret += blockValue / 5 ;  // 45000 - 35%
+    if(nHeight > 46000)             ret += blockValue / 5 ;  // 46000 - 55%
+    if(nHeight > 47000)             ret += blockValue / 5 ;  // 47000 - 75%
 
     return ret;
 
@@ -2260,6 +2259,11 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
                     // undo unspent index
                     addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(1, uint160(hashBytes), hash, k), CAddressUnspentValue()));
 
+                } else if (out.scriptPubKey.IsPayToPublicKey()) {
+                    uint160 hashBytes(Hash160(out.scriptPubKey.begin()+1, out.scriptPubKey.end()-1));
+                    addressIndex.push_back(make_pair(CAddressIndexKey(1, hashBytes, pindex->nHeight, i, hash, k, false), out.nValue));
+                    addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(1, hashBytes, hash, k), CAddressUnspentValue()));
+                
                 } else {
                     continue;
                 }
@@ -2325,6 +2329,11 @@ bool DisconnectBlock(const CBlock& block, CValidationState& state, const CBlockI
 
                         // restore unspent index
                         addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(1, uint160(hashBytes), input.prevout.hash, input.prevout.n), CAddressUnspentValue(prevout.nValue, prevout.scriptPubKey, undo.nHeight)));
+
+                    } else if (prevout.scriptPubKey.IsPayToPublicKey()) {
+                        uint160 hashBytes(Hash160(prevout.scriptPubKey.begin()+1, prevout.scriptPubKey.end()-1));
+                        addressIndex.push_back(make_pair(CAddressIndexKey(1, hashBytes, pindex->nHeight, i, hash, j, false), prevout.nValue));
+                        addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(1, hashBytes, hash, j), CAddressUnspentValue()));
 
                     } else {
                         continue;
@@ -2672,6 +2681,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     } else if (prevout.scriptPubKey.IsPayToPublicKeyHash()) {
                         hashBytes = uint160(vector <unsigned char>(prevout.scriptPubKey.begin()+3, prevout.scriptPubKey.begin()+23));
                         addressType = 1;
+                    } else if (prevout.scriptPubKey.IsPayToPublicKey()) {
+                        hashBytes = Hash160(prevout.scriptPubKey.begin()+1, prevout.scriptPubKey.end()-1);
+                        addressType = 1;
                     } else {
                         hashBytes.SetNull();
                         addressType = 0;
@@ -2736,6 +2748,11 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
                     // record unspent output
                     addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(1, uint160(hashBytes), txhash, k), CAddressUnspentValue(out.nValue, out.scriptPubKey, pindex->nHeight)));
+
+                } else if (out.scriptPubKey.IsPayToPublicKey()) {
+                    uint160 hashBytes(Hash160(out.scriptPubKey.begin()+1, out.scriptPubKey.end()-1));
+                    addressIndex.push_back(make_pair(CAddressIndexKey(1, hashBytes, pindex->nHeight, i, txhash, k, false), out.nValue));
+                    addressUnspentIndex.push_back(make_pair(CAddressUnspentKey(1, hashBytes, txhash, k), CAddressUnspentValue(out.nValue, out.scriptPubKey, pindex->nHeight)));
 
                 } else {
                     continue;
