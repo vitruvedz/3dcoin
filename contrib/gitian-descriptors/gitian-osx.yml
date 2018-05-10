@@ -1,5 +1,5 @@
 ---
-name: "3dcoin-osx-0.12"
+name: "3dcoin-osx-0.13"
 enable_cache: true
 suites:
 - "trusty"
