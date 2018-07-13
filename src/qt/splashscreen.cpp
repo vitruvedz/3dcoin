@@ -4,11 +4,11 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "splashscreen.h"
-
+#include "guiutil.h"
 #include "networkstyle.h"
 
 #include "clientversion.h"
-#include "guiutil.h"
+
 #include "init.h"
 #include "util.h"
 #include "ui_interface.h"
@@ -26,6 +26,13 @@
 SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) :
     QWidget(0, f), curAlignment(0)
 {
+    // transparent background
+    setAttribute(Qt::WA_TranslucentBackground);
+    setStyleSheet("background:transparent;");
+
+    // no window decorations
+    setWindowFlags(Qt::FramelessWindowHint);
+
     // set reference point, paddings
     int paddingLeft             = 14;
     int paddingTop              = 470;
@@ -33,10 +40,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     int titleCopyrightVSpace    = 32;
 
     float fontFactor            = 1.0;
-    float devicePixelRatio      = 1.0;
-#if QT_VERSION > 0x050100
-    devicePixelRatio = ((QGuiApplication*)QCoreApplication::instance())->devicePixelRatio();
-#endif
+    
 
     // define text to place
     QString titleText       = tr("3DCoin Core");
@@ -45,7 +49,6 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QString copyrightText3DCoin   = QChar(0xA9)+QString(" 2017-%1 ").arg(COPYRIGHT_YEAR) + QString(tr("The 3DCoin Core developers"));
     QString titleAddText    = networkStyle->getTitleAddText();
 
-    QString font            = QApplication::font().toString();
 
     // networkstyle.cpp can't (yet) read themes, so we do it here to get the correct Splash-screen
     QString splashScreenPath = ":/images/" + GUIUtil::getThemeName() + "/splash";
@@ -53,6 +56,8 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
         splashScreenPath = ":/images/" + GUIUtil::getThemeName() + "/splash_testnet";
     if(GetBoolArg("-testnet", false))
         splashScreenPath = ":/images/" + GUIUtil::getThemeName() + "/splash_testnet";
+
+    QString font = QApplication::font().toString();
 
     // load the bitmap for writing some text over it
     pixmap = QPixmap(splashScreenPath);
@@ -94,11 +99,9 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 
     pixPaint.end();
 
-    // Set window title
-    setWindowTitle(titleText + " " + titleAddText);
 
     // Resize window and move to center of desktop, disallow resizing
-    QRect r(QPoint(), QSize(pixmap.size().width()/devicePixelRatio,pixmap.size().height()/devicePixelRatio));
+    QRect r(QPoint(), pixmap.size());
     resize(r.size());
     setFixedSize(r.size());
     move(QApplication::desktop()->screenGeometry().center() - r.center());
