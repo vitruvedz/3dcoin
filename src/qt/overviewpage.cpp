@@ -161,9 +161,10 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     // that's it for litemode
     if(fLiteMode) return;
 
-    // Disable any PS UI for masternode or when autobackup is disabled or failed for whatever reason
-    if(fMasterNode || nWalletBackups <= 0){
-        DisablePrivateSendCompletely();
+    // Disable any PS UI -- Preparation for v14
+    DisablePrivateSendCompletely();
+    /*if(fMasterNode || nWalletBackups <= 0){
+        
         if (nWalletBackups <= 0) {
             ui->labelPrivateSendEnabled->setToolTip(tr("Automatic backups are disabled, no mixing available!"));
         }
@@ -180,7 +181,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
         timer = new QTimer(this);
         connect(timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
         timer->start(1000);
-    }
+    }*/
 }
 
 void OverviewPage::handleTransactionClicked(const QModelIndex &index)
