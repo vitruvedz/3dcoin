@@ -9,7 +9,7 @@
 #include "peertablemodel.h"
 
 #include "net.h"
-
+#include "trafficgraphdata.h"
 #include <QWidget>
 #include <QCompleter>
 
@@ -126,7 +126,7 @@ Q_SIGNALS:
 private:
     static QString FormatBytes(quint64 bytes);
     void startExecutor();
-    void setTrafficGraphRange(int mins);
+    void setTrafficGraphRange(TrafficGraphData::GraphRange range);
     /** Build parameter list for restart */
     void buildParameterlist(QString arg);
     /** show detailed information on ui about selected node */
