@@ -20,9 +20,7 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
     unitlist.append(COINS);
-    unitlist.append(POLYGON);
-    unitlist.append(EDGE);
-    unitlist.append(VERTEX);
+    unitlist.append(Qubit);
     return unitlist;
 }
 
@@ -31,9 +29,7 @@ bool BitcoinUnits::valid(int unit)
     switch(unit)
     {
     case COINS:
-    case POLYGON:
-    case EDGE:
-    case VERTEX:
+    case Qubit:
         return true;
     default:
         return false;
@@ -47,9 +43,7 @@ QString BitcoinUnits::name(int unit)
         switch(unit)
         {
             case COINS: return QString("3DC");
-            case POLYGON: return QString("POLYGON");
-            case EDGE: return QString::fromUtf8("EDGE");
-            case VERTEX: return QString("VERTEX");
+            case Qubit: return QString("Qubit");
             default: return QString("???");
         }
     }
@@ -58,9 +52,7 @@ QString BitcoinUnits::name(int unit)
         switch(unit)
         {
             case COINS: return QString("t3DC");
-            case POLYGON: return QString("tPOLYGON");
-            case EDGE: return QString::fromUtf8("tEDGE");
-            case VERTEX: return QString("tVERTEX");
+            case Qubit: return QString("tQubit");
             default: return QString("???");
         }
     }
@@ -73,9 +65,7 @@ QString BitcoinUnits::description(int unit)
         switch(unit)
         {
             case COINS: return QString("3DC");
-            case POLYGON: return QString("Milli-3DC (1 / 1" THIN_SP_UTF8 "000)");
-            case EDGE: return QString("Micro-3DC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case VERTEX: return QString("Ten Nano-3DC (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case Qubit: return QString("Ten Nano-Qubit (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -84,9 +74,7 @@ QString BitcoinUnits::description(int unit)
         switch(unit)
         {
             case COINS: return QString("Test3DC");
-            case POLYGON: return QString("Milli-Test3DC (1 / 1" THIN_SP_UTF8 "000)");
-            case EDGE: return QString("Micro-Test3DC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case VERTEX: return QString("Ten Nano-Test3DC (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case Qubit: return QString("Ten Nano-TestQubit (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -97,9 +85,7 @@ qint64 BitcoinUnits::factor(int unit)
     switch(unit)
     {
     case COINS:   return 10000000000;
-    case POLYGON: return 10000000;
-    case EDGE:    return 10000;
-    case VERTEX:  return 1;
+    case Qubit:   return 1;
     default:      return 10000000000;
     }
 }
@@ -109,9 +95,7 @@ int BitcoinUnits::decimals(int unit)
     switch(unit)
     {
     case COINS: return 10;
-    case POLYGON: return 7;
-    case EDGE: return 4;
-    case VERTEX: return 0;
+    case Qubit: return 0;
     default: return 0;
     }
 }

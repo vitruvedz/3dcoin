@@ -83,8 +83,9 @@ private:
     ClientModel *clientModel;
     WalletFrame *walletFrame;
 
-    UnitDisplayStatusBarControl *unitDisplayControl;
+    
     QLabel *labelEncryptionIcon;
+    QLabel *labelWalletHDStatusIcon;
     QPushButton *labelConnectionsIcon;
     QLabel *labelBlocksIcon;
     QLabel *progressBarLabel;
@@ -183,6 +184,13 @@ public Q_SLOTS:
     void message(const QString &title, const QString &message, unsigned int style, bool *ret = NULL);
 
 #ifdef ENABLE_WALLET
+
+    /** Set the hd-enabled status as shown in the UI.
+     @param[in] status            current hd enabled status
+     @see WalletModel::EncryptionStatus
+     */
+    void setHDStatus(int hdEnabled);
+
     /** Set the encryption status as shown in the UI.
        @param[in] status            current encryption status
        @see WalletModel::EncryptionStatus
@@ -258,33 +266,6 @@ private Q_SLOTS:
     void showProgress(const QString &title, int nProgress);
 };
 
-class UnitDisplayStatusBarControl : public QLabel
-{
-    Q_OBJECT
 
-public:
-    explicit UnitDisplayStatusBarControl(const PlatformStyle *platformStyle);
-    /** Lets the control know about the Options Model (and its signals) */
-    void setOptionsModel(OptionsModel *optionsModel);
-
-protected:
-    /** So that it responds to left-button clicks */
-    void mousePressEvent(QMouseEvent *event);
-
-private:
-    OptionsModel *optionsModel;
-    QMenu* menu;
-
-    /** Shows context menu with Display Unit options by the mouse coordinates */
-    void onDisplayUnitsClicked(const QPoint& point);
-    /** Creates context menu, its actions, and wires up all the relevant signals for mouse events. */
-    void createContextMenu();
-
-private Q_SLOTS:
-    /** When Display Units are changed on OptionsModel it will refresh the display text of the control on the status bar */
-    void updateDisplayUnit(int newUnits);
-    /** Tells underlying optionsModel to update its current display unit. */
-    void onMenuSelection(QAction* action);
-};
 
 #endif // BITCOIN_QT_BITCOINGUI_H

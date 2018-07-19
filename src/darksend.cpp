@@ -1753,15 +1753,15 @@ bool CDarksendPool::PrepareDenominate(int nMinRounds, int nMaxRounds, std::strin
                     vecTxIn.erase(it);
                     vCoins.erase(it2);
 
-                    CScript scriptChange;
+                    CScript scriptDenom;
                     CPubKey vchPubKey;
-                    // use a unique change address
-                    assert(reservekey.GetReservedKey(vchPubKey)); // should never fail, as we just unlocked
-                    scriptChange = GetScriptForDestination(vchPubKey.GetID());
+                    // use unique address
+                    assert(reservekey.GetReservedKey(vchPubKey, false)); // should never fail, as we just unlocked
+                    scriptDenom = GetScriptForDestination(vchPubKey.GetID());
                     reservekey.KeepKey();
 
                     // add new output
-                    CTxOut txout(nValueDenom, scriptChange);
+                    CTxOut txout(nValueDenom, scriptDenom);
                     vecTxOutRet.push_back(txout);
 
                     // subtract denomination amount
@@ -1834,7 +1834,7 @@ bool CDarksendPool::MakeCollateralAmounts(const CompactTallyItem& tallyItem)
 
     CScript scriptCollateral;
     CPubKey vchPubKey;
-    assert(reservekeyCollateral.GetReservedKey(vchPubKey)); // should never fail, as we just unlocked
+    assert(reservekeyCollateral.GetReservedKey(vchPubKey, false)); // should never fail, as we just unlocked
     scriptCollateral = GetScriptForDestination(vchPubKey.GetID());
 
     vecSend.push_back((CRecipient){scriptCollateral, PRIVATESEND_COLLATERAL*4, false});
@@ -1912,7 +1912,7 @@ bool CDarksendPool::CreateDenominated(const CompactTallyItem& tallyItem, bool fC
 
     CScript scriptCollateral;
     CPubKey vchPubKey;
-    assert(reservekeyCollateral.GetReservedKey(vchPubKey)); // should never fail, as we just unlocked
+    assert(reservekeyCollateral.GetReservedKey(vchPubKey, false)); // should never fail, as we just unlocked
     scriptCollateral = GetScriptForDestination(vchPubKey.GetID());
 
     // ****** Add collateral outputs ************ /
@@ -1956,8 +1956,8 @@ bool CDarksendPool::CreateDenominated(const CompactTallyItem& tallyItem, bool fC
             while(nValueLeft - nDenomValue >= 0 && nOutputs <= 10) {
                 CScript scriptDenom;
                 CPubKey vchPubKey;
-                //use a unique change address
-                assert(reservekeyDenom.GetReservedKey(vchPubKey)); // should never fail, as we just unlocked
+                // use a unique address
+                assert(reservekeyDenom.GetReservedKey(vchPubKey, false)); // should never fail, as we just unlocked
                 scriptDenom = GetScriptForDestination(vchPubKey.GetID());
                 // TODO: do not keep reservekeyDenom here
                 reservekeyDenom.KeepKey();

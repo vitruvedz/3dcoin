@@ -73,6 +73,8 @@ BITCOIN_CORE_H = \
   amount.h \
   arith_uint256.h \
   base58.h \
+  bip39.h \
+  bip39_english.h \
   bloom.h \
   cachemap.h \
   cachemultimap.h \
@@ -107,6 +109,7 @@ BITCOIN_CORE_H = \
   governance-votedb.h \
   flat-database.h \
   hash.h \
+  hdchain.h \
   httprpc.h \
   httpserver.h \
   init.h \
@@ -327,6 +330,7 @@ libbitcoin_common_a_SOURCES = \
   amount.cpp \
   arith_uint256.cpp \
   base58.cpp \
+  bip39.cpp \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
@@ -334,6 +338,7 @@ libbitcoin_common_a_SOURCES = \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
+  hdchain.cpp \
   key.cpp \
   keystore.cpp \
   netbase.cpp \

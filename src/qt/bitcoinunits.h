@@ -58,9 +58,7 @@ public:
     enum Unit
     {
         COINS,
-        POLYGON,
-        EDGE,
-        VERTEX
+        Qubit
     };
 
     enum SeparatorStyle

@@ -280,6 +280,8 @@ UniValue validateaddress(const UniValue& params, bool fHelp)
             "  \"pubkey\" : \"publickeyhex\",    (string) The hex value of the raw public key\n"
             "  \"iscompressed\" : true|false,  (boolean) If the address is compressed\n"
             "  \"account\" : \"account\"         (string) DEPRECATED. The account associated with the address, \"\" is the default account\n"
+            "  \"hdkeypath\" : \"keypath\"       (string, optional) The HD keypath if the key is HD and available\n"
+            "  \"hdchainid\" : \"<hash>\"        (string, optional) The ID of the HD chain\n"
             "}\n"
             "\nExamples:\n"
             + HelpExampleCli("validateaddress", "\"AsC7D6FUAjrcCuHDeQ76Ao5dWTS9i7ZZu6\"")
@@ -314,6 +316,13 @@ UniValue validateaddress(const UniValue& params, bool fHelp)
         ret.pushKVs(detail);
         if (pwalletMain && pwalletMain->mapAddressBook.count(dest))
             ret.push_back(Pair("account", pwalletMain->mapAddressBook[dest].name));
+        CKeyID keyID;
+        CHDChain hdChainCurrent;
+        if (pwalletMain && address.GetKeyID(keyID) && pwalletMain->mapHdPubKeys.count(keyID) && pwalletMain->GetHDChain(hdChainCurrent))
+        {
+            ret.push_back(Pair("hdkeypath", pwalletMain->mapHdPubKeys[keyID].GetKeyPath()));
+            ret.push_back(Pair("hdchainid", hdChainCurrent.GetID().GetHex()));
+        }
 #endif
     }
     return ret;
@@ -407,9 +416,9 @@ UniValue createmultisig(const UniValue& params, bool fHelp)
 
             "\nExamples:\n"
             "\nCreate a multisig address from 2 addresses\n"
-            + HelpExampleCli("createmultisig", "2 \"[\\\"Xt4qk9uKvQYAonVGSZNXqxeDmtjaEWgfrs\\\",\\\"XoSoWQkpgLpppPoyyzbUFh1fq2RBvW6UK1\\\"]\"") +
+            + HelpExampleCli("createmultisig", "2 \"[\\\"AoSoWQkpgLpppPoyyzbUFh1fq2RBvW6UK1\\\",\\\"ATADhAbA9ztMCLrkKdXtnenXtaoazRTtG6\\\"]\"") +
             "\nAs a json rpc call\n"
-            + HelpExampleRpc("createmultisig", "2, \"[\\\"Xt4qk9uKvQYAonVGSZNXqxeDmtjaEWgfrs\\\",\\\"XoSoWQkpgLpppPoyyzbUFh1fq2RBvW6UK1\\\"]\"")
+            + HelpExampleRpc("createmultisig", "2, \"[\\\"AoSoWQkpgLpppPoyyzbUFh1fq2RBvW6UK1\\\",\\\"ATADhAbA9ztMCLrkKdXtnenXtaoazRTtG6\\\"]\"")
         ;
         throw runtime_error(msg);
     }

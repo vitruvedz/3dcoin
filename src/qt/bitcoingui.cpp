@@ -78,8 +78,8 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     QMainWindow(parent),
     clientModel(0),
     walletFrame(0),
-    unitDisplayControl(0),
     labelEncryptionIcon(0),
+    labelWalletHDStatusIcon(0),
     labelConnectionsIcon(0),
     labelBlocksIcon(0),
     progressBarLabel(0),
@@ -199,8 +199,8 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     QHBoxLayout *frameBlocksLayout = new QHBoxLayout(frameBlocks);
     frameBlocksLayout->setContentsMargins(3,0,3,0);
     frameBlocksLayout->setSpacing(3);
-    unitDisplayControl = new UnitDisplayStatusBarControl(platformStyle);
     labelEncryptionIcon = new QLabel();
+    labelWalletHDStatusIcon = new QLabel();
     labelConnectionsIcon = new QPushButton();
     labelConnectionsIcon->setFlat(true); // Make the button look like a label, but clickable
     labelConnectionsIcon->setStyleSheet(".QPushButton { background-color: rgba(255, 255, 255, 0);}");
@@ -212,9 +212,9 @@ BitcoinGUI::BitcoinGUI(const PlatformStyle *platformStyle, const NetworkStyle *n
     if(enableWallet)
     {
         frameBlocksLayout->addStretch();
-        frameBlocksLayout->addWidget(unitDisplayControl);
         frameBlocksLayout->addStretch();
         frameBlocksLayout->addWidget(labelEncryptionIcon);
+        frameBlocksLayout->addWidget(labelWalletHDStatusIcon);
     }
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelConnectionsIcon);
@@ -395,9 +395,9 @@ void BitcoinGUI::createActions()
     openInfoAction->setStatusTip(tr("Show diagnostic information"));
     openRPCConsoleAction = new QAction(QIcon(":/icons/" + theme + "/debugwindow"), tr("&Debug console"), this);
     openRPCConsoleAction->setStatusTip(tr("Open debugging console"));
-    openGraphAction = new QAction(QIcon(":/icons/" + theme + "/connect_4"), tr("&Network Monitor"), this);
+    openGraphAction = new QAction(QIcon(":/icons/" + theme + "/connect_0"), tr("&Network Monitor"), this);
     openGraphAction->setStatusTip(tr("Show network monitor"));
-    openPeersAction = new QAction(QIcon(":/icons/" + theme + "/connect_4"), tr("&Peers list"), this);
+    openPeersAction = new QAction(QIcon(":/icons/" + theme + "/connect_0"), tr("&Peers list"), this);
     openPeersAction->setStatusTip(tr("Show peers info"));
     openRepairAction = new QAction(QIcon(":/icons/" + theme + "/options"), tr("Wallet &Repair"), this);
     openRepairAction->setStatusTip(tr("Show wallet repair options"));
@@ -620,7 +620,7 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
             walletFrame->setClientModel(clientModel);
         }
 #endif // ENABLE_WALLET
-        unitDisplayControl->setOptionsModel(clientModel->getOptionsModel());
+        
     } else {
         // Disable possibility to show main window via action
         toggleHideAction->setEnabled(false);
@@ -1208,6 +1208,17 @@ bool BitcoinGUI::handlePaymentRequest(const SendCoinsRecipient& recipient)
     return false;
 }
 
+void BitcoinGUI::setHDStatus(int hdEnabled)
+{
+    QString theme = GUIUtil::getThemeName();
+
+    labelWalletHDStatusIcon->setPixmap(platformStyle->SingleColorIcon(hdEnabled ? ":/icons/" + theme + "/hd_enabled" : ":/icons/" + theme + "/hd_disabled").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+    labelWalletHDStatusIcon->setToolTip(hdEnabled ? tr("HD key generation is <b>enabled</b>") : tr("HD key generation is <b>disabled</b>"));
+
+    // eventually disable the QLabel to set its opacity to 50%
+    labelWalletHDStatusIcon->setEnabled(hdEnabled);
+}
+
 void BitcoinGUI::setEncryptionStatus(int status)
 {
     QString theme = GUIUtil::getThemeName();
@@ -1354,76 +1365,4 @@ void BitcoinGUI::handleRestart(QStringList args)
         Q_EMIT requestedRestart(args);
 }
 
-UnitDisplayStatusBarControl::UnitDisplayStatusBarControl(const PlatformStyle *platformStyle) :
-    optionsModel(0),
-    menu(0)
-{
-    createContextMenu();
-    setToolTip(tr("Unit to show amounts in. Click to select another unit."));
-    QList<BitcoinUnits::Unit> units = BitcoinUnits::availableUnits();
-    int max_width = 0;
-    const QFontMetrics fm(font());
-    Q_FOREACH (const BitcoinUnits::Unit unit, units)
-    {
-        max_width = qMax(max_width, fm.width(BitcoinUnits::name(unit)));
-    }
-    setMinimumSize(max_width, 0);
-    setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    setStyleSheet(QString("QLabel { color : %1 }").arg(platformStyle->SingleColor().name()));
-}
 
-/** So that it responds to button clicks */
-void UnitDisplayStatusBarControl::mousePressEvent(QMouseEvent *event)
-{
-    onDisplayUnitsClicked(event->pos());
-}
-
-/** Creates context menu, its actions, and wires up all the relevant signals for mouse events. */
-void UnitDisplayStatusBarControl::createContextMenu()
-{
-    menu = new QMenu();
-    Q_FOREACH(BitcoinUnits::Unit u, BitcoinUnits::availableUnits())
-    {
-        QAction *menuAction = new QAction(QString(BitcoinUnits::name(u)), this);
-        menuAction->setData(QVariant(u));
-        menu->addAction(menuAction);
-    }
-    connect(menu,SIGNAL(triggered(QAction*)),this,SLOT(onMenuSelection(QAction*)));
-}
-
-/** Lets the control know about the Options Model (and its signals) */
-void UnitDisplayStatusBarControl::setOptionsModel(OptionsModel *optionsModel)
-{
-    if (optionsModel)
-    {
-        this->optionsModel = optionsModel;
-
-        // be aware of a display unit change reported by the OptionsModel object.
-        connect(optionsModel,SIGNAL(displayUnitChanged(int)),this,SLOT(updateDisplayUnit(int)));
-
-        // initialize the display units label with the current value in the model.
-        updateDisplayUnit(optionsModel->getDisplayUnit());
-    }
-}
-
-/** When Display Units are changed on OptionsModel it will refresh the display text of the control on the status bar */
-void UnitDisplayStatusBarControl::updateDisplayUnit(int newUnits)
-{
-    setText(BitcoinUnits::name(newUnits));
-}
-
-/** Shows context menu with Display Unit options by the mouse coordinates */
-void UnitDisplayStatusBarControl::onDisplayUnitsClicked(const QPoint& point)
-{
-    QPoint globalPos = mapToGlobal(point);
-    menu->exec(globalPos);
-}
-
-/** Tells underlying optionsModel to update its current display unit. */
-void UnitDisplayStatusBarControl::onMenuSelection(QAction* action)
-{
-    if (action)
-    {
-        optionsModel->setDisplayUnit(action->data());
-    }
-}
