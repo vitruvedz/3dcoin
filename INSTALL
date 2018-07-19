@@ -1,13 +1,25 @@
 Building 3DCoin Core
 
-Use the autogen script to prepare the build environment.
+Before trying to build, be sure to read one of these files,
+depending on your environment:
+
+  doc/build-unix.md
+  doc/build-openbsd.md
+  doc/build-osx.md
+  doc/build-windows.md
+
+After installing the needed dependencies,
+use the autogen script to prepare the build environment.
 
     ./autogen.sh
     ./configure
     make
 
 Precompiled binaries are available at github, see
-https://github.com/BlockchainTechLLC/3dcoin-binaries
+https://github.com/BlockchainTechLLC/3dcoin/releases
+
+Masternode auto build script available here:
+https://github.com/BlockchainTechLLC/masternode
 
 Always verify the signatures and checksums.
 
