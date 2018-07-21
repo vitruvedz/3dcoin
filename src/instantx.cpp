@@ -61,6 +61,8 @@ void CInstantSend::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataSt
 
         uint256 nVoteHash = vote.GetHash();
 
+        pfrom->setAskFor.erase(nVoteHash);
+
         if(mapTxLockVotes.count(nVoteHash)) return;
         mapTxLockVotes.insert(std::make_pair(nVoteHash, vote));
 
