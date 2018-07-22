@@ -1,6 +1,6 @@
 
 #include "netbase.h"
-#include "masternodeconfig.h"
+#include "masternode/config.h"
 #include "util.h"
 #include "chainparams.h"
 

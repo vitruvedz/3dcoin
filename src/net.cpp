@@ -24,8 +24,8 @@
 
 #include "darksend.h"
 #include "instantx.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
+#include "masternode/sync.h"
+#include "masternode/man.h"
 
 #ifdef WIN32
 #include <string.h>

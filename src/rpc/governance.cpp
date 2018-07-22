@@ -4,18 +4,18 @@
 
 //#define ENABLE_CORE_DEBUG
 
-#include "activemasternode.h"
+#include "masternode/active.h"
 #include "governance.h"
 #include "governance-vote.h"
 #include "governance-classes.h"
 #include "init.h"
 #include "main.h"
 #include "masternode.h"
-#include "masternode-sync.h"
-#include "masternodeconfig.h"
-#include "masternodeman.h"
+#include "masternode/sync.h"
+#include "masternode/config.h"
+#include "masternode/man.h"
 #include "messagesigner.h"
-#include "rpcserver.h"
+#include "rpc/server.h"
 #include "util.h"
 #include "utilmoneystr.h"
 

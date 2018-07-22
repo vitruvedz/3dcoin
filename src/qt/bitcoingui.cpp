@@ -30,7 +30,7 @@
 #include "init.h"
 #include "ui_interface.h"
 #include "util.h"
-#include "masternode-sync.h"
+#include "masternode/sync.h"
 #include "masternodelist.h"
 
 #include <iostream>

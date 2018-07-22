@@ -7,8 +7,8 @@
 #define DARKSEND_RELAY_H
 
 #include "main.h"
-#include "activemasternode.h"
-#include "masternodeman.h"
+#include "masternode/active.h"
+#include "masternode/man.h"
 
 
 class CDarkSendRelay

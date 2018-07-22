@@ -13,7 +13,7 @@
 #include "net.h"
 #include "netbase.h"
 #include "policy/rbf.h"
-#include "rpcserver.h"
+#include "rpc/server.h"
 #include "timedata.h"
 #include "util.h"
 #include "utilmoneystr.h"

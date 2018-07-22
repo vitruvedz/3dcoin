@@ -10,14 +10,14 @@
 #include "main.h"
 #include "net.h"
 #include "netbase.h"
-#include "rpcserver.h"
+#include "rpc/server.h"
 #include "timedata.h"
 #include "txmempool.h"
 #include "util.h"
 #include "spork.h"
 #include "utilstrencodings.h"
 #ifdef ENABLE_WALLET
-#include "masternode-sync.h"
+#include "masternode/sync.h"
 #include "wallet/wallet.h"
 #include "wallet/walletdb.h"
 #endif

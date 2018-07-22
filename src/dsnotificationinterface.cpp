@@ -6,9 +6,9 @@
 #include "darksend.h"
 #include "instantx.h"
 #include "governance.h"
-#include "masternodeman.h"
-#include "masternode-payments.h"
-#include "masternode-sync.h"
+#include "masternode/man.h"
+#include "masternode/payments.h"
+#include "masternode/sync.h"
 
 CDSNotificationInterface::CDSNotificationInterface()
 {

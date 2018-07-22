@@ -25,7 +25,7 @@
 #include "net.h"
 #include "netfulfilledman.h"
 #include "policy/policy.h"
-#include "rpcserver.h"
+#include "rpc/server.h"
 #include "script/standard.h"
 #include "script/sigcache.h"
 #include "scheduler.h"
@@ -43,7 +43,7 @@
 #include "wallet/walletdb.h"
 #endif
 
-#include "activemasternode.h"
+#include "masternode/active.h"
 #include "darksend.h"
 #include "dsnotificationinterface.h"
 #include "flat-database.h"
@@ -52,10 +52,10 @@
 #ifdef ENABLE_WALLET
 #include "keepass.h"
 #endif
-#include "masternode-payments.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
-#include "masternodeconfig.h"
+#include "masternode/payments.h"
+#include "masternode/sync.h"
+#include "masternode/man.h"
+#include "masternode/config.h"
 #include "messagesigner.h"
 #include "netfulfilledman.h"
 #include "spork.h"

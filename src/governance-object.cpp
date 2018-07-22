@@ -7,7 +7,7 @@
 #include "governance-classes.h"
 #include "governance-object.h"
 #include "governance-vote.h"
-#include "masternodeman.h"
+#include "masternode/man.h"
 #include "messagesigner.h"
 #include "util.h"
 

@@ -8,7 +8,7 @@
 #include "consensus/merkle.h"
 #include "consensus/validation.h"
 #include "main.h"
-#include "masternode-payments.h"
+#include "masternode/payments.h"
 #include "miner.h"
 #include "pubkey.h"
 #include "script/standard.h"

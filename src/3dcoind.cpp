@@ -6,15 +6,15 @@
 
 #include "chainparams.h"
 #include "clientversion.h"
-#include "rpcserver.h"
+#include "rpc/server.h"
 #include "init.h"
 #include "noui.h"
 #include "scheduler.h"
 #include "util.h"
-#include "masternodeconfig.h"
+#include "masternode/config.h"
 #include "httpserver.h"
 #include "httprpc.h"
-#include "rpcserver.h"
+
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/filesystem.hpp>

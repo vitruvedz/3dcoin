@@ -25,7 +25,7 @@
 
 #include "darksend.h"
 #ifdef ENABLE_WALLET
-#include "masternodeconfig.h"
+#include "masternode/config.h"
 #endif
 
 #include <QNetworkProxy>

@@ -2,14 +2,14 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "activemasternode.h"
+#include "masternode/active.h"
 #include "consensus/validation.h"
 #include "init.h"
 #include "governance.h"
 #include "masternode.h"
-#include "masternode-payments.h"
-#include "masternode-sync.h"
-#include "masternodeman.h"
+#include "masternode/payments.h"
+#include "masternode/sync.h"
+#include "masternode/man.h"
 #include "messagesigner.h"
 #include "util.h"
 

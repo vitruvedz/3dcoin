@@ -19,8 +19,8 @@
 #include "util.h"
 
 #include "darksend.h"
-#include "masternodeman.h"
-#include "masternode-sync.h"
+#include "masternode/man.h"
+#include "masternode/sync.h"
 
 #include <stdint.h>
 
