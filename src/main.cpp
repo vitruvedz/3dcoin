@@ -1755,9 +1755,9 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     if (nPrevHeight == 0)   {nSubsidyBase = 62896941;}
     CAmount nSubsidy = nSubsidyBase * COIN;   
 
-    // yearly decline of production by 5% per year
+    // yearly decline of production by 50% per year
     for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
-        nSubsidy -= nSubsidy/20;
+        nSubsidy -= nSubsidy/2;
     }
 
     return fSuperblockPartOnly ? 0 : nSubsidy;
