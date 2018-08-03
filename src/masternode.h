@@ -155,6 +155,12 @@ public:
         MASTERNODE_POSE_BAN
     };
 
+    enum CollateralStatus {
+        COLLATERAL_OK,
+        COLLATERAL_UTXO_NOT_FOUND,
+        COLLATERAL_INVALID_AMOUNT
+    };
+
     CTxIn vin;
     CService addr;
     CPubKey pubKeyCollateralAddress;
@@ -243,6 +249,9 @@ public:
     arith_uint256 CalculateScore(const uint256& blockHash);
 
     bool UpdateFromNewBroadcast(CMasternodeBroadcast& mnb);
+
+    static CollateralStatus CheckCollateral(CTxIn vin);
+    static CollateralStatus CheckCollateral(CTxIn vin, int& nHeight);
 
     void Check(bool fForce = false);
 
