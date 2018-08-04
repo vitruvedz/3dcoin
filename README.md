@@ -1,8 +1,9 @@
 3DCoin Core staging tree 0.13.3
 ===============================
-
-https://www.3dcoin.io
-
+Web wallet: https://3dcoin.online
+Website: https://www.3dcoin.io
+Forum : https://3dctalk.net
+Explorer: https://3dcstats.net
 
 UNIX BUILD NOTES
 ====================
