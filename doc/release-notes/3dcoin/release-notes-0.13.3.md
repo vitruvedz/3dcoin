@@ -31,7 +31,7 @@ bash update.sh
 
 Notable changes
 ===============
-
+**Block reward halving every year**
 PrivateSend disabled
 --------------------
 BIP39 
