@@ -1,12 +1,11 @@
-3DCoin Core 0.12.1
+3DCoin Core 0.13.3
 =====================
 
 Intro
 -----
-3DCoin is a free open source peer-to-peer electronic cash system that is
-completely decentralized, without the need for a central server or trusted
-parties.  Users hold the crypto keys to their own money and transact directly
-with each other, with the help of a P2P network to check for double-spending.
+3DCoin is a peer to peer blockchain based platform allowing users to manage 
+their business automatically by programming transactions to fulfil any contract. 
+In other words, it cuts out any third party or a trusted escrow, which is an impressive change.
 
 
 Setup
@@ -19,5 +18,5 @@ depending on the speed of your computer and network connection, the synchronizat
 process can take anywhere from a few hours to a day or more.
 
 See the 3dcoin wiki at:
-  https://BlockchainTechLLC.atlassian.net/wiki/
+  https://3dcoin.wiki
 for more help and information.
