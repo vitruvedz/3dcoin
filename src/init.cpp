@@ -84,7 +84,6 @@
 
 using namespace std;
 
-extern void ThreadSendAlert();
 
 #ifdef ENABLE_WALLET
 CWallet* pwalletMain = NULL;
@@ -2018,7 +2017,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     }
 #endif
 
-    threadGroup.create_thread(boost::bind(&ThreadSendAlert));
 
     return !fRequestShutdown;
 }
