@@ -72,11 +72,13 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
+        //3DCoin V0.14
+        consensus.nV014v1Start = 380000;
+        consensus.nV014v2Start = 517000;
+        consensus.nPrimenodePaymentsStartBlock = 600000; 
+        consensus.nPulsenodePaymentsStartBlock = 750000;
+        //3DCoin V0.14  
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
-        consensus.nPrimenodePaymentsStartBlock = 1003500; 
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nPulsenodePaymentsStartBlock = 1003500; 
-        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 500; // unused 
         consensus.nMasternodePaymentsIncreaseBlock = 41812; // 30days
         consensus.nMasternodePaymentsIncreasePeriod = 62718; // unused
@@ -193,11 +195,13 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 210240;
-        consensus.nPrimenodePaymentsStartBlock = 1003500; 
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nPulsenodePaymentsStartBlock = 1003500; 
-        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
+        //3DCoin V0.14
+        consensus.nV014v1Start = 380000;
+        consensus.nV014v2Start = 517000;
+        consensus.nPrimenodePaymentsStartBlock = 600000; 
+        consensus.nPulsenodePaymentsStartBlock = 750000;
+        //3DCoin V0.14 
+        consensus.nSubsidyHalvingInterval = 210240; 
         consensus.nMasternodePaymentsStartBlock = 10000; 
         consensus.nMasternodePaymentsIncreaseBlock = 46000;
         consensus.nMasternodePaymentsIncreasePeriod = 576;
@@ -303,11 +307,13 @@ class CRegTestParams : public CChainParams {
 public:
     CRegTestParams() {
         strNetworkID = "regtest";
-        consensus.nSubsidyHalvingInterval = 150;
-        consensus.nPrimenodePaymentsStartBlock = 1003500; 
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nPulsenodePaymentsStartBlock = 1003500; 
-        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
+        //3DCoin V0.14
+        consensus.nV014v1Start = 380000;
+        consensus.nV014v2Start = 517000;
+        consensus.nPrimenodePaymentsStartBlock = 600000; 
+        consensus.nPulsenodePaymentsStartBlock = 750000;
+        //3DCoin V0.14 
+        consensus.nSubsidyHalvingInterval = 150; 
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
         consensus.nMasternodePaymentsIncreasePeriod = 10;
