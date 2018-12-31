@@ -139,7 +139,38 @@ const char* GetOpName(opcodetype opcode)
     case OP_NOP8                   : return "OP_NOP8";
     case OP_NOP9                   : return "OP_NOP9";
     case OP_NOP10                  : return "OP_NOP10";
+    /*
+    // 3DCoin v0.14
+    // New Features
+    case SO_API                   : return "SO_API";
+    case SO_COUNT                 : return "SO_COUNT";
+    case SO_TIMELOCK              : return "SO_TIMELOCK";
 
+    // Stack
+    case SO_DUP                   : return "SO_DUP";
+    case SO_DROP                  : return "SO_DROP";
+    // Stack
+
+    //Crypto
+    case SO_HASH                  : return "SO_HASH";
+    //Crypto
+
+    //Math Logic
+    case SO_EQUAL                 : return "SO_EQUAL";
+    case SO_LESSTHAN              : return "SO_LESSTHAN";
+    case SO_GREATERTHAN           : return "SO_GREATERTHAN";
+    //Math Logic
+
+    // Conditions/loops
+    case SO_IF                    : return "SO_IF";
+    case SO_ELSE                  : return "SO_ELSE";
+    case SO_ENDIF                 : return "SO_ENDIF";
+    case SO_FOR                   : return "SO_FOR";
+    
+    // Conditions/loops
+
+    // 3DCoin v0.14
+    */
     case OP_INVALIDOPCODE          : return "OP_INVALIDOPCODE";
 
     // Note:
