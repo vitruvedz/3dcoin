@@ -2149,7 +2149,7 @@ CAmount CWallet::GetBalance() const
 
 CAmount CWallet::GetAnonymizableBalance() const
 {
-    if(fLiteMode) return 0;
+    if(true) return 0;
 
     std::vector<CompactTallyItem> vecTally;
     if(!SelectCoinsGrouppedByAddresses(vecTally, false)) return 0;
@@ -2167,7 +2167,7 @@ CAmount CWallet::GetAnonymizableBalance() const
 
 CAmount CWallet::GetAnonymizedBalance() const
 {
-    if(fLiteMode) return 0;
+    if(true) return 0;
 
     CAmount nTotal = 0;
     {
@@ -2188,7 +2188,7 @@ CAmount CWallet::GetAnonymizedBalance() const
 // that's ok as long as we use it for informational purposes only
 double CWallet::GetAverageAnonymizedRounds() const
 {
-    if(fLiteMode) return 0;
+    if(true) return 0;
 
     double fTotal = 0;
     double fCount = 0;
@@ -2223,7 +2223,7 @@ double CWallet::GetAverageAnonymizedRounds() const
 // that's ok as long as we use it for informational purposes only
 CAmount CWallet::GetNormalizedAnonymizedBalance() const
 {
-    if(fLiteMode) return 0;
+    if(true) return 0;
 
     CAmount nTotal = 0;
 
@@ -2253,7 +2253,7 @@ CAmount CWallet::GetNormalizedAnonymizedBalance() const
 
 CAmount CWallet::GetNeedsToBeAnonymizedBalance(CAmount nMinBalance) const
 {
-    if(fLiteMode) return 0;
+    if(true) return 0;
 
     CAmount nAnonymizedBalance = GetAnonymizedBalance();
     CAmount nNeedsToAnonymizeBalance = nPrivateSendAmount*COIN - nAnonymizedBalance;
@@ -2277,7 +2277,7 @@ CAmount CWallet::GetNeedsToBeAnonymizedBalance(CAmount nMinBalance) const
 
 CAmount CWallet::GetDenominatedBalance(bool unconfirmed) const
 {
-    if(fLiteMode) return 0;
+    if(true) return 0;
 
     CAmount nTotal = 0;
     {
