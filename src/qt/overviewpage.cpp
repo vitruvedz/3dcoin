@@ -159,7 +159,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     showOutOfSyncWarning(true);
 
     // that's it for litemode
-    if(fLiteMode) return;
+    if(true) return;
 
     // Disable any PS UI -- Preparation for v14
     DisablePrivateSendCompletely();
