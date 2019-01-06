@@ -436,7 +436,7 @@ void OverviewPage::updateAdvancedPSUI(bool fShowAdvancedPSUI) {
     int nNumItems = (fLiteMode || !fShowAdvancedPSUI) ? NUM_ITEMS : NUM_ITEMS_ADV;
     SetupTransactionList(nNumItems);
 
-    if (fLiteMode) return;
+    if (true) return;
 
     ui->framePrivateSend->setVisible(true);
     ui->labelCompletitionText->setVisible(fShowAdvancedPSUI);
