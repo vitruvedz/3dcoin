@@ -84,7 +84,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     
     /* Number of displayed decimal digits selector */
     QString digits;
-    for(int index = 2; index <=8; index++){
+    for(int index = 2; index <=10; index++){
         digits.setNum(index);
         ui->digits->addItem(digits, digits);
     }
@@ -200,12 +200,12 @@ void OptionsDialog::setMapper()
     /* Wallet */
     mapper->addMapping(ui->coinControlFeatures, OptionsModel::CoinControlFeatures);
     mapper->addMapping(ui->showMasternodesTab, OptionsModel::ShowMasternodesTab);
-    mapper->addMapping(ui->showAdvancedPSUI, OptionsModel::ShowAdvancedPSUI);
-    mapper->addMapping(ui->lowKeysWarning, OptionsModel::LowKeysWarning);
-    mapper->addMapping(ui->privateSendMultiSession, OptionsModel::PrivateSendMultiSession);
+    //mapper->addMapping(ui->showAdvancedPSUI, OptionsModel::ShowAdvancedPSUI);
+    //mapper->addMapping(ui->lowKeysWarning, OptionsModel::LowKeysWarning);
+    //mapper->addMapping(ui->privateSendMultiSession, OptionsModel::PrivateSendMultiSession);
     mapper->addMapping(ui->spendZeroConfChange, OptionsModel::SpendZeroConfChange);
-    mapper->addMapping(ui->privateSendRounds, OptionsModel::PrivateSendRounds);
-    mapper->addMapping(ui->privateSendAmount, OptionsModel::PrivateSendAmount);
+    //mapper->addMapping(ui->privateSendRounds, OptionsModel::PrivateSendRounds);
+    //mapper->addMapping(ui->privateSendAmount, OptionsModel::PrivateSendAmount);
 
     /* Network */
     mapper->addMapping(ui->mapPortUpnp, OptionsModel::MapPortUPnP);
