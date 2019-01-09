@@ -73,7 +73,7 @@ SendCoinsDialog::SendCoinsDialog(const PlatformStyle *platformStyle, QWidget *pa
 
     bool fUsePrivateSend = settings.value("bUseDarkSend").toBool();
     bool fUseInstantSend = settings.value("bUseInstantX").toBool();
-    if(fLiteMode) {
+    if(true) {
         ui->checkUsePrivateSend->setChecked(false);
         ui->checkUsePrivateSend->setVisible(false);
         ui->checkUseInstantSend->setVisible(false);

@@ -4,7 +4,6 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "alert.h"
-#include "base58.h"
 #include "clientversion.h"
 #include "net.h"
 #include "pubkey.h"
@@ -143,28 +142,6 @@ bool CAlert::RelayTo(CNode* pnode) const
         }
     }
     return false;
-}
-
-
-bool CAlert::Sign()
-{
-    CDataStream sMsg(SER_NETWORK, CLIENT_VERSION);
-    sMsg << *(CUnsignedAlert*)this;
-    vchMsg = std::vector<unsigned char>(sMsg.begin(), sMsg.end());
-    CBitcoinSecret vchSecret;
-    if (!vchSecret.SetString(GetArg("-alertkey", "")))
-    {
-        printf("CAlert::SignAlert() : vchSecret.SetString failed\n");
-        return false;
-    }
-    CKey key = vchSecret.GetKey();
-    if (!key.Sign(Hash(vchMsg.begin(), vchMsg.end()), vchSig))
-    {
-        printf("CAlert::SignAlert() : key.Sign failed\n");
-        return false;
-    }
-
-    return true;
 }
 
 

@@ -102,9 +102,14 @@ namespace boost {
 
 using namespace std;
 
-//3DCoin only features
+
 bool fMasterNode = false;
 bool fLiteMode = false;
+//3DCoin V0.14
+bool fPrimenode = false;
+bool fPulsenode = false;
+//3DCoin V0.14
+
 /**
     nWalletBackups:
         1..10   - number of automatic backups to keep

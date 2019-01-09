@@ -407,16 +407,8 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
             "  },\n"
             "  \"masternode_payments_started\" :  true|false, (boolean) true, if masternode payments started\n"
             "  \"masternode_payments_enforced\" : true|false, (boolean) true, if masternode payments are enforced\n"
-            "  \"superblock\" : [                  (array) required superblock payees that must be included in the next block\n"
-            "      {\n"
-            "         \"payee\" : \"xxxx\",          (string) payee address\n"
-            "         \"script\" : \"xxxx\",         (string) payee scriptPubKey\n"
-            "         \"amount\": n                (numeric) required amount to pay\n"
-            "      }\n"
-            "      ,...\n"
-            "  ],\n"
-            "  \"superblocks_started\" : true|false, (boolean) true, if superblock payments started\n"
-            "  \"superblocks_enabled\" : true|false  (boolean) true, if superblock payments are enabled\n"
+            "  \"v0.14_v1_started\" : true|false, (boolean) true, if v0.14 v1 started\n"
+            "  \"v0.14_v2_started\" : true|false, (boolean) true, if v0.14 v2 started\n"
             "}\n"
 
             "\nExamples:\n"
@@ -715,23 +707,8 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     result.push_back(Pair("masternode", masternodeObj));
     result.push_back(Pair("masternode_payments_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nMasternodePaymentsStartBlock));
     result.push_back(Pair("masternode_payments_enforced", sporkManager.IsSporkActive(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT)));
-
-    UniValue superblockObjArray(UniValue::VARR);
-    if(pblock->voutSuperblock.size()) {
-        BOOST_FOREACH (const CTxOut& txout, pblock->voutSuperblock) {
-            UniValue entry(UniValue::VOBJ);
-            CTxDestination address1;
-            ExtractDestination(txout.scriptPubKey, address1);
-            CBitcoinAddress address2(address1);
-            entry.push_back(Pair("payee", address2.ToString().c_str()));
-            entry.push_back(Pair("script", HexStr(txout.scriptPubKey.begin(), txout.scriptPubKey.end())));
-            entry.push_back(Pair("amount", txout.nValue));
-            superblockObjArray.push_back(entry);
-        }
-    }
-    result.push_back(Pair("superblock", superblockObjArray));
-    result.push_back(Pair("superblocks_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nSuperblockStartBlock));
-    result.push_back(Pair("superblocks_enabled", sporkManager.IsSporkActive(SPORK_9_SUPERBLOCKS_ENABLED)));
+    result.push_back(Pair("v0.14_v1_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nV014v1Start));
+    result.push_back(Pair("v0.14_v2_started", pindexPrev->nHeight + 1 > Params().GetConsensus().nV014v2Start));
 
     return result;
 }
