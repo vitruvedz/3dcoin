@@ -354,11 +354,9 @@ static const CRPCCommand vRPCCommands[] =
     { "3dcoin",               "spork",                  &spork,                  true  },
     { "3dcoin",               "getpoolinfo",            &getpoolinfo,            true  },
 #ifdef ENABLE_WALLET
-    { "3dcoin",               "privatesend",            &privatesend,            false },
 
     /* Wallet */
     { "wallet",             "keepass",                &keepass,                true },
-    { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   false },
     { "wallet",             "addmultisigaddress",     &addmultisigaddress,     true  },
     { "wallet",             "backupwallet",           &backupwallet,           true  },
     { "wallet",             "dumpprivkey",            &dumpprivkey,            true  },
