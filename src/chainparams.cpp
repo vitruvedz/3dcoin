@@ -72,11 +72,13 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
+        //3DCoin V0.14
+        consensus.nV014v1Start = 380000;
+        consensus.nV014v2Start = 517000;
+        consensus.nPrimenodePaymentsStartBlock = 600000; 
+        consensus.nPulsenodePaymentsStartBlock = 750000;
+        //3DCoin V0.14  
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
-        consensus.nPrimenodePaymentsStartBlock = 1003500; 
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nPulsenodePaymentsStartBlock = 1003500; 
-        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
         consensus.nMasternodePaymentsStartBlock = 500; // unused 
         consensus.nMasternodePaymentsIncreaseBlock = 41812; // 30days
         consensus.nMasternodePaymentsIncreasePeriod = 62718; // unused
@@ -120,7 +122,6 @@ public:
         pchMessageStart[1] = 0xc0;
         pchMessageStart[2] = 0xa2;
         pchMessageStart[3] = 0x7d;
-        vAlertPubKey = ParseHex("0425F475027A75BEC6B6AF1480C0965EEAF5DF78660B63826DD8C5039FAE90B5056738ABF6380C683407C966C93D2B9EE536CAC45E7DB07E0925FEF292298FACEA");
         nDefaultPort = 6695;
         nMaxTipAge = 6 * 60 * 60; // ~144 blocks behind -> 2 x fork detection time, was 24 * 60 * 60 in bitcoin
         nPruneAfterHeight = 100000;
@@ -169,7 +170,6 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
-        strSporkPubKey = "0425F475027A75BEC6B6AF1480C0965EEAF5DF78660B63826DD8C5039FAE90B5056738ABF6380C683407C966C93D2B9EE536CAC45E7DB07E0925FEF292298FACEA";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
@@ -193,11 +193,13 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 210240;
-        consensus.nPrimenodePaymentsStartBlock = 1003500; 
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nPulsenodePaymentsStartBlock = 1003500; 
-        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
+        //3DCoin V0.14
+        consensus.nV014v1Start = 380000;
+        consensus.nV014v2Start = 517000;
+        consensus.nPrimenodePaymentsStartBlock = 600000; 
+        consensus.nPulsenodePaymentsStartBlock = 750000;
+        //3DCoin V0.14 
+        consensus.nSubsidyHalvingInterval = 210240; 
         consensus.nMasternodePaymentsStartBlock = 10000; 
         consensus.nMasternodePaymentsIncreaseBlock = 46000;
         consensus.nMasternodePaymentsIncreasePeriod = 576;
@@ -236,7 +238,6 @@ public:
         pchMessageStart[1] = 0xa2;
         pchMessageStart[2] = 0xc4;
         pchMessageStart[3] = 0xcf;
-        vAlertPubKey = ParseHex("0425F475027A75BEC6B6AF1480C0965EEAF5DF78660B63826DD8C5039FAE90B5056738ABF6380C683407C966C93D2B9EE536CAC45E7DB07E0925FEF292298FACEA");
         nDefaultPort = 6696;
         nMaxTipAge = 0x7fffffff; // allow mining on top of old blocks for testnet
         nPruneAfterHeight = 1000;
@@ -279,7 +280,6 @@ public:
 
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
-        strSporkPubKey = "0425F475027A75BEC6B6AF1480C0965EEAF5DF78660B63826DD8C5039FAE90B5056738ABF6380C683407C966C93D2B9EE536CAC45E7DB07E0925FEF292298FACEA";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
@@ -303,11 +303,13 @@ class CRegTestParams : public CChainParams {
 public:
     CRegTestParams() {
         strNetworkID = "regtest";
-        consensus.nSubsidyHalvingInterval = 150;
-        consensus.nPrimenodePaymentsStartBlock = 1003500; 
-        consensus.nPrimenodePaymentsIncreaseBlock = 1254375; 
-        consensus.nPulsenodePaymentsStartBlock = 1003500; 
-        consensus.nPulsenodePaymentsIncreaseBlock = 1254375; 
+        //3DCoin V0.14
+        consensus.nV014v1Start = 380000;
+        consensus.nV014v2Start = 517000;
+        consensus.nPrimenodePaymentsStartBlock = 600000; 
+        consensus.nPulsenodePaymentsStartBlock = 750000;
+        //3DCoin V0.14 
+        consensus.nSubsidyHalvingInterval = 150; 
         consensus.nMasternodePaymentsStartBlock = 240;
         consensus.nMasternodePaymentsIncreaseBlock = 350;
         consensus.nMasternodePaymentsIncreasePeriod = 10;

@@ -38,10 +38,12 @@ struct BIP9Deployment {
 struct Params {
     uint256 hashGenesisBlock;
     int nSubsidyHalvingInterval;
-    int nPrimenodePaymentsStartBlock; 
-    int nPrimenodePaymentsIncreaseBlock; 
-    int nPulsenodePaymentsStartBlock; 
-    int nPulsenodePaymentsIncreaseBlock; 
+    //3DCoin V0.14
+    int nV014v1Start;
+    int nV014v2Start;
+    int nPrimenodePaymentsStartBlock;
+    int nPulsenodePaymentsStartBlock;
+    //3DCoin V0.14  
     int nMasternodePaymentsStartBlock;
     int nMasternodePaymentsIncreaseBlock;
     int nMasternodePaymentsIncreasePeriod; // in blocks

@@ -159,7 +159,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     showOutOfSyncWarning(true);
 
     // that's it for litemode
-    if(fLiteMode) return;
+    if(true) return;
 
     // Disable any PS UI -- Preparation for v14
     DisablePrivateSendCompletely();
@@ -436,7 +436,7 @@ void OverviewPage::updateAdvancedPSUI(bool fShowAdvancedPSUI) {
     int nNumItems = (fLiteMode || !fShowAdvancedPSUI) ? NUM_ITEMS : NUM_ITEMS_ADV;
     SetupTransactionList(nNumItems);
 
-    if (fLiteMode) return;
+    if (true) return;
 
     ui->framePrivateSend->setVisible(true);
     ui->labelCompletitionText->setVisible(fShowAdvancedPSUI);
