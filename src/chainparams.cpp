@@ -73,7 +73,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
         //3DCoin V0.14
-        consensus.nV014v1Start = 380000;
+        consensus.nV014v1Start = 420000;
         consensus.nV014v2Start = 517000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;

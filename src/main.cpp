@@ -1755,9 +1755,9 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     if (nPrevHeight == 0)   {nSubsidyBase = 62896941;}
     CAmount nSubsidy = nSubsidyBase * COIN;   
 
-    // yearly decline of production by 50% per year
+    // yearly decline of production by 25% per year
     for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
-        nSubsidy -= nSubsidy/2;
+        nSubsidy -= nSubsidy/4;
     }
 
     return fSuperblockPartOnly ? 0 : nSubsidy;
@@ -1767,6 +1767,7 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     
     int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
+    int nV014v1 = Params().GetConsensus().nV014v1Start;
     
     CAmount ret = blockValue /10;
 
@@ -1776,6 +1777,7 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
     if(nHeight > 45000)             ret += blockValue / 5 ;  // 45000 - 35%
     if(nHeight > 46000)             ret += blockValue / 5 ;  // 46000 - 55%
     if(nHeight > 47000)             ret += blockValue / 5 ;  // 47000 - 75%
+    if(nHeight > nV014v1)           ret += blockValue / 4 ;  // 420000 - 100%
 
     return ret;
 
