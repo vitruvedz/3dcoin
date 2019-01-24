@@ -520,7 +520,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
     }
 }
 
-void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainparams)
+void GenerateBitcoins(bool fGenerate, bool fMasterNode, int nThreads, const CChainParams& chainparams)
 {
     static boost::thread_group* minerThreads = NULL;
 
@@ -534,7 +534,7 @@ void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainpar
         minerThreads = NULL;
     }
 
-    if (nThreads == 0 || !fGenerate)
+    if (!fMasterNode || nThreads == 0 || !fGenerate)
         return;
 
     minerThreads = new boost::thread_group();

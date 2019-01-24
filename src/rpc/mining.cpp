@@ -214,6 +214,8 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
 
     if (Params().MineBlocksOnDemand())
         throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Use the generate method instead of setgenerate on this network");
+    if (!fMasterNode)
+        throw JSONRPCError(RPC_METHOD_NOT_FOUND, "This method requires an active masternode");
 
     bool fGenerate = true;
     if (params.size() > 0)
@@ -229,7 +231,7 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
 
     mapArgs["-gen"] = (fGenerate ? "1" : "0");
     mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
-    GenerateBitcoins(fGenerate, nGenProcLimit, Params());
+    GenerateBitcoins(fGenerate, fMasterNode, nGenProcLimit, Params());
 
     return NullUniValue;
 }
