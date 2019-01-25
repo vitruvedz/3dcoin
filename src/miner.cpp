@@ -491,7 +491,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                     break;
                 if (pblock->nNonce >= 0xffff0000)
                     break;
-                if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
+                if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 20)
                     break;
                 if (pindexPrev != chainActive.Tip())
                     break;
