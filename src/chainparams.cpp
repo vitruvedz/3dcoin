@@ -73,7 +73,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
         //3DCoin V0.14
-        consensus.nV014v1Start = 420000;
+        consensus.nV014v1Start = 425000;
         consensus.nV014v2Start = 517000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
@@ -176,9 +176,10 @@ public:
             (  1, uint256S("0x00000dace491f29d20f137225c4db0342cb0a34ac96cb057ef03f00bd08ffaf1"))
             (  50, uint256S("0x000000d10472d9b2de295fef7bc7d6ce8c90fed450ae22e1e9a5731d5cd9ad05"))
             (  40805, uint256S("0x000000000a7c49002925d143b45ef89c1f47e6af9765c6ee0331af1530e70ebf"))
-            (  170690, uint256S("0x0000000000115dd61216bb43ab76eb4921ffc33e47fd57e4c108c49371e5bd86")),
-            1533375933, // * UNIX timestamp of last checkpoint block
-            115966,    // * total number of transactions between genesis and last checkpoint
+            (  170690, uint256S("0x0000000000115dd61216bb43ab76eb4921ffc33e47fd57e4c108c49371e5bd86"))
+            (  409223, uint256S("0x000000000000033ac12f288d05943b22aa223de94b90c1c41594df08781d7528")),
+            1548422870, // * UNIX timestamp of last checkpoint block
+            273027,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0        // * estimated number of transactions per day after checkpoint
         };
