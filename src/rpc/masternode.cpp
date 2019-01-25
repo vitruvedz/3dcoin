@@ -22,70 +22,13 @@ void EnsureWalletIsUnlocked();
 
 UniValue privatesend(const UniValue& params, bool fHelp)
 {
-    if (fHelp || params.size() != 1)
-        throw std::runtime_error(
-            "privatesend \"command\"\n"
-            "\nArguments:\n"
-            "1. \"command\"        (string or set of strings, required) The command to execute\n"
-            "\nAvailable commands:\n"
-            "  start       - Start mixing\n"
-            "  stop        - Stop mixing\n"
-            "  reset       - Reset mixing\n"
-            );
 
-    if(params[0].get_str() == "start") {
-        {
-            LOCK(pwalletMain->cs_wallet);
-            EnsureWalletIsUnlocked();
-        }
-
-        if(fMasterNode)
-            return "Mixing is not supported from masternodes";
-
-        fEnablePrivateSend = true;
-        bool result = darkSendPool.DoAutomaticDenominating();
-        return "Mixing " + (result ? "started successfully" : ("start failed: " + darkSendPool.GetStatus() + ", will retry"));
-    }
-
-    if(params[0].get_str() == "stop") {
-        fEnablePrivateSend = false;
-        return "Mixing was stopped";
-    }
-
-    if(params[0].get_str() == "reset") {
-        darkSendPool.ResetPool();
-        return "Mixing was reset";
-    }
-
-    return "Unknown command, please see \"help privatesend\"";
+    return "Unknown command, please see \"help\"";
 }
 
 UniValue getpoolinfo(const UniValue& params, bool fHelp)
 {
-    if (fHelp || params.size() != 0)
-        throw std::runtime_error(
-            "getpoolinfo\n"
-            "Returns an object containing mixing pool related information.\n");
-
-    UniValue obj(UniValue::VOBJ);
-    obj.push_back(Pair("state",             darkSendPool.GetStateString()));
-    obj.push_back(Pair("mixing_mode",       fPrivateSendMultiSession ? "multi-session" : "normal"));
-    obj.push_back(Pair("queue",             darkSendPool.GetQueueSize()));
-    obj.push_back(Pair("entries",           darkSendPool.GetEntriesCount()));
-    obj.push_back(Pair("status",            darkSendPool.GetStatus()));
-
-    if (darkSendPool.pSubmittedToMasternode) {
-        obj.push_back(Pair("outpoint",      darkSendPool.pSubmittedToMasternode->vin.prevout.ToStringShort()));
-        obj.push_back(Pair("addr",          darkSendPool.pSubmittedToMasternode->addr.ToString()));
-    }
-
-    if (pwalletMain) {
-        obj.push_back(Pair("keys_left",     pwalletMain->nKeysLeftSinceAutoBackup));
-        obj.push_back(Pair("warnings",      pwalletMain->nKeysLeftSinceAutoBackup < PRIVATESEND_KEYS_THRESHOLD_WARNING
-                                                ? "WARNING: keypool is almost depleted!" : ""));
-    }
-
-    return obj;
+    return "Unknown command, please see \"help\"";
 }
 
 
@@ -110,7 +53,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
                 "\nArguments:\n"
                 "1. \"command\"        (string or set of strings, required) The command to execute\n"
                 "\nAvailable commands:\n"
-                "  count        - Print number of all known masternodes (optional: 'ps', 'enabled', 'all', 'qualify')\n"
+                "  count        - Print number of all known masternodes (optional: 'enabled', 'all', 'qualify')\n"
                 "  current      - Print info on current masternode winner to be paid the next block (calculated locally)\n"
                 "  debug        - Print masternode status\n"
                 "  genkey       - Generate new masternodeprivkey\n"
@@ -161,8 +104,6 @@ UniValue masternode(const UniValue& params, bool fHelp)
 
         std::string strMode = params[1].get_str();
 
-        if (strMode == "ps")
-            return mnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION);
 
         if (strMode == "enabled")
             return mnodeman.CountEnabled();
@@ -174,9 +115,8 @@ UniValue masternode(const UniValue& params, bool fHelp)
             return nCount;
 
         if (strMode == "all")
-            return strprintf("Total: %d (PS Compatible: %d / Enabled: %d / Qualify: %d)",
-                mnodeman.size(), mnodeman.CountEnabled(MIN_PRIVATESEND_PEER_PROTO_VERSION),
-                mnodeman.CountEnabled(), nCount);
+            return strprintf("Total: %d (Enabled: %d / Qualify: %d)",
+                mnodeman.size(), mnodeman.CountEnabled(), nCount);
     }
 
     if (strCommand == "current" || strCommand == "winner")

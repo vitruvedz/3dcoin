@@ -56,7 +56,6 @@ UniValue getinfo(const UniValue& params, bool fHelp)
             "  \"protocolversion\": xxxxx,   (numeric) the protocol version\n"
             "  \"walletversion\": xxxxx,     (numeric) the wallet version\n"
             "  \"balance\": xxxxxxx,         (numeric) the total 3dcoin balance of the wallet\n"
-            "  \"privatesend_balance\": xxxxxx, (numeric) the anonymized 3dcoin balance of the wallet\n"
             "  \"blocks\": xxxxxx,           (numeric) the current number of blocks processed in the server\n"
             "  \"timeoffset\": xxxxx,        (numeric) the time offset\n"
             "  \"connections\": xxxxx,       (numeric) the number of connections\n"
@@ -91,8 +90,6 @@ UniValue getinfo(const UniValue& params, bool fHelp)
     if (pwalletMain) {
         obj.push_back(Pair("walletversion", pwalletMain->GetVersion()));
         obj.push_back(Pair("balance",       ValueFromAmount(pwalletMain->GetBalance())));
-        if(!fLiteMode)
-            obj.push_back(Pair("privatesend_balance",       ValueFromAmount(pwalletMain->GetAnonymizedBalance())));
     }
 #endif
     obj.push_back(Pair("blocks",        (int)chainActive.Height()));
@@ -121,7 +118,7 @@ UniValue debug(const UniValue& params, bool fHelp)
         throw runtime_error(
             "debug ( 0|1|addrman|alert|bench|coindb|db|lock|rand|rpc|selectcoins|mempool"
             "|mempoolrej|net|proxy|prune|http|libevent|tor|zmq|"
-            "3dcoin|privatesend|instantsend|masternode|spork|keepass|mnpayments|gobject )\n"
+            "3dcoin|masternode|spork|keepass|mnpayments|gobject )\n"
             "Change debug category on the fly. Specify single category or use comma to specify many.\n"
             "\nExamples:\n"
             + HelpExampleCli("debug", "3dcoin")

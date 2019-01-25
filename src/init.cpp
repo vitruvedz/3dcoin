@@ -221,7 +221,7 @@ void PrepareShutdown()
     if (pwalletMain)
         pwalletMain->Flush(false);
 #endif
-    GenerateBitcoins(false, 0, Params());
+    GenerateBitcoins(false, false, 0, Params());
     StopNode();
 
     // STORE DATA CACHES INTO SERIALIZED DAT FILES
@@ -538,8 +538,6 @@ std::string HelpMessage(HelpMessageMode mode)
         _("If <category> is not supplied or if <category> = 1, output all debugging information.") + _("<category> can be:") + " " + debugCategories + ".");
     if (showDebug)
         strUsage += HelpMessageOpt("-nodebug", "Turn off debugging messages, same as -debug=0");
-    strUsage += HelpMessageOpt("-gen", strprintf(_("Generate coins (default: %u)"), DEFAULT_GENERATE));
-    strUsage += HelpMessageOpt("-genproclimit=<n>", strprintf(_("Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)"), DEFAULT_GENERATE_THREADS));
     strUsage += HelpMessageOpt("-help-debug", _("Show all debugging options (usage: --help -help-debug)"));
     strUsage += HelpMessageOpt("-logips", strprintf(_("Include IP addresses in debug output (default: %u)"), DEFAULT_LOGIPS));
     strUsage += HelpMessageOpt("-logtimestamps", strprintf(_("Prepend debug output with timestamp (default: %u)"), DEFAULT_LOGTIMESTAMPS));
@@ -1981,7 +1979,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // --- end disabled ---
 
     // Generate coins in the background
-    GenerateBitcoins(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
+    GenerateBitcoins(DEFAULT_GENERATE, GetBoolArg("-masternode", fMasterNode), DEFAULT_GENERATE_THREADS, chainparams);
 
     // ********************************************************* Step 13: finished
 

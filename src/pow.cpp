@@ -92,7 +92,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consens
     arith_uint256 PastDifficultyAverage;
     arith_uint256 PastDifficultyAveragePrev;
 
-    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) {
+    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin || BlockLastSolved->nHeight+1 == 425000) {
         return UintToArith256(params.powLimit).GetCompact();
     }
 

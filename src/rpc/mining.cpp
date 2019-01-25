@@ -190,49 +190,7 @@ UniValue generate(const UniValue& params, bool fHelp)
     return blockHashes;
 }
 
-UniValue setgenerate(const UniValue& params, bool fHelp)
-{
-    if (fHelp || params.size() < 1 || params.size() > 2)
-        throw runtime_error(
-            "setgenerate generate ( genproclimit )\n"
-            "\nSet 'generate' true or false to turn generation on or off.\n"
-            "Generation is limited to 'genproclimit' processors, -1 is unlimited.\n"
-            "See the getgenerate call for the current setting.\n"
-            "\nArguments:\n"
-            "1. generate         (boolean, required) Set to true to turn on generation, false to turn off.\n"
-            "2. genproclimit     (numeric, optional) Set the processor limit for when generation is on. Can be -1 for unlimited.\n"
-            "\nExamples:\n"
-            "\nSet the generation on with a limit of one processor\n"
-            + HelpExampleCli("setgenerate", "true 1") +
-            "\nCheck the setting\n"
-            + HelpExampleCli("getgenerate", "") +
-            "\nTurn off generation\n"
-            + HelpExampleCli("setgenerate", "false") +
-            "\nUsing json rpc\n"
-            + HelpExampleRpc("setgenerate", "true, 1")
-        );
 
-    if (Params().MineBlocksOnDemand())
-        throw JSONRPCError(RPC_METHOD_NOT_FOUND, "Use the generate method instead of setgenerate on this network");
-
-    bool fGenerate = true;
-    if (params.size() > 0)
-        fGenerate = params[0].get_bool();
-
-    int nGenProcLimit = GetArg("-genproclimit", DEFAULT_GENERATE_THREADS);
-    if (params.size() > 1)
-    {
-        nGenProcLimit = params[1].get_int();
-        if (nGenProcLimit == 0)
-            fGenerate = false;
-    }
-
-    mapArgs["-gen"] = (fGenerate ? "1" : "0");
-    mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
-    GenerateBitcoins(fGenerate, nGenProcLimit, Params());
-
-    return NullUniValue;
-}
 
 UniValue getmininginfo(const UniValue& params, bool fHelp)
 {
@@ -247,8 +205,8 @@ UniValue getmininginfo(const UniValue& params, bool fHelp)
             "  \"currentblocktx\": nnn,     (numeric) The last block transaction\n"
             "  \"difficulty\": xxx.xxxxx    (numeric) The current difficulty\n"
             "  \"errors\": \"...\"          (string) Current errors\n"
-            "  \"generate\": true|false     (boolean) If the generation is on or off (see getgenerate or setgenerate calls)\n"
-            "  \"genproclimit\": n          (numeric) The processor limit for generation. -1 if no generation. (see getgenerate or setgenerate calls)\n"
+            "  \"generate\": true|false     (boolean) If the generation is on or off\n"
+            "  \"genproclimit\": n          (numeric) The processor limit for generation. -1 if no generation.\n"
             "  \"pooledtx\": n              (numeric) The size of the mem pool\n"
             "  \"testnet\": true|false      (boolean) If using testnet or not\n"
             "  \"chain\": \"xxxx\",         (string) current network name as defined in BIP70 (main, test, regtest)\n"
@@ -731,66 +689,6 @@ protected:
     };
 };
 
-UniValue submitblock(const UniValue& params, bool fHelp)
-{
-    if (fHelp || params.size() < 1 || params.size() > 2)
-        throw runtime_error(
-            "submitblock \"hexdata\" ( \"jsonparametersobject\" )\n"
-            "\nAttempts to submit new block to network.\n"
-            "The 'jsonparametersobject' parameter is currently ignored.\n"
-            "See https://en.bitcoin.it/wiki/BIP_0022 for full specification.\n"
-
-            "\nArguments\n"
-            "1. \"hexdata\"    (string, required) the hex-encoded block data to submit\n"
-            "2. \"jsonparametersobject\"     (string, optional) object of optional parameters\n"
-            "    {\n"
-            "      \"workid\" : \"id\"    (string, optional) if the server provided a workid, it MUST be included with submissions\n"
-            "    }\n"
-            "\nResult:\n"
-            "\nExamples:\n"
-            + HelpExampleCli("submitblock", "\"mydata\"")
-            + HelpExampleRpc("submitblock", "\"mydata\"")
-        );
-
-    CBlock block;
-    if (!DecodeHexBlk(block, params[0].get_str()))
-        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Block decode failed");
-
-    uint256 hash = block.GetHash();
-    bool fBlockPresent = false;
-    {
-        LOCK(cs_main);
-        BlockMap::iterator mi = mapBlockIndex.find(hash);
-        if (mi != mapBlockIndex.end()) {
-            CBlockIndex *pindex = mi->second;
-            if (pindex->IsValid(BLOCK_VALID_SCRIPTS))
-                return "duplicate";
-            if (pindex->nStatus & BLOCK_FAILED_MASK)
-                return "duplicate-invalid";
-            // Otherwise, we might only have the header - process the block before returning
-            fBlockPresent = true;
-        }
-    }
-
-    CValidationState state;
-    submitblock_StateCatcher sc(block.GetHash());
-    RegisterValidationInterface(&sc);
-    bool fAccepted = ProcessNewBlock(state, Params(), NULL, &block, true, NULL);
-    UnregisterValidationInterface(&sc);
-    if (fBlockPresent)
-    {
-        if (fAccepted && !sc.found)
-            return "duplicate-inconclusive";
-        return "duplicate";
-    }
-    if (fAccepted)
-    {
-        if (!sc.found)
-            return "inconclusive";
-        state = sc.state;
-    }
-    return BIP22ValidationResult(state);
-}
 
 UniValue estimatefee(const UniValue& params, bool fHelp)
 {

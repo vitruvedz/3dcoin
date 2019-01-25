@@ -277,7 +277,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
         }
 
         // NOTE: unlike in bitcoin, we need to pass PREVIOUS block height here
-        CAmount blockReward = nFees + GetBlockSubsidy(pindexPrev->nBits, pindexPrev->nHeight, Params().GetConsensus());
+        CAmount blockReward = nFees + GetBlockSubsidy(pindexPrev->nHeight, Params().GetConsensus());
 
         // Compute regular coinbase transaction.
         txNew.vout[0].nValue = blockReward;
@@ -325,7 +325,7 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
     ++nExtraNonce;
     unsigned int nHeight = pindexPrev->nHeight+1; // Height first in coinbase required for block.version=2
     CMutableTransaction txCoinbase(pblock->vtx[0]);
-    txCoinbase.vin[0].scriptSig = (CScript() << nHeight << CScriptNum(nExtraNonce)) + COINBASE_FLAGS;
+    txCoinbase.vin[0].scriptSig = (CScript() << nHeight) + COINBASE_FLAGS;
     assert(txCoinbase.vin[0].scriptSig.size() <= 100);
 
     pblock->vtx[0] = txCoinbase;
@@ -491,7 +491,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                     break;
                 if (pblock->nNonce >= 0xffff0000)
                     break;
-                if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 60)
+                if (mempool.GetTransactionsUpdated() != nTransactionsUpdatedLast && GetTime() - nStart > 20)
                     break;
                 if (pindexPrev != chainActive.Tip())
                     break;
@@ -520,12 +520,12 @@ void static BitcoinMiner(const CChainParams& chainparams)
     }
 }
 
-void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainparams)
+void GenerateBitcoins(bool fGenerate, bool fMasterNode, int nThreads, const CChainParams& chainparams)
 {
     static boost::thread_group* minerThreads = NULL;
 
     if (nThreads < 0)
-        nThreads = GetNumCores();
+        nThreads = 1;
 
     if (minerThreads != NULL)
     {
@@ -534,7 +534,7 @@ void GenerateBitcoins(bool fGenerate, int nThreads, const CChainParams& chainpar
         minerThreads = NULL;
     }
 
-    if (nThreads == 0 || !fGenerate)
+    if (!fMasterNode || nThreads > 1 || !fGenerate)
         return;
 
     minerThreads = new boost::thread_group();

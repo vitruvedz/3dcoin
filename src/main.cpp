@@ -90,6 +90,7 @@ size_t nCoinCacheUsage = 5000 * 300;
 uint64_t nPruneTarget = 0;
 bool fAlerts = DEFAULT_ALERTS;
 bool fEnableReplacement = DEFAULT_ENABLE_REPLACEMENT;
+bool fV014Enabled = false;
 
 /** Fees smaller than this (in duffs) are considered zero fee (for relaying, mining and transaction creation) */
 CFeeRate minRelayTxFee = CFeeRate(DEFAULT_MIN_RELAY_TX_FEE);
@@ -1738,7 +1739,7 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
         might be a good idea to change this to use prev bits
         but current height to avoid confusion.
 */
-CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
+CAmount GetBlockSubsidy(int nPrevHeight, const Consensus::Params& consensusParams)
 {
     
     CAmount nSubsidyBase;
@@ -1755,18 +1756,19 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     if (nPrevHeight == 0)   {nSubsidyBase = 62896941;}
     CAmount nSubsidy = nSubsidyBase * COIN;   
 
-    // yearly decline of production by 50% per year
+    // yearly decline of production by 25% per year
     for (int i = consensusParams.nSubsidyHalvingInterval; i <= nPrevHeight; i += consensusParams.nSubsidyHalvingInterval) {
-        nSubsidy -= nSubsidy/2;
+        nSubsidy -= nSubsidy/4;
     }
 
-    return fSuperblockPartOnly ? 0 : nSubsidy;
+    return nSubsidy;
 }
 
 CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
 {
     
     int nMNPIBlock = Params().GetConsensus().nMasternodePaymentsIncreaseBlock;
+    int nV014v1 = Params().GetConsensus().nV014v1Start;
     
     CAmount ret = blockValue /10;
 
@@ -1776,6 +1778,7 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue)
     if(nHeight > 45000)             ret += blockValue / 5 ;  // 45000 - 35%
     if(nHeight > 46000)             ret += blockValue / 5 ;  // 46000 - 55%
     if(nHeight > 47000)             ret += blockValue / 5 ;  // 47000 - 75%
+    if(nHeight >= nV014v1)           ret += blockValue / 4 ;  // 425000 - 100%
 
     return ret;
 
@@ -2781,7 +2784,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     // the peer who sent us this block is missing some data and wasn't able
     // to recognize that block is actually invalid.
     // TODO: resync data (both ways?) and try to reprocess this block later.
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
+    CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nHeight, chainparams.GetConsensus());
     std::string strError = "";
     if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
         return state.DoS(0, error("ConnectBlock(3DC): %s", strError), REJECT_INVALID, "bad-cb-amount");
@@ -3751,6 +3754,9 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         return state.DoS(100, error("CheckBlock(): size limits failed"),
                          REJECT_INVALID, "bad-blk-length");
 
+    if (!block.vtx[0].IsCoinBaseNew() && fV014Enabled)
+        return state.DoS(100, error("CheckBlock(): first tx is not v014 coinbase"),
+                         REJECT_INVALID, "bad-cb-missing");
     // First transaction must be coinbase, the rest must not be
     if (block.vtx.empty() || !block.vtx[0].IsCoinBase())
         return state.DoS(100, error("CheckBlock(): first tx is not coinbase"),

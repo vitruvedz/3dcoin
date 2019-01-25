@@ -300,11 +300,9 @@ static const CRPCCommand vRPCCommands[] =
     { "mining",             "getmininginfo",          &getmininginfo,          true  },
     { "mining",             "getnetworkhashps",       &getnetworkhashps,       true  },
     { "mining",             "prioritisetransaction",  &prioritisetransaction,  true  },
-    { "mining",             "submitblock",            &submitblock,            true  },
 
     /* Coin generation */
     { "generating",         "getgenerate",            &getgenerate,            true  },
-    { "generating",         "setgenerate",            &setgenerate,            true  },
     { "generating",         "generate",               &generate,               true  },
 
     /* Raw transactions */
@@ -354,11 +352,9 @@ static const CRPCCommand vRPCCommands[] =
     { "3dcoin",               "spork",                  &spork,                  true  },
     { "3dcoin",               "getpoolinfo",            &getpoolinfo,            true  },
 #ifdef ENABLE_WALLET
-    { "3dcoin",               "privatesend",            &privatesend,            false },
 
     /* Wallet */
     { "wallet",             "keepass",                &keepass,                true },
-    { "wallet",             "instantsendtoaddress",   &instantsendtoaddress,   false },
     { "wallet",             "addmultisigaddress",     &addmultisigaddress,     true  },
     { "wallet",             "backupwallet",           &backupwallet,           true  },
     { "wallet",             "dumpprivkey",            &dumpprivkey,            true  },

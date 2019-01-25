@@ -70,6 +70,7 @@ BITCOIN_CORE_H = \
   spentindex.h \
   addrman.h \
   alert.h \
+  v014/blocks.h \
   amount.h \
   arith_uint256.h \
   base58.h \
@@ -327,6 +328,7 @@ libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_common_a_SOURCES = \
   amount.cpp \
+  v014/blocks.cpp \
   arith_uint256.cpp \
   base58.cpp \
   bip39.cpp \

@@ -73,7 +73,7 @@ public:
     CMainParams() {
         strNetworkID = "main";
         //3DCoin V0.14
-        consensus.nV014v1Start = 380000;
+        consensus.nV014v1Start = 425000;
         consensus.nV014v2Start = 517000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
@@ -176,9 +176,10 @@ public:
             (  1, uint256S("0x00000dace491f29d20f137225c4db0342cb0a34ac96cb057ef03f00bd08ffaf1"))
             (  50, uint256S("0x000000d10472d9b2de295fef7bc7d6ce8c90fed450ae22e1e9a5731d5cd9ad05"))
             (  40805, uint256S("0x000000000a7c49002925d143b45ef89c1f47e6af9765c6ee0331af1530e70ebf"))
-            (  170690, uint256S("0x0000000000115dd61216bb43ab76eb4921ffc33e47fd57e4c108c49371e5bd86")),
-            1533375933, // * UNIX timestamp of last checkpoint block
-            115966,    // * total number of transactions between genesis and last checkpoint
+            (  170690, uint256S("0x0000000000115dd61216bb43ab76eb4921ffc33e47fd57e4c108c49371e5bd86"))
+            (  409223, uint256S("0x000000000000033ac12f288d05943b22aa223de94b90c1c41594df08781d7528")),
+            1548422870, // * UNIX timestamp of last checkpoint block
+            273027,    // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0        // * estimated number of transactions per day after checkpoint
         };
@@ -194,14 +195,14 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         //3DCoin V0.14
-        consensus.nV014v1Start = 380000;
+        consensus.nV014v1Start = 15000;
         consensus.nV014v2Start = 517000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
         //3DCoin V0.14 
         consensus.nSubsidyHalvingInterval = 210240; 
         consensus.nMasternodePaymentsStartBlock = 10000; 
-        consensus.nMasternodePaymentsIncreaseBlock = 46000;
+        consensus.nMasternodePaymentsIncreaseBlock = 2000;
         consensus.nMasternodePaymentsIncreasePeriod = 576;
         consensus.nInstantSendKeepLock = 6;
         consensus.nBudgetPaymentsStartBlock = 10000000;
@@ -220,7 +221,7 @@ public:
         consensus.BIP34Hash = uint256S("0x0000047d24635e347be3aaaeb66c26be94901a2f962feccd4f95090191f208c1");
         consensus.powLimit = uint256S("00000fffff000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 24 * 60 * 60; // 24 hours
-        consensus.nPowTargetSpacing =  60; // 60 seconds
+        consensus.nPowTargetSpacing =  30; // 60 seconds
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
@@ -252,8 +253,8 @@ public:
 
          vFixedSeeds.clear();
         vSeeds.clear();
-        vSeeds.push_back(CDNSSeedData("testseed1", "testseed1.3dcstats.net"));
-        vSeeds.push_back(CDNSSeedData("testseed2", "testseed2.3dctalk.net"));
+        //vSeeds.push_back(CDNSSeedData("testseed1", "testseed1.3dcstats.net"));
+        //vSeeds.push_back(CDNSSeedData("testseed2", "testseed2.3dctalk.net"));
         // vSeeds.push_back(CDNSSeedData("3dcoin2", "testseed2.3dcoin.io"));
         // vSeeds.push_back(CDNSSeedData("Districts2", "testseed2.districts.io"));
 
@@ -283,11 +284,9 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (   0, uint256S("0x000007c41652b32383518b0a5b6722c5a693c730c4be7f1abcb0f70e286a3edd"))
-            ( 850, uint256S("0x00000b17ca31739138a0c73b93215d684a5cf90ab7225381621a293f803c8e32"))
-            ( 71309, uint256S("0x0000005a962f1cb793984576a93e5851193d6ebe0a71950b73c04e7c8a88a062")),
-            1533376648, // * UNIX timestamp of last checkpoint block
-            71085,     // * total number of transactions between genesis and last checkpoint
+            (   0, uint256S("0x000007c41652b32383518b0a5b6722c5a693c730c4be7f1abcb0f70e286a3edd")),
+            0, // * UNIX timestamp of last checkpoint block
+            0,     // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0         // * estimated number of transactions per day after checkpoint
         };
