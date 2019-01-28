@@ -3792,7 +3792,7 @@ for example: alertnotify=echo %%s | mail -s "3DCoin Alert" admin@foo.com
     </message>
     <message>
         <source>Copyright (C) 2014-%i The 3DCoin Core Developers</source>
-        <translation>Запазени права (C) 2014-%i 3DCoin Core разработчиците</translation>
+        <translation>Запазени права (C) 2018-%i 3DCoin Core разработчиците</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>

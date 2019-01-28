@@ -3799,8 +3799,8 @@ napríklad: alertnotify=echo %%s | mail -s "3DCoin Upozornenie" admin@foo.com
         <translation>Autorské práva (C) 2009-%i Vývojári jadra Bitcoin</translation>
     </message>
     <message>
-        <source>Copyright (C) 2014-%i The 3DCoin Core Developers</source>
-        <translation>Autorské práva (C) 2014-%i Vývojári jadra 3DCoin</translation>
+        <source>Copyright (C) 2018-%i The 3DCoin Core Developers</source>
+        <translation>Autorské práva (C) 2018-%i Vývojári jadra 3DCoin</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>
