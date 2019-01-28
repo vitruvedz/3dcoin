@@ -3530,8 +3530,8 @@ https://www.transifex.com/projects/p/3dcoin/</translation>
         <translation>版權為位元幣核心開發人員自西元 2009 至 %i 年起所有</translation>
     </message>
     <message>
-        <source>Copyright (C) 2014-%i The 3DCoin Core Developers</source>
-        <translation>版權為達世幣核心開發人員自西元 2014 至 %i 年起所有</translation>
+        <source>Copyright (C) 2018-%i The 3DCoin Core Developers</source>
+        <translation>版權為達世幣核心開發人員自西元 2018 至 %i 年起所有</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>

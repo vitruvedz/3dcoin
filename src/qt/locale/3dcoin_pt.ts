@@ -3696,8 +3696,8 @@ https://www.transifex.com/projects/p/3dcoin/</translation>
         <translation>Copyright (C) 2009-%i The Bitcoin Core Developers</translation>
     </message>
     <message>
-        <source>Copyright (C) 2014-%i The 3DCoin Core Developers</source>
-        <translation>Copyright (C) 2014-%i 3DCoin Core Developers</translation>
+        <source>Copyright (C) 2018-%i The 3DCoin Core Developers</source>
+        <translation>Copyright (C) 2018-%i 3DCoin Core Developers</translation>
     </message>
     <message>
         <source>Could not parse -rpcbind value %s as network address</source>

@@ -4837,8 +4837,8 @@ for example: alertnotify=echo %%s | mail -s &quot;3DCoin Alert&quot; admin@foo.c
     </message>
     <message>
         <location line="+1"/>
-        <source>Copyright (C) 2014-%i The 3DCoin Core Developers</source>
-        <translation>Copyright (C) 2014-%i The 3DCoin Core Developers</translation>
+        <source>Copyright (C) 2018-%i The 3DCoin Core Developers</source>
+        <translation>Copyright (C) 2018-%i The 3DCoin Core Developers</translation>
     </message>
     <message>
         <location line="+2"/>
