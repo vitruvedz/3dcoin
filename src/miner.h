@@ -7,6 +7,7 @@
 #define BITCOIN_MINER_H
 
 #include "primitives/block.h"
+#include "util.h"
 
 #include <stdint.h>
 
@@ -18,7 +19,7 @@ class CWallet;
 namespace Consensus { struct Params; };
 
 static const bool DEFAULT_GENERATE = true;
-static const int DEFAULT_GENERATE_THREADS = 1;
+static const int DEFAULT_GENERATE_THREADS = GetNumCores();
 
 static const bool DEFAULT_PRINTPRIORITY = false;
 
