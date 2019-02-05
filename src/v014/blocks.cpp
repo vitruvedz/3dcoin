@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2009-2015 The 3DCoin Core developers
+// Copyright (c) 2018-2019 The 3DCoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,7 +19,7 @@ uint256 CBlocksHeader::GetHash() const
 std::string CBlocks::ToString() const
 {
     std::stringstream s;
-    s << strprintf("CBlockv014(hash=%s, ver=%d, hashPrevBlock=%s, hashTxRoot=%s,hashObjRoot=%s, hashDpsRoot=%s, nTime=%u, nBits=%08x, vtx=%u)\n",
+    s << strprintf("CBlockv014(hash=%s, ver=%d, hashPrevBlock=%s, hashTxRoot=%s,hashObjRoot=%s, hashDpsRoot=%s, nTime=%u, nBits=%08x, vtx=%u, vobj=%u, vdps=%u)\n",
         GetHash().ToString(),
         nVersion,
         hashPrevBlock.ToString(),
@@ -27,10 +27,20 @@ std::string CBlocks::ToString() const
         hashObjRoot.ToString(),
         hashDpsRoot.ToString(),
         nTime, nBits,
-        vtx.size());
+        vtx.size(),
+        vobj.size(),
+        vdps.size());
     for (unsigned int i = 0; i < vtx.size(); i++)
     {
         s << "  " << vtx[i].ToString() << "\n";
+    }
+    for (unsigned int i = 0; i < vtx.size(); i++)
+    {
+        s << "  " << vobj[i].ToString() << "\n";
+    }
+    for (unsigned int i = 0; i < vtx.size(); i++)
+    {
+        s << "  " << vdps[i].ToString() << "\n";
     }
     return s.str();
 }
