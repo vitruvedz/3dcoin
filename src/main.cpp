@@ -3787,8 +3787,8 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
 bool CheckV014Block(const CChainParams& chainparams, const CBlock& block, CValidationState& state)
 {
         if (!block.vtx[0].IsCoinBaseNew())
-        return state.DoS(100, error("CheckBlock(): first tx is not v014 coinbase"),
-                         REJECT_INVALID, "bad-v014cb-missing");
+            return state.DoS(100, error("CheckBlock(): first tx is not v014 coinbase"),
+                             REJECT_INVALID, "bad-v014cb-missing");
 
         //V014-TODO add Proof of Sync validation after the complete implementation
 
@@ -3942,8 +3942,9 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
 
         if (!ContextualCheckBlockHeader(block, state, pindexPrev))
             return false;
-        if (!CheckV014BlockHeader(chainparams, block, pindexPrev, state) && pindexPrev->nHeight+1 >= Params().GetConsensus().nV014v1Start)
-            return false;
+        if (pindexPrev->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+            if (!CheckV014BlockHeader(chainparams, block, pindexPrev, state))
+                return false;
     }
     if (pindex == NULL)
         pindex = AddToBlockIndex(block);
@@ -3986,10 +3987,10 @@ static bool AcceptBlock(const CBlock& block, CValidationState& state, const CCha
         if (fTooFarAhead) return true;      // Block height is too high
     }
 
-    if(pindex->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+    if (pindex->nHeight+1 >= Params().GetConsensus().nV014v1Start)
         if (!CheckV014Block(chainparams, block, state))
-        return false;
-        //LogPrintf("%s: V014Activated-AcceptBlock\n", __func__);
+            return false;
+            //LogPrintf("%s: V014Activated-AcceptBlock\n", __func__);
 
     if ((!CheckBlock(block, state)) || !ContextualCheckBlock(block, state, pindex->pprev)) {
         if (state.IsInvalid() && !state.CorruptionPossible()) {
@@ -4081,8 +4082,8 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
 
     if (pindexPrev->nHeight+1 >= Params().GetConsensus().nV014v1Start)
         if (!CheckV014Block(chainparams, block, state))
-        return false;
-        //LogPrintf("%s: V014Activated", __func__);
+            return false;
+            //LogPrintf("%s: V014Activated", __func__);
 
         // NOTE: CheckBlockHeader is called by CheckBlock
     if (!ContextualCheckBlockHeader(block, state, pindexPrev))
