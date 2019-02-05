@@ -3986,8 +3986,8 @@ static bool AcceptBlock(const CBlock& block, CValidationState& state, const CCha
         if (fTooFarAhead) return true;      // Block height is too high
     }
 
-    
-        if (!CheckV014Block(chainparams, block, state) && pindex->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+    if(pindex->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+        if (!CheckV014Block(chainparams, block, state))
         return false;
         //LogPrintf("%s: V014Activated-AcceptBlock\n", __func__);
 
@@ -4079,10 +4079,10 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     indexDummy.pprev = pindexPrev;
     indexDummy.nHeight = pindexPrev->nHeight + 1;
 
-    
-    if (!CheckV014Block(chainparams, block, state) && pindexPrev->nHeight+1 >= Params().GetConsensus().nV014v1Start)
-    return false;
-    //LogPrintf("%s: V014Activated", __func__);
+    if (pindexPrev->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+        if (!CheckV014Block(chainparams, block, state))
+        return false;
+        //LogPrintf("%s: V014Activated", __func__);
 
         // NOTE: CheckBlockHeader is called by CheckBlock
     if (!ContextualCheckBlockHeader(block, state, pindexPrev))
