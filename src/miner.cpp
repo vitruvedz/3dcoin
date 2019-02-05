@@ -398,7 +398,7 @@ static bool ProcessBlockFound(const CBlock* pblock, const CChainParams& chainpar
 void static BitcoinMiner(const CChainParams& chainparams)
 {
     LogPrintf("3DCoinMiner -- started\n");
-    SetThreadPriority(THREAD_PRIORITY_LOWEST);
+    SetThreadPriority(THREAD_PRIORITY_BELOW_NORMAL);
     RenameThread("3dcoin-miner");
 
     unsigned int nExtraNonce = 0;
@@ -461,14 +461,15 @@ void static BitcoinMiner(const CChainParams& chainparams)
                 uint256 hash;
                 while (true)
                 {
-                    hash = pblock->GetHash();
-                    if (UintToArith256(hash) <= hashTarget)
+                    if(pindexPrev->nHeight+1 >= 425000 && GetAdjustedTime() > pindexPrev->GetBlockTime()+59)
                     {
+                        hash = pblock->GetHash();
+                    
+                        if (UintToArith256(hash) <= hashTarget)
+                        {
                         // Found a solution
-                        SetThreadPriority(THREAD_PRIORITY_NORMAL);
-                        LogPrintf("3DCoinMiner:\n  proof-of-work found\n  hash: %s\n  target: %s\n", hash.GetHex(), hashTarget.GetHex());
+                        LogPrintf("3DCoinMiner:\n  proof-of-work found\n  hash: %s\n  target: %s\n done: %s\n", hash.GetHex(), hashTarget.GetHex(), nHashesDone);
                         ProcessBlockFound(pblock, chainparams);
-                        SetThreadPriority(THREAD_PRIORITY_LOWEST);
                         coinbaseScript->KeepScript();
 
                         // In regression test mode, stop mining after a block is found. This
@@ -477,6 +478,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                             throw boost::thread_interrupted();
 
                         break;
+                        }
                     }
                     pblock->nNonce += 1;
                     nHashesDone += 1;

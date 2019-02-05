@@ -90,7 +90,6 @@ size_t nCoinCacheUsage = 5000 * 300;
 uint64_t nPruneTarget = 0;
 bool fAlerts = DEFAULT_ALERTS;
 bool fEnableReplacement = DEFAULT_ENABLE_REPLACEMENT;
-bool fV014Enabled = false;
 
 /** Fees smaller than this (in duffs) are considered zero fee (for relaying, mining and transaction creation) */
 CFeeRate minRelayTxFee = CFeeRate(DEFAULT_MIN_RELAY_TX_FEE);
@@ -3754,9 +3753,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         return state.DoS(100, error("CheckBlock(): size limits failed"),
                          REJECT_INVALID, "bad-blk-length");
 
-    if (!block.vtx[0].IsCoinBaseNew() && fV014Enabled)
-        return state.DoS(100, error("CheckBlock(): first tx is not v014 coinbase"),
-                         REJECT_INVALID, "bad-cb-missing");
     // First transaction must be coinbase, the rest must not be
     if (block.vtx.empty() || !block.vtx[0].IsCoinBase())
         return state.DoS(100, error("CheckBlock(): first tx is not coinbase"),
@@ -3765,39 +3761,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         if (block.vtx[i].IsCoinBase())
             return state.DoS(100, error("CheckBlock(): more than one coinbase"),
                              REJECT_INVALID, "bad-cb-multiple");
-
-
-    // 3DCOIN : CHECK TRANSACTIONS FOR INSTANTSEND
-
-    if(sporkManager.IsSporkActive(SPORK_3_INSTANTSEND_BLOCK_FILTERING)) {
-        // We should never accept block which conflicts with completed transaction lock,
-        // that's why this is in CheckBlock unlike coinbase payee/amount.
-        // Require other nodes to comply, send them some data in case they are missing it.
-        BOOST_FOREACH(const CTransaction& tx, block.vtx) {
-            // skip coinbase, it has no inputs
-            if (tx.IsCoinBase()) continue;
-            // LOOK FOR TRANSACTION LOCK IN OUR MAP OF OUTPOINTS
-            BOOST_FOREACH(const CTxIn& txin, tx.vin) {
-                uint256 hashLocked;
-                if(instantsend.GetLockedOutPointTxHash(txin.prevout, hashLocked) && hashLocked != tx.GetHash()) {
-                    // Every node which relayed this block to us must invalidate it
-                    // but they probably need more data.
-                    // Relay corresponding transaction lock request and all its votes
-                    // to let other nodes complete the lock.
-                    instantsend.Relay(hashLocked);
-                    LOCK(cs_main);
-                    mapRejectedBlocks.insert(make_pair(block.GetHash(), GetTime()));
-                    return state.DoS(0, error("CheckBlock(3DC): transaction %s conflicts with transaction lock %s",
-                                                tx.GetHash().ToString(), hashLocked.ToString()),
-                                     REJECT_INVALID, "conflict-tx-lock");
-                }
-            }
-        }
-    } else {
-        LogPrintf("CheckBlock(3DC): spork is off, skipping transaction locking checks\n");
-    }
-
-    // END 3DCOIN
 
     // Check transactions
     BOOST_FOREACH(const CTransaction& tx, block.vtx)
@@ -3817,6 +3780,36 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
 
     if (fCheckPOW && fCheckMerkleRoot)
         block.fChecked = true;
+
+    return true;
+}
+
+bool CheckV014Block(const CChainParams& chainparams, const CBlock& block, CValidationState& state)
+{
+        if (!block.vtx[0].IsCoinBaseNew())
+        return state.DoS(100, error("CheckBlock(): first tx is not v014 coinbase"),
+                         REJECT_INVALID, "bad-v014cb-missing");
+
+        //V014-TODO add Proof of Sync validation after the complete implementation
+
+    return true;
+}
+
+bool CheckV014BlockHeader(const CChainParams& chainparams, const CBlock& block, CBlockIndex *pindexPrev, CValidationState& state)
+{
+
+        // Check block timestamp against prev
+        if (block.nTime > GetAdjustedTime()+5)
+            return state.DoS(100, error("%s: Gettime failed, BlockTime: %d\n  Gettime: %s\n", __func__, block.nTime, GetAdjustedTime()),
+                             REJECT_INVALID, "bad-v014-time-future");
+            //LogPrintf("CurrentTimeCheck:\n  BlockTime: %s\n  Gettime: %s\n", block.nTime, GetAdjustedTime());
+        // Check timestamp against current time
+        if (pindexPrev->nTime+59 > block.nTime)
+            return state.DoS(100, error("%s: Prevtime failed, BlockTime: %d\n  Prevtime: %s\n", __func__, block.nTime, pindexPrev->nTime),
+                             REJECT_INVALID, "bad-v014-time-too-soon");
+            //LogPrintf("PrevTimecheck:\n  BlockTime: %s\n  PrevTime: %s\n", block.nTime, pindexPrev->nTime);
+
+        //V014-TODO add Proof of Sync header validation after the complete implementation
 
     return true;
 }
@@ -3842,23 +3835,19 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& sta
     // Check proof of work
     if(Params().NetworkIDString() == CBaseChainParams::MAIN && nHeight <= 68589){
         // architecture issues with DGW v1 and v2)
-        unsigned int nBitsNext = GetNextWorkRequired(pindexPrev, &block, consensusParams);
-        double n1 = ConvertBitsToDouble(block.nBits);
-        double n2 = ConvertBitsToDouble(nBitsNext);
+            unsigned int nBitsNext = GetNextWorkRequired(pindexPrev, &block, consensusParams);
+            double n1 = ConvertBitsToDouble(block.nBits);
+            double n2 = ConvertBitsToDouble(nBitsNext);
 
-        if (abs(n1-n2) > n1*0.5)
-            return state.DoS(100, error("%s : incorrect proof of work (DGW pre-fork) - %f %f %f at %d", __func__, abs(n1-n2), n1, n2, nHeight),
-                            REJECT_INVALID, "bad-diffbits");
-    } else {
-        if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
-            return state.DoS(100, error("%s : incorrect proof of work at %d", __func__, nHeight),
-                            REJECT_INVALID, "bad-diffbits");
+            if (abs(n1-n2) > n1*0.5)
+                return state.DoS(100, error("%s : incorrect proof of work (DGW pre-fork) - %f %f %f at %d", __func__, abs(n1-n2), n1, n2, nHeight),
+                                REJECT_INVALID, "bad-diffbits");
+        } else {
+            if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
+                return state.DoS(100, error("%s : incorrect proof of work at %d", __func__, nHeight),
+                                REJECT_INVALID, "bad-diffbits");
     }
-
-    // Check timestamp against prev
-    if (block.GetBlockTime() <= pindexPrev->GetMedianTimePast())
-        return state.Invalid(error("%s: block's timestamp is too early", __func__),
-                             REJECT_INVALID, "time-too-old");
+    
 
     // Reject block.nVersion=1 blocks when 95% (75% on testnet) of the network has upgraded:
     if (block.nVersion < 2 && IsSuperMajority(2, pindexPrev, consensusParams.nMajorityRejectBlockOutdated, consensusParams))
@@ -3953,6 +3942,8 @@ static bool AcceptBlockHeader(const CBlockHeader& block, CValidationState& state
 
         if (!ContextualCheckBlockHeader(block, state, pindexPrev))
             return false;
+        if (!CheckV014BlockHeader(chainparams, block, pindexPrev, state) && pindexPrev->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+            return false;
     }
     if (pindex == NULL)
         pindex = AddToBlockIndex(block);
@@ -3994,6 +3985,11 @@ static bool AcceptBlock(const CBlock& block, CValidationState& state, const CCha
         if (!fHasMoreWork) return true;     // Don't process less-work chains
         if (fTooFarAhead) return true;      // Block height is too high
     }
+
+    
+        if (!CheckV014Block(chainparams, block, state) && pindex->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+        return false;
+        //LogPrintf("%s: V014Activated-AcceptBlock\n", __func__);
 
     if ((!CheckBlock(block, state)) || !ContextualCheckBlock(block, state, pindex->pprev)) {
         if (state.IsInvalid() && !state.CorruptionPossible()) {
@@ -4083,7 +4079,12 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     indexDummy.pprev = pindexPrev;
     indexDummy.nHeight = pindexPrev->nHeight + 1;
 
-    // NOTE: CheckBlockHeader is called by CheckBlock
+    
+    if (!CheckV014Block(chainparams, block, state) && pindexPrev->nHeight+1 >= Params().GetConsensus().nV014v1Start)
+    return false;
+    //LogPrintf("%s: V014Activated", __func__);
+
+        // NOTE: CheckBlockHeader is called by CheckBlock
     if (!ContextualCheckBlockHeader(block, state, pindexPrev))
         return false;
     if (!CheckBlock(block, state, fCheckPOW, fCheckMerkleRoot))
