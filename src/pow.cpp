@@ -140,7 +140,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 {
     unsigned int retarget = DIFF_DGW;
 
-    if (pindexLast->nHeight+1 >= 425000)
+    if (pindexLast->nHeight+1 >= 424999)
         return 0x1e0fffff;
     // mainnet/regtest share a configuration 
     if (Params().NetworkIDString() == CBaseChainParams::MAIN || Params().NetworkIDString() == CBaseChainParams::REGTEST) {
