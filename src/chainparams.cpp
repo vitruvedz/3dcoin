@@ -73,8 +73,8 @@ public:
     CMainParams() {
         strNetworkID = "main";
         //3DCoin V0.14
-        consensus.nV014v1Start = 450000;
-        consensus.nV014v2Start = 517000;
+        consensus.nV014v1Start = 475000;
+        consensus.nV014v2Start = 525000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
         //3DCoin V0.14  
@@ -196,7 +196,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         //3DCoin V0.14
-        consensus.nV014v1Start = 50000;
+        consensus.nV014v1Start = 20000;
         consensus.nV014v2Start = 517000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
