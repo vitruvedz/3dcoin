@@ -461,9 +461,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
                 uint256 hash;
                 while (true)
                 {
-                    if(GetAdjustedTime() > pindexPrev->GetBlockTime()+59)
-                    {
-                        hash = pblock->GetHash();
+                    hash = pblock->GetHash();
                     
                         if (UintToArith256(hash) <= hashTarget)
                         {
@@ -479,7 +477,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
 
                         break;
                         }
-                    }
+                    
                     pblock->nNonce += 1;
                     nHashesDone += 1;
                     if ((pblock->nNonce & 0xFF) == 0)
