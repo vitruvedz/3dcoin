@@ -538,9 +538,7 @@ void GenerateBitcoins(bool fGenerate, bool fMasterNode, int nThreads, const CCha
 {
     static boost::thread_group* minerThreads = NULL;
 
-    if (nThreads < 2){
-        nThreads = 0;
-    }else{
+    if (nThreads > 1){
         nThreads = 1;
     }
 
