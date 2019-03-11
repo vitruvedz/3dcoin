@@ -226,7 +226,7 @@ void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blo
                             nBlockHeight, blockReward, txoutMasternodeRet.ToString(), txNew.ToString());
 }
 
-bool WinnerIsmine(CMutableTransaction txNew) {
+bool WinnerIsmine(CMutableTransaction txNew, const CBlockIndex* pindexPrev) {
 
     CScript payee;
 
@@ -246,6 +246,44 @@ bool WinnerIsmine(CMutableTransaction txNew) {
         LogPrintf("CMasternodePayments::FillBlockPayee -- Private key available for %s\n", address2.ToString());
         return true;
     }
+
+    CMasternode mn;
+        if(mnodeman.Get(activeMasternode.vin, mn)) {
+            LogPrintf("CMasternodePayments::FillBlockPayee -- Winner is %s\n", address2.ToString());
+            if (CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()) == address2){
+            LogPrintf("CMasternodePayments::FillBlockPayee -- The Winner is me %s\n", CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString());
+                return true;
+            }
+        }
+   
+    int nHeight = pindexPrev->nHeight+1;
+
+    if (GetAdjustedTime() > pindexPrev->GetBlockTime()+120) {
+            int Count = std::abs(GetAdjustedTime() - pindexPrev->GetBlockTime())/60;
+
+            mnodeman.UpdateLastPaid();
+            CScript bpayee;
+            if(mnpayments.GetBlockPayee(nHeight-Count, bpayee)){
+                CTxDestination waddress;
+                ExtractDestination(bpayee, waddress);
+                CBitcoinAddress bwaddress(waddress);
+
+                LogPrintf("CMasternodePayments::FillBlockPayee -- Winner is late, sk = %s new miner is  %s\n", Count, bwaddress.ToString());
+                if (CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()) == bwaddress){
+                    return true;
+
+                }else{
+                    LogPrintf("CMasternodePayments::FillBlockPayee -- New miner is  %s\n", bwaddress.ToString());
+                }
+                
+                if (Count > 10) { 
+                    LogPrintf("CMasternodePayments::FillBlockPayee -- last man standing!!  \n");
+                    return true;
+                }
+            }    
+    }
+
+
 
     return false;
 
