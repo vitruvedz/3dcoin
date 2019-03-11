@@ -196,7 +196,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         //3DCoin V0.14
-        consensus.nV014v1Start = 9450;
+        consensus.nV014v1Start = 8450;
         consensus.nV014v2Start = 517000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
