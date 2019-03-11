@@ -142,8 +142,9 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
     if (pindexLast->nHeight+1 > Params().GetConsensus().nV014v1Start && pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2) {
-            return nProofOfWorkLimit;
-        }
+        return nProofOfWorkLimit;
+        
+    }
                     
         
     // mainnet/regtest share a configuration 
