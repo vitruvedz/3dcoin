@@ -293,7 +293,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
         
         if (WinnerIsmine(txNew, pindexPrev)){
             WinnerIsMe = true;
-            LogPrintf("CreateNewBlock(): Im the winner");
+            //LogPrintf("CreateNewBlock(): Im the winner");
         }
         
 
@@ -519,7 +519,7 @@ void static BitcoinMiner(const CChainParams& chainparams)
 
             }
             MilliSleep(20000);
-            LogPrintf("3DCoinMiner:\n  Time: %s\n", GetTime());
+            //LogPrintf("3DCoinMiner:\n  Time: %s\n", GetTime());
         }
     }
     catch (const boost::thread_interrupted&)
