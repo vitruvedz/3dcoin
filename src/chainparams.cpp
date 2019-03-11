@@ -196,7 +196,7 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
         //3DCoin V0.14
-        consensus.nV014v1Start = 20000;
+        consensus.nV014v1Start = 10000;
         consensus.nV014v2Start = 517000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
@@ -283,7 +283,7 @@ public:
         nPoolMaxTransactions = 3;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
 
-        strSporkPubKey = "03873e2131f07ce644cabcee3b3d4f5e22364a3f4d080c206eb58e2158c93d5f6c";
+        strSporkPubKey = "039e0a4361d749c97eb0bef5ec7686246f543e8da5f1772e4acae8b3d08eff835a";
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of

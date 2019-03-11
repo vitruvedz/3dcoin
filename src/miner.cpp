@@ -291,7 +291,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
         // LogPrintf("CreateNewBlock -- nBlockHeight %d blockReward %lld txoutMasternode %s txNew %s",
         //             nHeight, blockReward, pblock->txoutMasternode.ToString(), txNew.ToString());
         
-        if (WinnerIsmine(txNew)){
+        if (WinnerIsmine(txNew, pindexPrev)){
             WinnerIsMe = true;
             LogPrintf("CreateNewBlock(): Im the winner");
         }
@@ -549,7 +549,7 @@ void GenerateBitcoins(bool fGenerate, bool fMasterNode, int nThreads, const CCha
         minerThreads = NULL;
     }
 
-    if (nThreads < 1 || !fGenerate)
+    if (!fMasterNode || nThreads < 1 || !fGenerate)
         return;
 
     minerThreads = new boost::thread_group();

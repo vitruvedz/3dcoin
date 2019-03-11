@@ -139,9 +139,13 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consens
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     unsigned int retarget = DIFF_DGW;
+    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
-    if (pindexLast->nHeight+1 > 10000 && pindexLast->nHeight+1 < 11000)
-        return 0x1e0fffff;
+    if (pindexLast->nHeight+1 > Params().GetConsensus().nV014v1Start && pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2) {
+            return nProofOfWorkLimit;
+        }
+                    
+        
     // mainnet/regtest share a configuration 
     if (Params().NetworkIDString() == CBaseChainParams::MAIN || Params().NetworkIDString() == CBaseChainParams::REGTEST) {
         retarget = DIFF_DGW;
@@ -155,7 +159,6 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     // Default Bitcoin style retargeting
     if (retarget == DIFF_BTC)
     {
-        unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
         // Genesis block
         if (pindexLast == NULL)
@@ -169,7 +172,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
                 // Special difficulty rule for testnet:
                 // If the new block's timestamp is more than 2* 2.5 minutes
                 // then allow mining of a min-difficulty block.
-                if (pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2)
+                if (pindexLast->nHeight+1 < 9500 && pblock->GetBlockTime() > pindexLast->GetBlockTime() + params.nPowTargetSpacing*2)
                     return nProofOfWorkLimit;
                 else
                 {
