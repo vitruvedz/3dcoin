@@ -249,9 +249,9 @@ bool WinnerIsmine(CMutableTransaction txNew, const CBlockIndex* pindexPrev) {
 
     CMasternode mn;
         if(mnodeman.Get(activeMasternode.vin, mn)) {
-            LogPrintf("CMasternodePayments::FillBlockPayee -- Winner is %s\n", address2.ToString());
+            //LogPrintf("CMasternodePayments::FillBlockPayee -- Winner is %s\n", address2.ToString());
             if (CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()) == address2){
-            LogPrintf("CMasternodePayments::FillBlockPayee -- The Winner is me %s\n", CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString());
+            //LogPrintf("CMasternodePayments::FillBlockPayee -- The Winner is me %s\n", CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()).ToString());
                 return true;
             }
         }
@@ -268,14 +268,14 @@ bool WinnerIsmine(CMutableTransaction txNew, const CBlockIndex* pindexPrev) {
                 ExtractDestination(bpayee, waddress);
                 CBitcoinAddress bwaddress(waddress);
 
-                LogPrintf("CMasternodePayments::FillBlockPayee -- Winner is late, sk = %s new miner is  %s\n", Count, bwaddress.ToString());
+                //LogPrintf("CMasternodePayments::FillBlockPayee -- Winner is late, sk = %s new miner is  %s\n", Count, bwaddress.ToString());
                 if (CBitcoinAddress(mn.pubKeyCollateralAddress.GetID()) == bwaddress){
                     return true;
 
                 }else{
                     LogPrintf("CMasternodePayments::FillBlockPayee -- New miner is  %s\n", bwaddress.ToString());
                 }
-                
+
                 if (Count > 10) { 
                     LogPrintf("CMasternodePayments::FillBlockPayee -- last man standing!!  \n");
                     return true;
