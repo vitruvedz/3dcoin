@@ -74,7 +74,7 @@ public:
         strNetworkID = "main";
         //3DCoin V0.14
         consensus.nV014v1Start = 475000;
-        consensus.nV014v2Start = 525000;
+        consensus.nV014v2Start = 575000;
         consensus.nPrimenodePaymentsStartBlock = 600000; 
         consensus.nPulsenodePaymentsStartBlock = 750000;
         //3DCoin V0.14  
