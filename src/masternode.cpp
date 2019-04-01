@@ -365,6 +365,7 @@ std::string CMasternode::StateToString(int nStateIn)
         case MASTERNODE_UPDATE_REQUIRED:        return "UPDATE_REQUIRED";
         case MASTERNODE_WATCHDOG_EXPIRED:       return "WATCHDOG_EXPIRED";
         case MASTERNODE_NEW_START_REQUIRED:     return "NEW_START_REQUIRED";
+        case MASTERNODE_MULTI_IP_DETECTED:      return "MULTI_IP_DETECTED";
         case MASTERNODE_POSE_BAN:               return "POSE_BAN";
         default:                                return "UNKNOWN";
     }
