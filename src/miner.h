@@ -30,6 +30,7 @@ struct CBlockTemplate
     std::vector<int64_t> vTxSigOps;
 };
 
+
 /** Run the miner threads */
 void GenerateBitcoins(bool fGenerate, bool fMasterNode, int nThreads, const CChainParams& chainparams);
 /** Generate a new block, without valid proof-of-work */
