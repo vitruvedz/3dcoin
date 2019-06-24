@@ -19,14 +19,15 @@ uint256 CBlockv2Header::GetHash() const
 std::string CBlockv2::ToString() const
 {
     std::stringstream s;
-    s << strprintf("CBlockv014(hash=%s, ver=%d, hashPrevBlock=%s, hashTxRoot=%s,hashObjRoot=%s, hashDpsRoot=%s, msgMiner=%s, nTime=%u, nBits=%08x, vtx=%u, vobj=%u, vdps=%u)\n",
+    s << strprintf("CBlockv014(hash=%s, ver=%d, hashPrevBlock=%s, hashTxRoot=%s,hashObjRoot=%s, hashDpsRoot=%s, minerPubKey=%s, minerSig=%u nTime=%u, nBits=%08x, vtx=%u, vobj=%u, vdps=%u)\n",
         GetHash().ToString(),
         nVersion,
         hashPrevBlock.ToString(),
         hashTxRoot.ToString(),
         hashObjRoot.ToString(),
         hashDpsRoot.ToString(),
-        msgMiner,
+        minerPubKey.ToString(),
+        minerSig.size(),
         nTime, nBits, nNonce,
         vtx.size(),
         vobj.size(),

@@ -24,6 +24,7 @@
 #include "txmempool.h"
 #include "util.h"
 #include "utilmoneystr.h"
+#include "masternode.h"
 #include "masternode/payments.h"
 #include "masternode/sync.h"
 #include "validationinterface.h"
@@ -311,6 +312,7 @@ CBlockv2Template* CreateNewBlock(const CChainParams& chainparams, const CScript&
         pblockv2->nBits          = GetNextWorkRequiredv2(pindexPrev, pblockv2, chainparams.GetConsensus());
         pblockv2->nNonce         = 0;
         pblockv2template->vTxSigOps[0] = GetLegacySigOpCount(pblockv2->vtx[0]);
+        SignBlock(pindexPrev->nHeight, pblockv2);
 
         CValidationState state;
         if (!TestBlockv2Validity(state, chainparams, *pblockv2, pindexPrev, false, false)) {

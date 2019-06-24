@@ -37,6 +37,8 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
 bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight, CAmount blockReward);
 void FillBlockPayments(CMutableTransaction& txNew, int nBlockHeight, CAmount blockReward, CTxOut& txoutMasternodeRet);
 bool WinnerIsmine(CMutableTransaction txNew, const CBlockIndex* pindexPrev);
+bool SignBlock(int nHeight, CBlockv2* pblockv2);
+bool IsBlockSigValid(CBlockv2* blockv2, int nHeight);
 std::string GetRequiredPaymentsString(int nBlockHeight);
 
 class CMasternodePayee

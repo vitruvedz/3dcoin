@@ -21,7 +21,8 @@ public:
     uint256 hashTxRoot;
     uint256 hashObjRoot;
     uint256 hashDpsRoot;
-    std::string msgMiner;
+    CTxOut minerPubKey;
+    std::vector<unsigned char> minerSig;
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
@@ -41,7 +42,8 @@ public:
         READWRITE(hashTxRoot);
         READWRITE(hashObjRoot);
         READWRITE(hashDpsRoot);
-        READWRITE(msgMiner);
+        READWRITE(minerPubKey);
+        READWRITE(minerSig);
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
@@ -54,7 +56,8 @@ public:
         hashTxRoot.SetNull();
         hashObjRoot.SetNull();
         hashDpsRoot.SetNull();
-        msgMiner = "";
+        minerPubKey = CTxOut();
+        minerSig.clear();
         nTime = 0;
         nBits = 0;
         nNonce = 0;
@@ -128,7 +131,8 @@ public:
         blockv2.hashTxRoot = hashTxRoot;
         blockv2.hashObjRoot = hashObjRoot;
         blockv2.hashDpsRoot = hashDpsRoot;
-        blockv2.msgMiner    = msgMiner;
+        blockv2.minerPubKey = minerPubKey;
+        blockv2.minerSig    = minerSig;
         blockv2.nTime          = nTime;
         blockv2.nBits          = nBits;
         blockv2.nNonce         = nNonce;

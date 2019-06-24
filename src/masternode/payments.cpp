@@ -289,6 +289,32 @@ bool WinnerIsmine(CMutableTransaction txNew, const CBlockIndex* pindexPrev) {
 
 }
 
+bool SignBlock(int nHeight, CBlockv2* pblockv2) {
+
+
+    std::string Message = std::to_string(nHeight);
+    std::vector<unsigned char> vchSig;
+
+    if(!CMessageSigner::SignMessage(Message, vchSig, activeMasternode.keyMasternode)) {
+        LogPrintf("CMasternodePaymentSignBlock::Sign -- SignMessage() failed\n");
+        return false;
+        
+    }
+
+    LogPrintf("CMasternodePaymentSignBlock::Sign -- SignMessage() success %c\n", vchSig[0]);
+    return true;
+}
+
+bool IsBlockSigValid(CBlockv2* pblockv2, int nHeight){
+
+    //Check if BlockSig is valid
+    //Check if Blocksig match the masternode pubkey
+    
+
+    return true;
+}
+
+
 std::string GetRequiredPaymentsString(int nBlockHeight)
 {
     // IF WE HAVE A ACTIVATED TRIGGER FOR THIS HEIGHT - IT IS A SUPERBLOCK, GET THE REQUIRED PAYEES
