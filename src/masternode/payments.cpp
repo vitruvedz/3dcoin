@@ -300,6 +300,8 @@ bool SignBlock(int nHeight, CBlockv2* pblockv2) {
         return false;
         
     }
+    //add MinerSig to the block
+    pblockv2->minerSig = vchSig;
 
     LogPrintf("CMasternodePaymentSignBlock::Sign -- SignMessage() success %c\n", vchSig[0]);
     return true;
@@ -307,8 +309,13 @@ bool SignBlock(int nHeight, CBlockv2* pblockv2) {
 
 bool IsBlockSigValid(CBlockv2* pblockv2, int nHeight){
 
-    //Check if BlockSig is valid
-    //Check if Blocksig match the masternode pubkey
+    //Check if BlockSig is valid and match the masternode pubkey
+    std::string strError;
+    std::string Message = std::to_string(nHeight);
+    if(!CMessageSigner::VerifyMessage(pblockv2->minerPubKey, pblockv2->minerSig, Message, strError)) {
+        LogPrintf("CMasternodePaymentIsBlockSigValid::Sign -- VerifyMessage() failed, error: %s\n", strError);
+        return false;
+    }
     
 
     return true;

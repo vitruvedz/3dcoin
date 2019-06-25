@@ -10,6 +10,7 @@
 #include "primitives/transaction.h"
 #include "serialize.h"
 #include "uint256.h"
+#include "pubkey.h"
 
 
 class CBlockv2Header
@@ -21,7 +22,7 @@ public:
     uint256 hashTxRoot;
     uint256 hashObjRoot;
     uint256 hashDpsRoot;
-    CTxOut minerPubKey;
+    CPubKey minerPubKey;
     std::vector<unsigned char> minerSig;
     uint32_t nTime;
     uint32_t nBits;
@@ -56,7 +57,6 @@ public:
         hashTxRoot.SetNull();
         hashObjRoot.SetNull();
         hashDpsRoot.SetNull();
-        minerPubKey = CTxOut();
         minerSig.clear();
         nTime = 0;
         nBits = 0;

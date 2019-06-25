@@ -26,7 +26,7 @@ std::string CBlockv2::ToString() const
         hashTxRoot.ToString(),
         hashObjRoot.ToString(),
         hashDpsRoot.ToString(),
-        minerPubKey.ToString(),
+        minerPubKey.GetID().ToString(),
         minerSig.size(),
         nTime, nBits, nNonce,
         vtx.size(),
