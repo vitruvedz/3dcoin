@@ -904,8 +904,10 @@ bool CMasternodePing::CheckAndUpdate(CMasternode* pmn, bool fFromNewBroadcast, i
         mnodeman.mapSeenMasternodeBroadcast[hash].second.lastPing = *this;
     }
 
-    pmn->Check(true); // force update, ignoring cache
-    if (!pmn->IsEnabled()) return false;
+    // force update, ignoring cache
+    pmn->Check(true);
+    // relay ping for nodes in ENABLED/EXPIRED state only, skip everyone else
+    if (!pmn->IsEnabled() && !pmn->IsExpired()) return false;
 
     LogPrint("masternode", "CMasternodePing::CheckAndUpdate -- Masternode ping acceepted and relayed, masternode=%s\n", vin.prevout.ToStringShort());
     Relay();
