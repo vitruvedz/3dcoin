@@ -75,8 +75,9 @@ public:
         //3DCoin V0.14
         consensus.nV014v1Start = 475000;
         consensus.nV014v2Start = 575000;
-        consensus.nPrimenodePaymentsStartBlock = 600000; 
-        consensus.nPulsenodePaymentsStartBlock = 750000;
+        consensus.nV014v3Start = 800000;
+        consensus.nPrimenodePaymentsStartBlock = 820000; 
+        consensus.nPulsenodePaymentsStartBlock = 850000;
         //3DCoin V0.14  
         consensus.nSubsidyHalvingInterval = 501750; // Note: actual number of blocks per calendar year with DGW v3 is 501750
         consensus.nMasternodePaymentsStartBlock = 500; // unused 
