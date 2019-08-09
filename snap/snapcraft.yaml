@@ -38,5 +38,3 @@ apps:
     3dcoin:
       # See 'snapcraft plugins'
       plugin: nil
-  
-
