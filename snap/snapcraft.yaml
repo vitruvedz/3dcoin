@@ -16,3 +16,25 @@
       # See 'snapcraft plugins'
       plugin: nil
   
+apps:
+  3dcoind:
+    command: 3dcoind
+    plugs: [network, network-bind]
+    environment:
+      # Override HOME so the bitcoin datadir is located at
+      # ~/snap/3dcoin/common/.3dcoin instead of
+      # ~/snap/3dcoin/current/.3dcoin, and each new version of the bitcoin
+      # snap won't have a different data directory:
+      # https://docs.snapcraft.io/environment-variables/7983
+      HOME: $SNAP_USER_COMMON
+  3dcoin-qt:
+    command: desktop-launch 3dcoin-qt
+    plugs: [network, network-bind, desktop, x11]
+    environment:
+      HOME: $SNAP_USER_COMMON
+      DISABLE_WAYLAND: 1
+  3dcoin-cli:
+    command: 3dcoin-cli
+    plugs: [network]
+    environment:
+      HOME: $SNAP_USER_COMMON
