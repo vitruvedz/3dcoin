@@ -11,13 +11,13 @@
   grade: devel # must be 'stable' to release into candidate/stable channels
   confinement: devmode # use 'strict' once you have the right plugs and slots
 
-apps:
-  daemon:
-    command: bitcoind
-  qt:
-    command: bitcoin-qt
-  cli:
-    command: bitcoin-cli
+  apps:
+    daemon:
+      command: 3dcoind
+    qt:
+      command: 3dcoin-qt
+    cli:
+      command: 3dcoin-cli
     
   parts:
     my-part:
