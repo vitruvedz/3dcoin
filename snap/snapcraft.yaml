@@ -8,8 +8,8 @@
     we live in tweetspace and your description wants to look good in the snap
     store.
 
-  grade: devel # must be 'stable' to release into candidate/stable channels
-  confinement: devmode # use 'strict' once you have the right plugs and slots
+  grade: stable # must be 'stable' to release into candidate/stable channels
+  confinement: strict # use 'strict' once you have the right plugs and slots
 
   parts:
     my-part:
