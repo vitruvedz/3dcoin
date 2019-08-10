@@ -11,10 +11,67 @@
   grade: stable # must be 'stable' to release into candidate/stable channels
   confinement: strict # use 'strict' once you have the right plugs and slots
 
-  parts:
-    3dcoin:
-      override-build: | 
-      env | grep SNAP
-      wget https://github.com/BlockchainTechLLC/3dcoin/releases/download/v0.14.5.1/3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
-      tar -xvf 3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
-      plugin: nil
+parts:
+  bitcoin:
+    source: https://github.com/bitcoin/bitcoin
+    source-type: git
+    source-tag: v0.17.0.1
+    plugin: autotools
+    # XXX We don't want to copy the full blockchain every time that the snap is
+    # updated, but there's no way to define a default data dir in bitcoin-qt.
+    # Also, it would be better if we could split the wallet from the blockchain
+    # https://github.com/bitcoin/bitcoin/issues/3214
+    # -- elopio-20170308
+    override-build: | 
+      git apply $SNAPCRAFT_STAGE/default_data_dir.patch
+      snapcraftctl build
+    build-packages:
+      - g++
+      - pkg-config
+      - libssl-dev
+      - libevent-dev
+      - bsdmainutils
+      # Boost.
+      - libboost-system-dev
+      - libboost-filesystem-dev
+      - libboost-chrono-dev
+      - libboost-program-options-dev
+      - libboost-test-dev
+      - libboost-thread-dev
+      # Optional.
+      - libminiupnpc-dev
+      - libzmq3-dev
+      # GUI.
+      - libqt5gui5
+      - libqt5core5a
+      - libqt5dbus5
+      - qttools5-dev
+      - qttools5-dev-tools
+      - libprotobuf-dev
+      - protobuf-compiler
+      # Optional.
+      - libqrencode-dev
+    stage-packages: [ca-certificates]
+    after:
+      - berkeleydb
+      - desktop-qt5
+      - patches
+  berkeleydb:
+    source: http://download.oracle.com/berkeley-db/db-4.8.30.NC.tar.gz
+    source-checksum: sha256/12edc0df75bf9abd7f82f821795bcee50f42cb2e5f76a6a281b85732798364ef 
+    plugin: nil
+    override-build: |
+      cd build_unix
+      ../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$SNAPCRAFT_PART_INSTALL
+      snapcraftctl build
+      make install
+    prime:
+      - -*
+  patches:
+    source: snap/patches
+    plugin: dump
+    prime:
+      - -*
+  desktop:
+    source: snap/gui
+    plugin: dump
