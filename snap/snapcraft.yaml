@@ -12,13 +12,13 @@ confinement: strict
 
 apps:
   daemon:
-    command: bitcoind
+    command: 3dcoind
     plugs: [network, network-bind]
     environment:
       XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
   qt:
-    command: desktop-launch bitcoin-qt
+    command: desktop-launch 3dcoin-qt
     plugs: [network, network-bind, unity7]
     desktop: bitcoin.desktop
   cli:
-    command: bitcoin-cli
+    command: 3dcoin-cli
