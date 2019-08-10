@@ -9,3 +9,16 @@ description: |
 
 grade: stable
 confinement: strict
+
+apps:
+  daemon:
+    command: bitcoind
+    plugs: [network, network-bind]
+    environment:
+      XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
+  qt:
+    command: desktop-launch bitcoin-qt
+    plugs: [network, network-bind, unity7]
+    desktop: bitcoin.desktop
+  cli:
+    command: bitcoin-cli
