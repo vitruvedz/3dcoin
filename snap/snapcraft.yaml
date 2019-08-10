@@ -7,9 +7,15 @@ description: |
   we live in tweetspace and your description wants to look good in the snap
   store.
 
-grade: stable
-confinement: strict
+grade: devel
+confinement: devmode
 
+apps:
+  3dcoind:
+    command: bin/3dcoind
+  3dcoin-cli:
+    command: bin/3dcoin-cli
+    
 parts:
   gnu-3dcoin:
     source: https://github.com/BlockchainTechLLC/3dcoin/releases/download/v0.14.5.1/3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
