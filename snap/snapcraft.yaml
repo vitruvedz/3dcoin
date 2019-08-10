@@ -20,5 +20,3 @@
       tar -xvf 3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
     build-packages:
       - wget
-    after:
-      - desktop-qt5
