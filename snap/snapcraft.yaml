@@ -10,14 +10,6 @@
   grade: stable # must be 'stable' to release into candidate/stable channels
   confinement: strict # use 'strict' once you have the right plugs and slots
 
-apps:
-  3dcoind:
-    command: 3dcoind
-  3dcoin-qt:
-    command: desktop-launch 3dcoin-qt
-  3dcoin-cli:
-    command: 3dcoin-cli
-      
   parts:
     my-part:
       # See 'snapcraft plugins'
