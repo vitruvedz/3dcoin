@@ -18,3 +18,7 @@
       env | grep SNAP
       wget https://github.com/BlockchainTechLLC/3dcoin/releases/download/v0.14.5.1/3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
       tar -xvf 3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
+    build-packages:
+      - wget
+    after:
+      - desktop-qt5
