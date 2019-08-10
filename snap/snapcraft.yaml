@@ -11,17 +11,10 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
 parts:
-  my-part:
+  3dcoin:
     # See 'snapcraft plugins'
     plugin: nil
     override-build: | 
       env | grep SNAP
       wget https://github.com/BlockchainTechLLC/3dcoin/releases/download/v0.14.5.1/3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
       tar -xvf 3dcoin-x86_64-pc-linux-gnu-0.14.5.1.tar.gz
-      install -m 0755 -D -t $SNAPCRAFT_PART_INSTALL/bin 3dcoin-x86_64-pc-linux-gnu-0.14.5.1/bin/bitcoind
-      install -m 0755 -D -t $SNAPCRAFT_PART_INSTALL/bin 3dcoin-x86_64-pc-linux-gnu-0.14.5.1/bin/bitcoin-qt
-      install -m 0755 -D -t $SNAPCRAFT_PART_INSTALL/bin 3dcoin-x86_64-pc-linux-gnu-0.14.5.1/bin/bitcoin-cli
-    build-packages:
-      - wget
-    after:
-      - desktop-qt5
